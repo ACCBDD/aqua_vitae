@@ -11,12 +11,15 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import org.joml.Vector3f;
@@ -36,7 +39,7 @@ public class AquaVitaeClient {
 
     @SubscribeEvent
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        ModFluidTypes.REGISTERED.forEach(type -> {
+        ModFluidTypes.REGISTERED.forEach((name, set) -> {
             event.registerFluidType(new IClientFluidTypeExtensions() {
                 private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
                 private static final ResourceLocation WATER_STILL = ResourceLocation.withDefaultNamespace("block/water_still");
@@ -45,7 +48,7 @@ public class AquaVitaeClient {
 
                 @Override
                 public int getTintColor() {
-                    return type.color();
+                    return set.color();
                 }
 
                 @Override
@@ -81,7 +84,19 @@ public class AquaVitaeClient {
                     RenderSystem.setShaderFogColor((color >> 16 & 255) / 255f, (color >> 8 & 255) / 255f, (color & 255) / 255f, 1);
                     RenderSystem.setShaderFogEnd(10);
                 }
-            }, type.type());
+            }, set.type());
+        });
+    }
+
+    @SubscribeEvent
+    public void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+        ModFluids.REGISTERED.forEach(fluid -> {
+           event.register((stack, index) -> {
+               if (index == 1) {
+                   return ModFluidTypes.REGISTERED.get(fluid.get().getFluidType().getDescriptionId()).color();
+               }
+               return event.getItemColors().getColor(new ItemStack(Items.BUCKET), 0);
+           }, fluid.get().getBucket());
         });
     }
 }

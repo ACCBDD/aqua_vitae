@@ -7,14 +7,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
 public class ModFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, MODID);
-    public static final List<FluidSet> REGISTERED = new ArrayList<>();
+    public static final Map<String, FluidSet> REGISTERED = new HashMap<>();
 
     public static final DeferredHolder<FluidType, FluidType> AQUA_VITAE_TYPE = register("aqua_vitae", 0xEEFFFFFF);
     public static final DeferredHolder<FluidType, FluidType> TEQUILA_BLANCO_TYPE = register("tequila_blanco", 0xEEE8F1FF);
@@ -35,7 +35,7 @@ public class ModFluidTypes {
                 .density(0)
                 .temperature(0)
                 .viscosity(0)));
-        REGISTERED.add(new FluidSet(name, registered, color));
+        REGISTERED.put("block.aqua_vitae."+name, new FluidSet(name, registered, color));
         return registered;
     }
 

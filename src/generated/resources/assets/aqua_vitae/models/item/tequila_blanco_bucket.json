@@ -1,0 +1,8 @@
+{
+  "parent": "neoforge:item/bucket",
+  "apply_fluid_luminosity": true,
+  "cover_is_mask": false,
+  "flip_gas": false,
+  "fluid": "aqua_vitae:flowing_tequila_blanco",
+  "loader": "neoforge:fluid_container"
+}
