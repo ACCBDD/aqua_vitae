@@ -43,7 +43,7 @@ public class ModItems {
         return registerWithTab(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static <T extends Fluid> DeferredItem<BucketItem> registerBucket(String name, Supplier<T> fluid) {
+    private static <T extends Fluid> DeferredItem<BucketItem> registerBucket(String name, Supplier<? extends Fluid> fluid) {
         return registerWithTab(name, () -> new BucketItem(fluid.get(), (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1)));
     }
 }

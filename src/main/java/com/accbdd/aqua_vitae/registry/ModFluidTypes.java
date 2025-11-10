@@ -18,12 +18,12 @@ public class ModFluidTypes {
 
     public static final DeferredHolder<FluidType, FluidType> AQUA_VITAE_TYPE = register("aqua_vitae", 0xEEFFFFFF);
     public static final DeferredHolder<FluidType, FluidType> TEQUILA_BLANCO_TYPE = register("tequila_blanco", 0xEEE8F1FF);
-    public static final DeferredHolder<FluidType, FluidType> TEQUILA_REPOSADO_TYPE = register("tequila_reposado", 0xEEFFE7B3);
-    public static final DeferredHolder<FluidType, FluidType> TEQUILA_ANEJO_TYPE = register("tequila_anejo", 0xEEB8885C);
+    public static final DeferredHolder<FluidType, FluidType> TEQUILA_REPOSADO_TYPE = register("tequila_reposado", 0xDDFFE291);
+    public static final DeferredHolder<FluidType, FluidType> TEQUILA_ANEJO_TYPE = register("tequila_anejo", 0xCCFCBA03);
 
     public static DeferredHolder<FluidType, FluidType> register(String name, int color) {
         DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new FluidType(FluidType.Properties.create()
-                .descriptionId("block.aqua_vitae.aqua_vitae")
+                .descriptionId("block.aqua_vitae."+name)
                 .fallDistanceModifier(0)
                 .canExtinguish(true)
                 .canConvertToSource(false)

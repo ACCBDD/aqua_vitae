@@ -18,11 +18,11 @@ public class AquaVitae {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
-        ModFluids.FLUIDS.register(modEventBus);
-        ModFluidTypes.FLUID_TYPES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModCreativeTab.CREATIVE_TABS.register(modEventBus);
+        ModFluidTypes.FLUID_TYPES.register(modEventBus);
+        ModFluids.FLUIDS.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
