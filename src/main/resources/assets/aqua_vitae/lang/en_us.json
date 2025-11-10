@@ -1,5 +1,5 @@
 {
   "itemGroup.aqua_vitae": "Aqua Vitae",
-  "block.aqua_vitae.example_block": "Example Block",
-  "item.aqua_vitae.example_item": "Example Item"
+  "block.aqua_vitae.aqua_vitae": "Aqua Vitae",
+  "item.aqua_vitae.aqua_vitae_bucket": "Bucket of Aqua Vitae"
 }

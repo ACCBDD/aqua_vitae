@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -14,7 +15,7 @@ public class ModCreativeTab {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_TABS.register(MODID,
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.aqua_vitae"))
-                    .icon(() -> ModItems.EXAMPLE_BLOCK_ITEM.get().getDefaultInstance())
+                    .icon(Items.WHEAT::getDefaultInstance)
                     .displayItems((parameters, output) -> {
                         ModItems.CREATIVE_TAB_ITEMS.forEach(output::accept);
                     }).build());

@@ -19,12 +19,15 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     public static final List<DeferredItem<? extends Item>> CREATIVE_TAB_ITEMS = new ArrayList<>();
 
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = registerSimpleBlockItem("example_block", ModBlocks.EXAMPLE_BLOCK);
-    public static final DeferredItem<BucketItem> TEST_BUCKET_ITEM = registerBucket("test_bucket", ModFluids.TEST_FLUID);
+    public static final DeferredItem<BucketItem> AQUA_VITAE_BUCKET = registerBucket("aqua_vitae_bucket", ModFluids.AQUA_VITAE);
+    public static final DeferredItem<BucketItem> TEQUILA_BLANCO_BUCKET = registerBucket("tequila_blanco_bucket", ModFluids.TEQUILA_BLANCO);
+    public static final DeferredItem<BucketItem> TEQUILA_REPOSADO_BUCKET = registerBucket("tequila_reposado_bucket", ModFluids.TEQUILA_REPOSADO);
+    public static final DeferredItem<BucketItem> TEQUILA_ANEJO_BUCKET = registerBucket("tequila_anejo_bucket", ModFluids.TEQUILA_ANEJO);
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier) {
         return ITEMS.register(name, itemSupplier);
     }
+
 
     private static <T extends Item> DeferredItem<T> registerWithTab(String name, Supplier<T> itemSupplier) {
         DeferredItem<T> register = register(name, itemSupplier);
