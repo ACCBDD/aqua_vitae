@@ -16,5 +16,7 @@ public class BlockStateGenerator extends BlockStateProvider {
         simpleBlock(ModBlocks.TEQUILA_BLANCO.get(), models().getExistingFile(mcLoc("water")));
         simpleBlock(ModBlocks.TEQUILA_REPOSADO.get(), models().getExistingFile(mcLoc("water")));
         simpleBlock(ModBlocks.TEQUILA_ANEJO.get(), models().getExistingFile(mcLoc("water")));
+
+        directionalBlock(ModBlocks.KEG.get(), models().getExistingFile(modLoc("keg")));
     }
 }

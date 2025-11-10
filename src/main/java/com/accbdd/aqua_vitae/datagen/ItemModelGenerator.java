@@ -1,6 +1,8 @@
 package com.accbdd.aqua_vitae.datagen;
 
+import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModFluids;
+import com.accbdd.aqua_vitae.registry.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -18,6 +20,9 @@ public class ItemModelGenerator extends ItemModelProvider {
     @Override
     protected void registerModels() {
         ModFluids.REGISTERED.forEach(this::bucketModel);
+        simpleBlockItem(ModBlocks.KEG.get());
+        basicItem(ModItems.CUP.get());
+        basicItem(ModItems.SHOT_GLASS.get());
     }
 
     private void bucketModel(DeferredHolder<Fluid, FlowingFluid> fluid) {

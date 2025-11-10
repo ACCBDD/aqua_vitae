@@ -14,7 +14,7 @@ public class ModCreativeTab {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_TABS.register(MODID,
             () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.aqua_vitae"))
+                    .title(Component.translatable("item_group.aqua_vitae"))
                     .icon(Items.WHEAT::getDefaultInstance)
                     .displayItems((parameters, output) -> {
                         ModItems.CREATIVE_TAB_ITEMS.forEach(output::accept);

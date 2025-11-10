@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "aqua_vitae:block/keg_end",
+    "side": "aqua_vitae:block/keg_side"
+  }
+}

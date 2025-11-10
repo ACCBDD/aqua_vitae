@@ -24,6 +24,7 @@ public class Generators {
         // If it's a server resource (goes in the data folder) include the server.
         generator.addProvider(event.includeServer(), new RecipeGenerator(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput, lookupProvider));
 
         // If it's a client resource (goes in the assets folder) include the client.
         generator.addProvider(event.includeClient(), new BlockModelGenerator(packOutput, MODID, existingFileHelper));

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "aqua_vitae:block/keg",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "aqua_vitae:block/keg",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "aqua_vitae:block/keg",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "aqua_vitae:block/keg",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "aqua_vitae:block/keg"
+    },
+    "facing=west": {
+      "model": "aqua_vitae:block/keg",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

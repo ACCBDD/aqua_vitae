@@ -11,6 +11,6 @@ public class BlockModelGenerator extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
-
+        cubeColumnHorizontal("keg", modLoc("block/keg_side"), modLoc("block/keg_end"));
     }
 }
