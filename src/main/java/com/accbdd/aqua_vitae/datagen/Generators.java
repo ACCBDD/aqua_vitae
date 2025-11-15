@@ -1,14 +1,25 @@
 package com.accbdd.aqua_vitae.datagen;
 
 
+import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
+import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
@@ -31,5 +42,27 @@ public class Generators {
         generator.addProvider(event.includeClient(), new ItemModelGenerator(packOutput, MODID, existingFileHelper));
         generator.addProvider(event.includeClient(), new BlockStateGenerator(packOutput, MODID, existingFileHelper));
         generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
+
+        //utility classes for datagen
+        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}", new BuiltInFlavors(), new BuiltInIngredients());
+        generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
+                AquaVitae.FLAVOR_REGISTRY,
+                bootstrap -> {
+                    for (Map.Entry<ResourceKey<BrewingIngredient.Flavor>, BrewingIngredient.Flavor> entry : BuiltIn.FLAVORS.entrySet())
+                        bootstrap.register(
+                                entry.getKey(),
+                                entry.getValue()
+                        );
+                }
+        ).add(
+                AquaVitae.INGREDIENT_REGISTRY,
+                bootstrap -> {
+                    for (Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> entry : BuiltIn.BREWING_INGREDIENTS.entrySet())
+                        bootstrap.register(
+                                entry.getKey(),
+                                entry.getValue()
+                        );
+                }
+        ), Set.of(MODID)));
     }
 }

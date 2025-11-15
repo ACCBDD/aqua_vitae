@@ -30,6 +30,13 @@ public class CupItem extends Item {
     }
 
     @Override
+    public Component getName(ItemStack stack) {
+        if (stack.has(ModComponents.FLUIDSTACK.get()) && !stack.get(ModComponents.FLUIDSTACK.get()).stack().isEmpty())
+            return Component.translatable("grammar.aqua_vitae.container_of", super.getName(stack), stack.get(ModComponents.FLUIDSTACK.get()).stack().getHoverName());
+        return super.getName(stack);
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack();

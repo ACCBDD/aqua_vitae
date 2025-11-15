@@ -1,15 +1,10 @@
 {
   "block.aqua_vitae.aqua_vitae": "Aqua Vitae",
   "block.aqua_vitae.keg": "Keg",
-  "block.aqua_vitae.tequila_anejo": "Tequila Añejo",
-  "block.aqua_vitae.tequila_blanco": "Tequila Blanco",
-  "block.aqua_vitae.tequila_reposado": "Tequila Reposado",
   "effect.aqua_vitae.tipsy": "Tipsy",
+  "grammar.aqua_vitae.container_of": "%s of %s",
   "item.aqua_vitae.aqua_vitae_bucket": "Bucket of Aqua Vitae",
   "item.aqua_vitae.cup": "Cup",
-  "item.aqua_vitae.shot_glass": "Shot Glass",
-  "item.aqua_vitae.tequila_anejo_bucket": "Bucket of Tequila Añejo",
-  "item.aqua_vitae.tequila_blanco_bucket": "Bucket of Tequila Blanco",
-  "item.aqua_vitae.tequila_reposado_bucket": "Bucket of Tequila Reposado",
+  "item.aqua_vitae.shooter": "Shooter",
   "item_group.aqua_vitae": "Aqua Vitae"
 }

@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
 public class FluidTagGenerator extends FluidTagsProvider {
-    public static TagKey<Fluid> HARD_LIQUOR = TagKey.create(Registries.FLUID, loc("hard_liquor"));
+    public static TagKey<Fluid> AQUA_VITAE = TagKey.create(Registries.FLUID, loc("aqua_vitae"));
 
     public FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, MODID, existingFileHelper);
@@ -24,15 +24,9 @@ public class FluidTagGenerator extends FluidTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(HARD_LIQUOR).add(
+        tag(AQUA_VITAE).add(
                 ModFluids.AQUA_VITAE.get(),
-                ModFluids.FLOWING_AQUA_VITAE.get(),
-                ModFluids.TEQUILA_ANEJO.get(),
-                ModFluids.FLOWING_TEQUILA_ANEJO.get(),
-                ModFluids.TEQUILA_REPOSADO.get(),
-                ModFluids.FLOWING_TEQUILA_REPOSADO.get(),
-                ModFluids.TEQUILA_BLANCO.get(),
-                ModFluids.FLOWING_TEQUILA_BLANCO.get()
+                ModFluids.FLOWING_AQUA_VITAE.get()
         );
     }
 

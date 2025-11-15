@@ -16,10 +16,8 @@ public class ModFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, MODID);
     public static final Map<String, FluidSet> REGISTERED = new HashMap<>();
 
-    public static final DeferredHolder<FluidType, FluidType> AQUA_VITAE_TYPE = register("aqua_vitae", 0xEEFFFFFF);
-    public static final DeferredHolder<FluidType, FluidType> TEQUILA_BLANCO_TYPE = register("tequila_blanco", 0xEEE8F1FF);
-    public static final DeferredHolder<FluidType, FluidType> TEQUILA_REPOSADO_TYPE = register("tequila_reposado", 0xDDFFE291);
-    public static final DeferredHolder<FluidType, FluidType> TEQUILA_ANEJO_TYPE = register("tequila_anejo", 0xCCFCBA03);
+    public static final DeferredHolder<FluidType, FluidType> AQUA_VITAE_TYPE = register("aqua_vitae", 0xAAFFFFFF);
+    public static final DeferredHolder<FluidType, FluidType> ALCOHOL_TYPE = register("alcohol", 0xEEDDDDDD);
 
     public static DeferredHolder<FluidType, FluidType> register(String name, int color) {
         DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new FluidType(FluidType.Properties.create()
@@ -32,9 +30,7 @@ public class ModFluidTypes {
                 .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                 .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
                 .canHydrate(false)
-                .density(0)
-                .temperature(0)
-                .viscosity(0)));
+                .viscosity(500)));
         REGISTERED.put("block.aqua_vitae."+name, new FluidSet(name, registered, color));
         return registered;
     }

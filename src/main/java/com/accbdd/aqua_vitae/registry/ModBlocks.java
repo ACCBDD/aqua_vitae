@@ -21,9 +21,6 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<LiquidBlock> AQUA_VITAE = registerLiquidBlock("aqua_vitae", ModFluids.AQUA_VITAE);
-    public static final DeferredBlock<LiquidBlock> TEQUILA_BLANCO = registerLiquidBlock("tequila_blanco", ModFluids.TEQUILA_BLANCO);
-    public static final DeferredBlock<LiquidBlock> TEQUILA_REPOSADO = registerLiquidBlock("tequila_reposado", ModFluids.TEQUILA_REPOSADO);
-    public static final DeferredBlock<LiquidBlock> TEQUILA_ANEJO = registerLiquidBlock("tequila_anejo", ModFluids.TEQUILA_ANEJO);
 
     public static final DeferredBlock<Block> KEG = registerBlock("keg", KegBlock::new);
 

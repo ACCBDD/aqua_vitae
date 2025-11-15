@@ -22,7 +22,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         ModFluids.REGISTERED.forEach(this::bucketModel);
         simpleBlockItem(ModBlocks.KEG.get());
         basicItem(ModItems.CUP.get());
-        basicItem(ModItems.SHOT_GLASS.get());
+        basicItem(ModItems.SHOOTER.get());
     }
 
     private void bucketModel(DeferredHolder<Fluid, FlowingFluid> fluid) {

@@ -22,13 +22,12 @@ public class LanguageGenerator extends LanguageProvider {
         add("effect.aqua_vitae.tipsy", "Tipsy");
 
         addFluidSet("Aqua Vitae", ModBlocks.AQUA_VITAE , ModItems.AQUA_VITAE_BUCKET);
-        addFluidSet("Tequila Blanco", ModBlocks.TEQUILA_BLANCO , ModItems.TEQUILA_BLANCO_BUCKET);
-        addFluidSet("Tequila Reposado", ModBlocks.TEQUILA_REPOSADO , ModItems.TEQUILA_REPOSADO_BUCKET);
-        addFluidSet("Tequila Añejo", ModBlocks.TEQUILA_ANEJO , ModItems.TEQUILA_ANEJO_BUCKET);
 
         addBlock(ModBlocks.KEG, "Keg");
         addItem(ModItems.CUP, "Cup");
-        addItem(ModItems.SHOT_GLASS, "Shot Glass");
+        addItem(ModItems.SHOOTER, "Shooter");
+
+        add("grammar.aqua_vitae.container_of", "%s of %s");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {

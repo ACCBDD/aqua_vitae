@@ -21,14 +21,11 @@ public class ModItems {
     public static final List<DeferredItem<? extends Item>> CREATIVE_TAB_ITEMS = new ArrayList<>();
 
     public static final DeferredItem<BucketItem> AQUA_VITAE_BUCKET = registerBucket("aqua_vitae_bucket", ModFluids.AQUA_VITAE);
-    public static final DeferredItem<BucketItem> TEQUILA_BLANCO_BUCKET = registerBucket("tequila_blanco_bucket", ModFluids.TEQUILA_BLANCO);
-    public static final DeferredItem<BucketItem> TEQUILA_REPOSADO_BUCKET = registerBucket("tequila_reposado_bucket", ModFluids.TEQUILA_REPOSADO);
-    public static final DeferredItem<BucketItem> TEQUILA_ANEJO_BUCKET = registerBucket("tequila_anejo_bucket", ModFluids.TEQUILA_ANEJO);
 
     public static final DeferredItem<BlockItem> KEG = registerSimpleBlockItem("keg", ModBlocks.KEG);
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
-    public static final DeferredItem<CupItem> SHOT_GLASS = registerWithTab("shot_glass", () -> new CupItem(20, 4, 50));
+    public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier) {
         return ITEMS.register(name, itemSupplier);

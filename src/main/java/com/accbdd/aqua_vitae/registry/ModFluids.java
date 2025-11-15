@@ -20,12 +20,9 @@ public class ModFluids {
 
     public static final DeferredHolder<Fluid, FlowingFluid> AQUA_VITAE = registerSource("aqua_vitae", () -> ModFluidImpl.AQUA_VITAE_PROPERTIES);
     public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_AQUA_VITAE = registerFlowing("flowing_aqua_vitae", () -> ModFluidImpl.AQUA_VITAE_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> TEQUILA_BLANCO = registerSource("tequila_blanco", () -> ModFluidImpl.TEQUILA_BLANCO_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_TEQUILA_BLANCO = registerFlowing("flowing_tequila_blanco", () -> ModFluidImpl.TEQUILA_BLANCO_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> TEQUILA_REPOSADO = registerSource("tequila_reposado", () -> ModFluidImpl.TEQUILA_REPOSADO_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_TEQUILA_REPOSADO = registerFlowing("flowing_tequila_reposado", () -> ModFluidImpl.TEQUILA_REPOSADO_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> TEQUILA_ANEJO = registerSource("tequila_anejo", () -> ModFluidImpl.TEQUILA_ANEJO_PROPERTIES);
-    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_TEQUILA_ANEJO = registerFlowing("flowing_tequila_anejo", () -> ModFluidImpl.TEQUILA_ANEJO_PROPERTIES);
+
+    public static final DeferredHolder<Fluid, FlowingFluid> ALCOHOL = registerSource("alcohol", () -> ModFluidImpl.ALCOHOL_PROPERTIES);
+    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_ALCOHOL = registerFlowing("flowing_alcohol", () -> ModFluidImpl.ALCOHOL_PROPERTIES);
 
     private static DeferredHolder<Fluid, FlowingFluid> registerSource(String name, Supplier<BaseFlowingFluid.Properties> properties) {
         DeferredHolder<Fluid, FlowingFluid> register = FLUIDS.register(name, () -> new BaseFlowingFluid.Source(properties.get()));

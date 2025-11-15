@@ -3,6 +3,6 @@
   "apply_fluid_luminosity": true,
   "cover_is_mask": false,
   "flip_gas": false,
-  "fluid": "aqua_vitae:flowing_tequila_anejo",
+  "fluid": "aqua_vitae:flowing_alcohol",
   "loader": "neoforge:fluid_container"
 }

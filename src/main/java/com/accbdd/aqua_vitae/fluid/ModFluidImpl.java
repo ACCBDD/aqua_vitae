@@ -13,21 +13,8 @@ public class ModFluidImpl {
             ModFluids.FLOWING_AQUA_VITAE::value)
             .bucket(ModItems.AQUA_VITAE_BUCKET).block(ModBlocks.AQUA_VITAE);
 
-    public static final BaseFlowingFluid.Properties TEQUILA_BLANCO_PROPERTIES = new BaseFlowingFluid.Properties(
-            ModFluidTypes.TEQUILA_BLANCO_TYPE::value,
-            ModFluids.TEQUILA_BLANCO::value,
-            ModFluids.FLOWING_TEQUILA_BLANCO::value)
-            .bucket(ModItems.TEQUILA_BLANCO_BUCKET).block(ModBlocks.TEQUILA_BLANCO);
-
-    public static final BaseFlowingFluid.Properties TEQUILA_REPOSADO_PROPERTIES = new BaseFlowingFluid.Properties(
-            ModFluidTypes.TEQUILA_REPOSADO_TYPE::value,
-            ModFluids.TEQUILA_REPOSADO::value,
-            ModFluids.FLOWING_TEQUILA_REPOSADO::value)
-            .bucket(ModItems.TEQUILA_REPOSADO_BUCKET).block(ModBlocks.TEQUILA_REPOSADO);
-
-    public static final BaseFlowingFluid.Properties TEQUILA_ANEJO_PROPERTIES = new BaseFlowingFluid.Properties(
-            ModFluidTypes.TEQUILA_ANEJO_TYPE::value,
-            ModFluids.TEQUILA_ANEJO::value,
-            ModFluids.FLOWING_TEQUILA_ANEJO::value)
-            .bucket(ModItems.TEQUILA_ANEJO_BUCKET).block(ModBlocks.TEQUILA_ANEJO);
+    public static final BaseFlowingFluid.Properties ALCOHOL_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.ALCOHOL_TYPE::value,
+            ModFluids.ALCOHOL::value,
+            ModFluids.FLOWING_ALCOHOL::value);
 }

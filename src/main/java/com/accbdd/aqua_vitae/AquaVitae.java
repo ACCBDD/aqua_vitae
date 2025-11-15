@@ -4,9 +4,13 @@ import com.accbdd.aqua_vitae.capability.CupHandler;
 import com.accbdd.aqua_vitae.datagen.FluidTagGenerator;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
@@ -18,12 +22,16 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import org.slf4j.Logger;
 
 @Mod(AquaVitae.MODID)
 public class AquaVitae {
     public static final String MODID = "aqua_vitae";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static ResourceKey<Registry<BrewingIngredient.Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
+    public static ResourceKey<Registry<BrewingIngredient>> INGREDIENT_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "brewing_ingredient"));
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
@@ -37,6 +45,7 @@ public class AquaVitae {
 
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);
+        modEventBus.addListener(this::registerDatapackRegistries);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -47,7 +56,7 @@ public class AquaVitae {
     public void onPlayerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
         if (!player.level().isClientSide) {
-            if (player.level().getFluidState(BlockPos.containing(player.getEyePosition())).is(FluidTagGenerator.HARD_LIQUOR)) {
+            if (player.level().getFluidState(BlockPos.containing(player.getEyePosition())).is(FluidTagGenerator.AQUA_VITAE)) {
                 player.addEffect(new MobEffectInstance(ModEffects.TIPSY, 200, 4));
             }
         }
@@ -67,5 +76,19 @@ public class AquaVitae {
                     cup
             );
         });
+    }
+
+    public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
+        event.dataPackRegistry(
+                FLAVOR_REGISTRY,
+                BrewingIngredient.Flavor.CODEC,
+                BrewingIngredient.Flavor.CODEC
+        );
+
+        event.dataPackRegistry(
+                INGREDIENT_REGISTRY,
+                BrewingIngredient.CODEC,
+                BrewingIngredient.CODEC
+        );
     }
 }
