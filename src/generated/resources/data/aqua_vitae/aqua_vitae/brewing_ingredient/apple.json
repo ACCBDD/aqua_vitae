@@ -5,7 +5,7 @@
     "aqua_vitae:fruity",
     "aqua_vitae:sweet"
   ],
-  "ingredient": {
+  "input": {
     "item": "minecraft:apple"
   },
   "starch": 0.02,

@@ -2,7 +2,6 @@ package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -41,7 +40,7 @@ public class CupItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack();
         tooltipComponents.add(fluid.getHoverName().copy().append(": " + fluid.getAmount()));
-        tooltipComponents.add(Component.literal(fluid.getOrDefault(DataComponents.DAMAGE, 0) + " heat"));
+        tooltipComponents.add(Component.literal(fluid.getOrDefault(ModComponents.STARCH, 0) + " starch"));
     }
 
     @Override
@@ -68,7 +67,7 @@ public class CupItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        stack.set(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY);
+        stack.remove(ModComponents.FLUIDSTACK.get());
         return stack;
     }
 

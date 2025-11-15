@@ -10,7 +10,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class AquaVitaeUtil {
+public class RegistryUtils {
 
     @Nullable
     public static RegistryAccess registryAccess() {
@@ -31,6 +31,13 @@ public class AquaVitaeUtil {
     public static Registry<BrewingIngredient.Flavor> flavorRegistry() {
         if (registryAccess() != null)
             return registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get();
+        return null;
+    }
+
+    @Nullable
+    public static Registry<BrewingIngredient> ingredientRegistry() {
+        if (registryAccess() != null)
+            return registryAccess().registry(AquaVitae.INGREDIENT_REGISTRY).get();
         return null;
     }
 }

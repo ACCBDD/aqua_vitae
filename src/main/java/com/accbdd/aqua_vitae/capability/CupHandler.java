@@ -8,7 +8,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 /**
- * Capability for an item that stores one portion of a liquid, only able to fill up to full and empty out any amount
+ * Capability for an item that stores a liquid
  */
 public class CupHandler extends FluidTank implements IFluidHandlerItem {
     private final ItemStack stack;
@@ -16,18 +16,22 @@ public class CupHandler extends FluidTank implements IFluidHandlerItem {
     public CupHandler(ItemStack stack, int capacity) {
         super(capacity);
         this.stack = stack;
-        this.fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack();
+        this.fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack().copy();
     }
 
     @Override
     public ItemStack getContainer() {
+        if (fluid.isEmpty())
+            stack.remove(ModComponents.FLUIDSTACK.get());
+        else
+            stack.set(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(fluid.copy()));
         return stack;
     }
 
     @Override
     protected void onContentsChanged() {
         super.onContentsChanged();
-        stack.set(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(this.fluid));
+        stack.set(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(this.fluid.copy()));
     }
 
     public void interactWith(IFluidHandler other) {
