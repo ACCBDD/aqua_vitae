@@ -3,7 +3,6 @@ package com.accbdd.aqua_vitae.capability;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
@@ -32,15 +31,5 @@ public class CupHandler extends FluidTank implements IFluidHandlerItem {
     protected void onContentsChanged() {
         super.onContentsChanged();
         stack.set(ModComponents.FLUIDSTACK, new FluidStackComponent(this.fluid.copy()));
-    }
-
-    public void interactWith(IFluidHandler other) {
-        if (this.fluid.isEmpty()) { //fill this cup
-           if (other.drain(capacity, FluidAction.SIMULATE).getAmount() == capacity) {  //if we can fully fill this cup up
-               fill(other.drain(capacity, FluidAction.EXECUTE), FluidAction.EXECUTE);
-           }
-        } else { //try to empty as much as possible
-            drain(other.fill(drain(capacity, FluidAction.SIMULATE), FluidAction.EXECUTE), FluidAction.EXECUTE);
-        }
     }
 }
