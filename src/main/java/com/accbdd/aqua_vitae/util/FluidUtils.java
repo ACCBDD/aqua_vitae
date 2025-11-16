@@ -1,7 +1,11 @@
 package com.accbdd.aqua_vitae.util;
 
+import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
+import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -84,8 +88,8 @@ public class FluidUtils {
         flavors.addAll(ingredient.flavors());
         flavors.addAll(component.flavors());
         items.add(itemStack.copyWithCount(1));
-        BrewingIngredient.BrewingProperties initial = component.properties();
-        BrewingIngredient.BrewingProperties toAdd = ingredient.properties();
+        BrewingProperties initial = component.properties();
+        BrewingProperties toAdd = ingredient.properties();
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().size())));
     }
 
@@ -94,13 +98,81 @@ public class FluidUtils {
         if (component == null)
             return List.of();
 
-        BrewingIngredient.BrewingProperties props = component.properties();
+        BrewingProperties props = component.properties();
 
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(Component.literal(String.format("color: %s, starch: %s, sugar: %s", Integer.toHexString(props.color()), props.starch(), props.sugar())));
         tooltip.add(Component.literal(String.format("yeast: %s, yeast_tol: %s, dp: %s", props.yeast(), props.yeastTolerance(), props.diastaticPower())));
         tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
         tooltip.add(Component.literal(String.format("ingredients: %s", component.ingredients())));
+        return tooltip;
+    }
+
+    /**
+     * @param fluid a fluid with fermenting properties already applied
+     * @return a fluid fermented for one tick
+     */
+    public static FluidStack ferment(FluidStack fluid) {
+        //todo: flavors changing
+        FermentingPropertiesComponent ferment = fluid.get(ModComponents.FERMENTING_PROPERTIES);
+        if (ferment == null)
+            return fluid;
+
+        FluidStack newFluid = fluid.copy();
+        AlcoholPropertiesComponent alcohol = fluid.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY);
+        BrewingProperties brewing = ferment.properties();
+
+        double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1);
+        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / brewing.yeastTolerance(), 0);
+        double yeastFactor = (double) brewing.sugar() / Math.max(brewing.yeast(), 1);
+        double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
+        int abbDelta = (int) (conversionRate / fluid.getAmount() * 100);
+
+        FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
+                ferment.flavors(),
+                new BrewingProperties(brewing.color(),
+                        brewing.starch(),
+                        (int) (brewing.sugar() - conversionRate),
+                        brewing.yeast(),
+                        brewing.yeastTolerance(),
+                        brewing.diastaticPower()));
+
+        AlcoholPropertiesComponent newAlcohol = new AlcoholPropertiesComponent(alcohol.color(),
+                alcohol.abb() + abbDelta,
+                alcohol.age(),
+                alcohol.flavors(),
+                alcohol.items());
+
+        AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
+        AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
+
+        if (newFerment.properties().sugar() == 0)
+            newFluid.remove(ModComponents.FERMENTING_PROPERTIES);
+        else
+            newFluid.set(ModComponents.FERMENTING_PROPERTIES, newFerment);
+        newFluid.set(ModComponents.ALCOHOL_PROPERTIES, newAlcohol);
+        return newFluid;
+    }
+
+    public static FluidStack stress(FluidStack fluid) {
+        FermentingPropertiesComponent ferment = fluid.get(ModComponents.FERMENTING_PROPERTIES);
+        if (ferment == null)
+            return fluid;
+
+        FluidStack newFluid = fluid.copy();
+        fluid.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(ferment.stress() + 1, ferment.flavors(), ferment.properties()));
+        return newFluid;
+    }
+
+    public static List<Component> getAlcoholTooltip(FluidStack fluid) {
+        AlcoholPropertiesComponent component = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
+        if (component == null)
+            return List.of();
+
+        List<Component> tooltip = new ArrayList<>();
+        tooltip.add(Component.literal(String.format("color: %s, abb: %s, age: %s", Integer.toHexString(component.color()), component.abb(), component.age())));
+        tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
+        tooltip.add(Component.literal(String.format("ingredients: %s", component.items())));
         return tooltip;
     }
 }

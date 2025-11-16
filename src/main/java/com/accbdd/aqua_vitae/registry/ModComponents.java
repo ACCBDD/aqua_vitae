@@ -1,5 +1,7 @@
 package com.accbdd.aqua_vitae.registry;
 
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
+import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import net.minecraft.core.component.DataComponentType;
@@ -17,4 +19,10 @@ public class ModComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<PrecursorPropertiesComponent>> PRECURSOR_PROPERTIES = COMPONENTS.registerComponentType("precursor_properties",
             builder -> builder.persistent(PrecursorPropertiesComponent.CODEC).networkSynchronized(PrecursorPropertiesComponent.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<FermentingPropertiesComponent>> FERMENTING_PROPERTIES = COMPONENTS.registerComponentType("fermenting_properties",
+            builder -> builder.persistent(FermentingPropertiesComponent.CODEC).networkSynchronized(FermentingPropertiesComponent.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AlcoholPropertiesComponent>> ALCOHOL_PROPERTIES = COMPONENTS.registerComponentType("alcohol_properties",
+            builder -> builder.persistent(AlcoholPropertiesComponent.CODEC).networkSynchronized(AlcoholPropertiesComponent.STREAM_CODEC));
 }

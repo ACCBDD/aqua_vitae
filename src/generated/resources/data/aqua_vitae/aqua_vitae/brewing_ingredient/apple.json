@@ -12,6 +12,6 @@
     "starch": 2,
     "sugar": 60,
     "yeast": 5,
-    "yeast_tolerance": 0.08
+    "yeast_tolerance": 80
   }
 }

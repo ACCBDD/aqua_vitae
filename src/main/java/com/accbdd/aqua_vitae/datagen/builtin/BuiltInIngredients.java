@@ -19,7 +19,7 @@ public class BuiltInIngredients {
                             .starch(2)
                             .sugar(60)
                             .yeast(5)
-                            .yeastTolerance(0.08f)
+                            .yeastTolerance(80)
                             .build(),
                     List.of(BuiltInFlavors.FRUITY.getKey(), BuiltInFlavors.SWEET.getKey())));
 

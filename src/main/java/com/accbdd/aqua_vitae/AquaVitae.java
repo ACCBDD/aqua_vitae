@@ -66,16 +66,23 @@ public class AquaVitae {
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.KEG.get(),
-                (entity, side) -> entity.getTank()
+                (entity, side) -> entity.getFluidHandler()
         );
 
-        ModItems.ITEMS.getEntries().stream().filter(holder -> holder.get() instanceof CupItem).map(holder -> (CupItem)holder.get()).forEach(cup -> {
-            event.registerItem(
-                    Capabilities.FluidHandler.ITEM,
-                    (c, dir) -> new CupHandler(c, cup.getCapacity()),
-                    cup
-            );
-        });
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.FERMENTER.get(),
+                (entity, side) -> entity.getFluidHandler()
+        );
+
+        ModItems.ITEMS.getEntries().stream().filter(holder -> holder.get() instanceof CupItem)
+                .map(holder -> (CupItem)holder.get())
+                .forEach(cup -> event.registerItem(
+                        Capabilities.FluidHandler.ITEM,
+                        (c, dir) -> new CupHandler(c, cup.getCapacity()),
+                        cup
+                    )
+                );
     }
 
     public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {

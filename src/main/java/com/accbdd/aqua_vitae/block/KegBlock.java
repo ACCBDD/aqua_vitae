@@ -76,14 +76,14 @@ public class KegBlock extends BaseEntityBlock {
         if (keg == null)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        if (FluidUtils.handleInteraction(player, hand, stack, keg.getTank())) {
+        if (FluidUtils.handleInteraction(player, hand, stack, keg.getFluidHandler())) {
             level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;
         } else {
             BrewingIngredient ingredient = RegistryUtils.ingredientRegistry().stream().filter(ing -> ing.itemIngredient().test(stack)).findFirst().orElse(null);
             if (ingredient != null) {
-                FluidStack fluid = keg.getTank().getFluid();
+                FluidStack fluid = keg.getFluid();
                 if (!fluid.isEmpty()) {
                     FluidUtils.modifyPrecursor(fluid, ingredient, stack);
                     stack.shrink(1);
@@ -93,7 +93,7 @@ public class KegBlock extends BaseEntityBlock {
         }
 
         if (player.isShiftKeyDown()) {
-            player.displayClientMessage(keg.getTank().getFluid().getHoverName().copy().append(": " + keg.getTank().getFluidAmount()), true);
+            player.displayClientMessage(keg.getFluid().getHoverName().copy().append(": " + keg.getFluid().getAmount()), true);
             return ItemInteractionResult.CONSUME;
         }
 

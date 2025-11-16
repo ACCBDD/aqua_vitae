@@ -1,0 +1,46 @@
+package com.accbdd.aqua_vitae.component;
+
+import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @param color
+ * @param abb alcohol per bucket - 1000 should be granular enough?
+ * @param age TODO: what unit?
+ * @param flavors
+ * @param items TODO: support fluidstacks
+ */
+public record AlcoholPropertiesComponent(int color, int abb, int age, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<ItemStack> items) {
+
+    public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), List.of());
+
+    public static final Codec<AlcoholPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    Codec.INT.fieldOf("color").forGetter(AlcoholPropertiesComponent::color),
+                    Codec.INT.fieldOf("abb").forGetter(AlcoholPropertiesComponent::abb),
+                    Codec.INT.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
+                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(AlcoholPropertiesComponent::flavors),
+                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(AlcoholPropertiesComponent::items)
+            ).apply(instance, AlcoholPropertiesComponent::new)
+    );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, AlcoholPropertiesComponent> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, AlcoholPropertiesComponent::color,
+            ByteBufCodecs.INT, AlcoholPropertiesComponent::abb,
+            ByteBufCodecs.INT, AlcoholPropertiesComponent::age,
+            ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), AlcoholPropertiesComponent::flavors,
+            ItemStack.LIST_STREAM_CODEC, AlcoholPropertiesComponent::items,
+            AlcoholPropertiesComponent::new
+    );
+}

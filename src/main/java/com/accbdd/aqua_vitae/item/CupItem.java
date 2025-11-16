@@ -1,11 +1,15 @@
 package com.accbdd.aqua_vitae.item;
 
+import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.registry.ModEffects;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -42,6 +46,7 @@ public class CupItem extends Item {
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
         tooltipComponents.add(fluid.getHoverName().copy().append(": " + fluid.getAmount()));
         tooltipComponents.addAll(FluidUtils.getPrecursorTooltip(fluid));
+        tooltipComponents.addAll(FluidUtils.getAlcoholTooltip(fluid));
     }
 
     @Override
@@ -68,7 +73,15 @@ public class CupItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        stack.remove(ModComponents.FLUIDSTACK);
+        if (level.isClientSide)
+            return stack;
+        var fluid = stack.remove(ModComponents.FLUIDSTACK).stack();
+        if (fluid.has(ModComponents.ALCOHOL_PROPERTIES)) {
+            AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
+            livingEntity.addEffect(new MobEffectInstance(ModEffects.TIPSY, 100, props.abb() / 20));
+            props.flavors().stream().map(key -> level.registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get().get(key))
+                    .forEach(flavor -> flavor.effects().forEach(livingEntity::addEffect));
+        }
         return stack;
     }
 

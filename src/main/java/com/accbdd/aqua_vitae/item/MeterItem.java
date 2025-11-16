@@ -17,7 +17,7 @@ public class MeterItem extends Item {
             return InteractionResult.SUCCESS;
 
         context.getLevel().getBlockEntity(context.getClickedPos(), ModBlockEntities.KEG.get()).ifPresent(keg ->
-                FluidUtils.getPrecursorTooltip(keg.getTank().getFluid()).forEach(component ->
+                FluidUtils.getPrecursorTooltip(keg.getFluid()).forEach(component ->
                         context.getPlayer().sendSystemMessage(component)));
 
         return InteractionResult.CONSUME;

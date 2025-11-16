@@ -54,14 +54,22 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             )
     );
 
-    public record BrewingProperties(int color, int starch, int sugar, int yeast, float yeastTolerance, int diastaticPower) {
+    /**
+     * @param color
+     * @param starch
+     * @param sugar
+     * @param yeast
+     * @param yeastTolerance in terms of alcohol per bucket
+     * @param diastaticPower
+     */
+    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
         public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingProperties::color),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("starch").forGetter(BrewingProperties::starch),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("sugar").forGetter(BrewingProperties::sugar),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("yeast").forGetter(BrewingProperties::yeast),
-                        Codec.floatRange(0, 1).fieldOf("yeast_tolerance").forGetter(BrewingProperties::yeastTolerance),
+                        Codec.intRange(0, 1000).fieldOf("yeast_tolerance").forGetter(BrewingProperties::yeastTolerance),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("diastatic_power").forGetter(BrewingProperties::diastaticPower)
                 ).apply(instance, BrewingProperties::new)
         );
@@ -71,7 +79,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 ByteBufCodecs.INT, BrewingProperties::starch,
                 ByteBufCodecs.INT, BrewingProperties::sugar,
                 ByteBufCodecs.INT, BrewingProperties::yeast,
-                ByteBufCodecs.FLOAT, BrewingProperties::yeastTolerance,
+                ByteBufCodecs.INT, BrewingProperties::yeastTolerance,
                 ByteBufCodecs.INT, BrewingProperties::diastaticPower,
                 BrewingProperties::new
         );
@@ -80,7 +88,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * Adds two BrewingProperties together with a weight
          * @param other to add
          * @param weight the weight this object should have in comparison to the other
-         * @return
+         * @return a new combined BrewingProperties object
          */
         public BrewingProperties add(BrewingProperties other, int weight) {
             int a = ((this.color >> 24 & 0xFF) * weight + (other.color >> 24 & 0xFF)) / (weight + 1);
@@ -101,7 +109,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             int starch;
             int sugar;
             int yeast;
-            float yeastTolerance;
+            int yeastTolerance;
             int diastaticPower;
 
             public Builder() {
@@ -148,7 +156,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 return this;
             }
 
-            public Builder yeastTolerance(float yeastTolerance) {
+            public Builder yeastTolerance(int yeastTolerance) {
                 this.yeastTolerance = yeastTolerance;
                 return this;
             }
