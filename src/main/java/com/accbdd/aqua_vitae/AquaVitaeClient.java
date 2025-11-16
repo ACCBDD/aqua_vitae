@@ -26,6 +26,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
 @Mod(value = AquaVitae.MODID, dist = {Dist.CLIENT})
@@ -36,60 +37,67 @@ public class AquaVitaeClient {
 
     @SubscribeEvent
     public void onClientSetup(FMLClientSetupEvent event) {
-        ModFluids.REGISTERED.forEach(fluid -> {
-            ItemBlockRenderTypes.setRenderLayer(fluid.get(), RenderType.translucent());
-        });
+        ModFluids.REGISTERED.forEach(fluid -> ItemBlockRenderTypes.setRenderLayer(fluid.get(), RenderType.translucent()));
     }
 
     @SubscribeEvent
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        ModFluidTypes.REGISTERED.forEach((name, set) -> {
-            event.registerFluidType(new IClientFluidTypeExtensions() {
-                private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
-                private static final ResourceLocation WATER_STILL = ResourceLocation.withDefaultNamespace("block/water_still");
-                private static final ResourceLocation WATER_FLOW = ResourceLocation.withDefaultNamespace("block/water_flow");
-                private static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
+        ModFluidTypes.REGISTERED.forEach((name, set) -> event.registerFluidType(new IClientFluidTypeExtensions() {
+            private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
+            private static final ResourceLocation WATER_STILL = ResourceLocation.withDefaultNamespace("block/water_still");
+            private static final ResourceLocation WATER_FLOW = ResourceLocation.withDefaultNamespace("block/water_flow");
+            private static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
 
-                @Override
-                public int getTintColor() {
-                    return set.color();
-                }
+            @Override
+            public int getTintColor() {
+                return set.color();
+            }
 
-                @Override
-                public ResourceLocation getStillTexture() {
-                    return WATER_STILL;
-                }
+            @Override
+            public int getTintColor(FluidStack stack) {
+                if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
+                    return stack.get(ModComponents.ALCOHOL_PROPERTIES).color();
+                if (stack.has(ModComponents.FERMENTING_PROPERTIES))
+                    return stack.get(ModComponents.FERMENTING_PROPERTIES).properties().color();
+                if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
+                    return stack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
+                return getTintColor();
+            }
 
-                @Override
-                public ResourceLocation getFlowingTexture() {
-                    return WATER_FLOW;
-                }
+            @Override
+            public ResourceLocation getStillTexture() {
+                return WATER_STILL;
+            }
 
-                @Override
-                public ResourceLocation getOverlayTexture() {
-                    return WATER_OVERLAY;
-                }
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return WATER_FLOW;
+            }
 
-                @Override
-                public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                    return UNDERWATER_LOCATION;
-                }
+            @Override
+            public ResourceLocation getOverlayTexture() {
+                return WATER_OVERLAY;
+            }
 
-                @Override
-                public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-                    int color = getTintColor();
-                    return new Vector3f(color >> 16 & 255, color >> 8 & 255, color & 255);
-                }
+            @Override
+            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+                return UNDERWATER_LOCATION;
+            }
 
-                @Override
-                public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
-                    int color = getTintColor();
-                    RenderSystem.setShaderFogStart(1);
-                    RenderSystem.setShaderFogColor((color >> 16 & 255) / 255f, (color >> 8 & 255) / 255f, (color & 255) / 255f, 1);
-                    RenderSystem.setShaderFogEnd(10);
-                }
-            }, set.type());
-        });
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                int color = getTintColor();
+                return new Vector3f(color >> 16 & 255, color >> 8 & 255, color & 255);
+            }
+
+            @Override
+            public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+                int color = getTintColor();
+                RenderSystem.setShaderFogStart(1);
+                RenderSystem.setShaderFogColor((color >> 16 & 255) / 255f, (color >> 8 & 255) / 255f, (color & 255) / 255f, 1);
+                RenderSystem.setShaderFogEnd(10);
+            }
+        }, set.type()));
     }
 
     @SubscribeEvent
@@ -112,4 +120,5 @@ public class AquaVitaeClient {
             return -1;
         }, ModItems.EYEBALL);
     }
+
 }

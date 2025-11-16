@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
-import net.minecraft.sounds.SoundEvents;
-import net.neoforged.neoforge.common.SoundActions;
+import com.accbdd.aqua_vitae.fluid.AlcoholFluidType;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -20,17 +19,7 @@ public class ModFluidTypes {
     public static final DeferredHolder<FluidType, FluidType> ALCOHOL_TYPE = register("alcohol", 0xEEDDDDDD);
 
     public static DeferredHolder<FluidType, FluidType> register(String name, int color) {
-        DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new FluidType(FluidType.Properties.create()
-                .descriptionId("block.aqua_vitae."+name)
-                .fallDistanceModifier(0)
-                .canExtinguish(true)
-                .canConvertToSource(false)
-                .supportsBoating(true)
-                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
-                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-                .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
-                .canHydrate(false)
-                .viscosity(500)));
+        DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new AlcoholFluidType(name));
         REGISTERED.put("block.aqua_vitae."+name, new FluidSet(name, registered, color));
         return registered;
     }

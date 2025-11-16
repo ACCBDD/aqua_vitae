@@ -1,14 +1,14 @@
 {
   "flavors": [],
   "input": {
-    "item": "minecraft:lapis_lazuli"
+    "item": "minecraft:wheat"
   },
   "properties": {
-    "color": "FF0000FF",
+    "color": "00FFFFFF",
     "diastatic_power": 0,
     "starch": 0,
     "sugar": 0,
-    "yeast": 0,
+    "yeast": 200,
     "yeast_tolerance": 0
   }
 }

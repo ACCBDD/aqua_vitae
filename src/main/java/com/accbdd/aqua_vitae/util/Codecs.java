@@ -29,7 +29,7 @@ public class Codecs {
                     return DataResult.error(() -> ("Invalid hex color: " + finalStr));
                 }
             },
-            Integer::toHexString
+            val -> String.format("%08X", val)
     );
 
     public static final StreamCodec<FriendlyByteBuf, Integer> HEX_STREAM_CODEC =

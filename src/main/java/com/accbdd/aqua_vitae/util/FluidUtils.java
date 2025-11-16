@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FluidUtils {
-
     public static boolean handleInteraction(Player player, InteractionHand hand, ItemStack itemStack, IFluidHandler other) {
         if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null) {
             return false;
@@ -122,23 +121,23 @@ public class FluidUtils {
         AlcoholPropertiesComponent alcohol = fluid.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY);
         BrewingProperties brewing = ferment.properties();
 
-        double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1);
-        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / brewing.yeastTolerance(), 0);
-        double yeastFactor = (double) brewing.sugar() / Math.max(brewing.yeast(), 1);
+        double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1); //bigger batches ferment slower, to a point
+        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / brewing.yeastTolerance(), 0); // closer to abb tolerance means slower ferment
+        double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
         double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
-        int abbDelta = (int) (conversionRate / fluid.getAmount() * 100);
+        double abbDelta = conversionRate / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1
 
         FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
                 ferment.flavors(),
                 new BrewingProperties(brewing.color(),
                         brewing.starch(),
-                        (int) (brewing.sugar() - conversionRate),
+                        Math.max(0, (int) (brewing.sugar() - conversionRate)),
                         brewing.yeast(),
                         brewing.yeastTolerance(),
                         brewing.diastaticPower()));
 
         AlcoholPropertiesComponent newAlcohol = new AlcoholPropertiesComponent(alcohol.color(),
-                alcohol.abb() + abbDelta,
+                (float) (alcohol.abb() + abbDelta),
                 alcohol.age(),
                 alcohol.flavors(),
                 alcohol.items());
@@ -146,7 +145,7 @@ public class FluidUtils {
         AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
         AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
 
-        if (newFerment.properties().sugar() == 0)
+        if (newFerment.properties().sugar() == 0 || conversionRate == 0)
             newFluid.remove(ModComponents.FERMENTING_PROPERTIES);
         else
             newFluid.set(ModComponents.FERMENTING_PROPERTIES, newFerment);

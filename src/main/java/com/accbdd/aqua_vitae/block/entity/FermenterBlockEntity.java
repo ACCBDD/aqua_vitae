@@ -14,7 +14,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
     public static final int CAPACITY = 8000;
-    public static final int CYCLE_LENGTH = 20;
+    public static final int CYCLE_LENGTH = 2;
 
     private int cycleProgress;
 

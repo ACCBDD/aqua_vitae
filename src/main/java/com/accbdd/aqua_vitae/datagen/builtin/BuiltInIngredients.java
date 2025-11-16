@@ -30,4 +30,22 @@ public class BuiltInIngredients {
                             .color(0xFF0000FF)
                             .build(),
                     List.of()));
+
+    public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> SUGAR = brewingIngredient("sugar",
+            new BrewingIngredient(
+                    Ingredient.of(Items.SUGAR),
+                    new BrewingIngredient.BrewingProperties.Builder()
+                            .color(0x00FFFFFF)
+                            .sugar(200)
+                            .build(),
+                    List.of()));
+
+    public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> YEAST = brewingIngredient("yeast",
+            new BrewingIngredient(
+                    Ingredient.of(Items.WHEAT),
+                    new BrewingIngredient.BrewingProperties.Builder()
+                            .color(0x00FFFFFF)
+                            .yeast(200)
+                            .build(),
+                    List.of()));
 }

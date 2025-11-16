@@ -91,17 +91,37 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * @return a new combined BrewingProperties object
          */
         public BrewingProperties add(BrewingProperties other, int weight) {
-            int a = ((this.color >> 24 & 0xFF) * weight + (other.color >> 24 & 0xFF)) / (weight + 1);
-            int r = ((this.color >> 16 & 0xFF) * weight + (other.color >> 16 & 0xFF)) / (weight + 1);
-            int g = ((this.color >> 8 & 0xFF) * weight + (other.color >> 8 & 0xFF)) / (weight + 1);
-            int b = ((this.color & 0xFF) * weight + (other.color & 0xFF)) / (weight + 1);
-            int newColor = (a << 24) | (r << 16) | (g << 8) | b;
+            int newColor = blendColor(other, weight);
+
             return new BrewingProperties(newColor,
                     this.starch + other.starch,
                     this.sugar + other.sugar,
                     this.yeast + other.yeast,
                     Math.max(this.yeastTolerance, other.yeastTolerance), //max for yeast
                     (this.diastaticPower * weight + other.diastaticPower) / (weight + 1)); //average DP
+        }
+
+        private int blendColor(BrewingProperties other, int weight) {
+            int aN = (other.color >>> 24) & 0xFF;
+            if (aN == 0)
+                return this.color;
+            int rN = (other.color >>> 16) & 0xFF;
+            int gN = (other.color >>> 8 ) & 0xFF;
+            int bN =  other.color & 0xFF;
+            int aT = (this.color >>> 24) & 0xFF;
+            int rT = (this.color >>> 16) & 0xFF;
+            int gT = (this.color >>> 8) & 0xFF;
+            int bT =  this.color & 0xFF;
+
+            float strength = aN / 255f;
+
+            float mix = strength / (weight + 1);
+
+            int a = (int)(aT * (1 - mix) + aN * mix);
+            int r = (int)(rT * (1 - mix) + rN * mix);
+            int g = (int)(gT * (1 - mix) + gN * mix);
+            int b = (int)(bT * (1 - mix) + bN * mix);
+            return (a << 24) | (r << 16) | (g << 8) | b;
         }
 
         public static class Builder {

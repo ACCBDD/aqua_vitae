@@ -1,13 +1,13 @@
 {
   "flavors": [],
   "input": {
-    "item": "minecraft:lapis_lazuli"
+    "item": "minecraft:sugar"
   },
   "properties": {
-    "color": "FF0000FF",
+    "color": "00FFFFFF",
     "diastatic_power": 0,
     "starch": 0,
-    "sugar": 0,
+    "sugar": 200,
     "yeast": 0,
     "yeast_tolerance": 0
   }

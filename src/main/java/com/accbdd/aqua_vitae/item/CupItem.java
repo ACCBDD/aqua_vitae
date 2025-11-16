@@ -78,7 +78,7 @@ public class CupItem extends Item {
         var fluid = stack.remove(ModComponents.FLUIDSTACK).stack();
         if (fluid.has(ModComponents.ALCOHOL_PROPERTIES)) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-            livingEntity.addEffect(new MobEffectInstance(ModEffects.TIPSY, 100, props.abb() / 20));
+            livingEntity.addEffect(new MobEffectInstance(ModEffects.TIPSY, 100, (int) (props.abb() / 20)));
             props.flavors().stream().map(key -> level.registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get().get(key))
                     .forEach(flavor -> flavor.effects().forEach(livingEntity::addEffect));
         }
