@@ -5,6 +5,9 @@ import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,7 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable FluidIngredient fluidIngredient, int color, float starch, float sugar, float yeast, float yeastTolerance, float diastaticPower, List<ResourceKey<Flavor>> flavors, MaltProperties maltProperties) {
+public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable FluidIngredient fluidIngredient, BrewingProperties properties, BrewingProperties maltProperties, List<ResourceKey<Flavor>> flavors) {
+
+    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, List<ResourceKey<Flavor>> flavors) {
+        this(itemIngredient, null, properties, null, flavors);
+    }
+
+    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, BrewingProperties maltProperties, List<ResourceKey<Flavor>> flavors) {
+        this(itemIngredient, null, properties, maltProperties, flavors);
+    }
+
+    public BrewingIngredient(FluidIngredient fluidIngredient, BrewingProperties properties, List<ResourceKey<Flavor>> flavors) {
+        this(null, fluidIngredient, properties, null, flavors);
+    }
+
 
     public Either<Ingredient, FluidIngredient> input() {
         if (itemIngredient == null) {
@@ -25,133 +41,123 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
     }
 
-    public static class Builder {
-        Ingredient itemIngredient;
-        FluidIngredient fluidIngredient;
-        int color;
-        float starch;
-        float sugar;
-        float yeast;
-        float yeastTolerance;
-        float diastaticPower;
-        List<ResourceKey<Flavor>> flavors;
-        MaltProperties maltProperties;
-
-        private Builder(Ingredient itemIngredient, FluidIngredient fluidIngredient) {
-            this.itemIngredient = itemIngredient;
-            this.fluidIngredient = fluidIngredient;
-            this.color = 0x00000000;
-            this.starch = 0;
-            this.sugar = 0;
-            this.yeast = 0;
-            this.yeastTolerance = 0;
-            this.diastaticPower = 0;
-            this.flavors = List.of();
-            this.maltProperties = null;
-        }
-
-        public Builder(Ingredient itemIngredient) {
-            this(itemIngredient, null);
-        }
-
-        public Builder(FluidIngredient fluidIngredient) {
-            this(null, fluidIngredient);
-        }
-
-        private static Builder copy(Ingredient itemIngredient, FluidIngredient fluidIngredient, BrewingIngredient copied) {
-            Builder builder = new Builder(itemIngredient, fluidIngredient);
-            builder.itemIngredient = itemIngredient;
-            builder.fluidIngredient = fluidIngredient;
-            builder.color = copied.color;
-            builder.starch = copied.starch;
-            builder.sugar = copied.sugar;
-            builder.yeast = copied.yeast;
-            builder.yeastTolerance = copied.yeastTolerance;
-            builder.diastaticPower = copied.diastaticPower;
-            builder.flavors = copied.flavors;
-            builder.maltProperties = copied.maltProperties;
-            return builder;
-        }
-
-        public static Builder copy(Ingredient itemIngredient, BrewingIngredient copied) {
-            return Builder.copy(itemIngredient, null, copied);
-        }
-
-        public static Builder copy(FluidIngredient fluidIngredient, BrewingIngredient copied) {
-            return Builder.copy(null, fluidIngredient, copied);
-        }
-
-        public BrewingIngredient build() {
-            return new BrewingIngredient(itemIngredient, fluidIngredient, color, starch, sugar, yeast, yeastTolerance, diastaticPower, flavors, maltProperties);
-        }
-
-        public Builder color(int color) {
-            this.color = color;
-            return this;
-        }
-
-        public Builder starch(float starch) {
-            this.starch = starch;
-            return this;
-        }
-
-        public Builder sugar(float sugar) {
-            this.sugar = sugar;
-            return this;
-        }
-
-        public Builder yeast(float yeast) {
-            this.yeast = yeast;
-            return this;
-        }
-
-        public Builder yeastTolerance(float yeastTolerance) {
-            this.yeastTolerance = yeastTolerance;
-            return this;
-        }
-
-        public Builder diastaticPower(float diastaticPower) {
-            this.diastaticPower = diastaticPower;
-            return this;
-        }
-
-        public Builder flavors(List<ResourceKey<Flavor>> flavors) {
-            this.flavors = flavors;
-            return this;
-        }
-
-        public Builder maltProperties(int color, float starch, float diastaticPower) {
-            this.maltProperties = new MaltProperties(color, starch, diastaticPower);
-            return this;
-        }
-    }
-
     public static Codec<BrewingIngredient> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.either(Ingredient.CODEC, FluidIngredient.CODEC).fieldOf("input").forGetter(BrewingIngredient::input),
-                    Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingIngredient::color),
-                    Codec.floatRange(0, 1).fieldOf("starch").forGetter(BrewingIngredient::starch),
-                    Codec.floatRange(0, 1).fieldOf("sugar").forGetter(BrewingIngredient::sugar),
-                    Codec.floatRange(0, 1).fieldOf("yeast").forGetter(BrewingIngredient::yeast),
-                    Codec.floatRange(0, 1).fieldOf("yeast_tolerance").forGetter(BrewingIngredient::yeastTolerance),
-                    Codec.floatRange(0, 1).fieldOf("diastatic_power").forGetter(BrewingIngredient::diastaticPower),
-                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().fieldOf("flavors").forGetter(BrewingIngredient::flavors),
-                    MaltProperties.CODEC.optionalFieldOf("malt_properties").forGetter(i -> Optional.ofNullable(i.maltProperties()))
-            ).apply(instance, (i, color, starch, sugar, yeast, yeast_tol, dia_pow, flavors, malt) ->
+                    BrewingProperties.CODEC.fieldOf("properties").forGetter(BrewingIngredient::properties),
+                    BrewingProperties.CODEC.optionalFieldOf("malt_properties").forGetter(i -> Optional.ofNullable(i.maltProperties())),
+                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().fieldOf("flavors").forGetter(BrewingIngredient::flavors)
+            ).apply(instance, (i, properties, malt, flavors) ->
                 i.map(
-                        item -> new BrewingIngredient(item, null, color, starch, sugar, yeast, yeast_tol, dia_pow, flavors, malt.orElse(null)),
-                        fluid -> new BrewingIngredient(null, fluid, color, starch, sugar, yeast, yeast_tol, dia_pow, flavors, malt.orElse(null)))
+                        item -> new BrewingIngredient(item, null, properties, malt.orElse(null), flavors),
+                        fluid -> new BrewingIngredient(null, fluid, properties, malt.orElse(null), flavors))
             )
     );
 
-    public record MaltProperties(int color, float starch, float diastaticPower) {
-        public static Codec<MaltProperties> CODEC = RecordCodecBuilder.create(instance ->
+    public record BrewingProperties(int color, int starch, int sugar, int yeast, float yeastTolerance, int diastaticPower) {
+        public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        Codecs.HEX_STRING.fieldOf("color").forGetter(MaltProperties::color),
-                        Codec.FLOAT.fieldOf("starch").forGetter(MaltProperties::starch),
-                        Codec.FLOAT.fieldOf("diastatic_power").forGetter(MaltProperties::diastaticPower)
-                ).apply(instance, MaltProperties::new)
+                        Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingProperties::color),
+                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("starch").forGetter(BrewingProperties::starch),
+                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("sugar").forGetter(BrewingProperties::sugar),
+                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("yeast").forGetter(BrewingProperties::yeast),
+                        Codec.floatRange(0, 1).fieldOf("yeast_tolerance").forGetter(BrewingProperties::yeastTolerance),
+                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("diastatic_power").forGetter(BrewingProperties::diastaticPower)
+                ).apply(instance, BrewingProperties::new)
         );
+
+        public static StreamCodec<FriendlyByteBuf, BrewingProperties> STREAM_CODEC = StreamCodec.composite(
+                Codecs.HEX_STREAM_CODEC, BrewingProperties::color,
+                ByteBufCodecs.INT, BrewingProperties::starch,
+                ByteBufCodecs.INT, BrewingProperties::sugar,
+                ByteBufCodecs.INT, BrewingProperties::yeast,
+                ByteBufCodecs.FLOAT, BrewingProperties::yeastTolerance,
+                ByteBufCodecs.INT, BrewingProperties::diastaticPower,
+                BrewingProperties::new
+        );
+
+        /**
+         * Adds two BrewingProperties together with a weight
+         * @param other to add
+         * @param weight the weight this object should have in comparison to the other
+         * @return
+         */
+        public BrewingProperties add(BrewingProperties other, int weight) {
+            int a = ((this.color >> 24 & 0xFF) * weight + (other.color >> 24 & 0xFF)) / (weight + 1);
+            int r = ((this.color >> 16 & 0xFF) * weight + (other.color >> 16 & 0xFF)) / (weight + 1);
+            int g = ((this.color >> 8 & 0xFF) * weight + (other.color >> 8 & 0xFF)) / (weight + 1);
+            int b = ((this.color & 0xFF) * weight + (other.color & 0xFF)) / (weight + 1);
+            int newColor = (a << 24) | (r << 16) | (g << 8) | b;
+            return new BrewingProperties(newColor,
+                    this.starch + other.starch,
+                    this.sugar + other.sugar,
+                    this.yeast + other.yeast,
+                    Math.max(this.yeastTolerance, other.yeastTolerance), //max for yeast
+                    (this.diastaticPower * weight + other.diastaticPower) / (weight + 1)); //average DP
+        }
+
+        public static class Builder {
+            int color;
+            int starch;
+            int sugar;
+            int yeast;
+            float yeastTolerance;
+            int diastaticPower;
+
+            public Builder() {
+                this.color = 0x00000000;
+                this.starch = 0;
+                this.sugar = 0;
+                this.yeast = 0;
+                this.yeastTolerance = 0;
+                this.diastaticPower = 0;
+            }
+
+            public Builder copy() {
+                Builder builder = new Builder();
+                builder.color = this.color;
+                builder.starch = this.starch;
+                builder.sugar = this.sugar;
+                builder.yeast = this.yeast;
+                builder.yeastTolerance = this.yeastTolerance;
+                builder.diastaticPower = this.diastaticPower;
+                return builder;
+            }
+
+            public BrewingProperties build() {
+                return new BrewingProperties(color, starch, sugar, yeast, yeastTolerance, diastaticPower);
+            }
+
+            public Builder color(int color) {
+                this.color = color;
+                return this;
+            }
+
+            public Builder starch(int starch) {
+                this.starch = starch;
+                return this;
+            }
+
+            public Builder sugar(int sugar) {
+                this.sugar = sugar;
+                return this;
+            }
+
+            public Builder yeast(int yeast) {
+                this.yeast = yeast;
+                return this;
+            }
+
+            public Builder yeastTolerance(float yeastTolerance) {
+                this.yeastTolerance = yeastTolerance;
+                return this;
+            }
+
+            public Builder diastaticPower(int diastaticPower) {
+                this.diastaticPower = diastaticPower;
+                return this;
+            }
+        }
     }
 
     public record Flavor(List<MobEffectInstance> effects) {

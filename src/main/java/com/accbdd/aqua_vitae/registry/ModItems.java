@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.registry;
 
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.item.MeterItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -26,6 +27,8 @@ public class ModItems {
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));
+    public static final DeferredItem<CupItem> EYEBALL = registerWithTab("eyeball", () -> new CupItem(20, 1, 10));
+    public static final DeferredItem<MeterItem> METER = registerWithTab("meter", MeterItem::new);
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier) {
         return ITEMS.register(name, itemSupplier);

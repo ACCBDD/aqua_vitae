@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +23,7 @@ public class CupItem extends Item {
 
     public CupItem(int useTime, int stacksTo, int capacity) {
         super(new Properties()
-                .component(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(FluidStack.EMPTY))
+                .component(ModComponents.FLUIDSTACK, new FluidStackComponent(FluidStack.EMPTY))
                 .stacksTo(stacksTo));
         this.useTime = useTime;
         this.capacity = capacity;
@@ -30,7 +31,7 @@ public class CupItem extends Item {
 
     @Override
     public Component getName(ItemStack stack) {
-        if (stack.has(ModComponents.FLUIDSTACK.get()) && !stack.get(ModComponents.FLUIDSTACK.get()).stack().isEmpty())
+        if (stack.has(ModComponents.FLUIDSTACK) && !stack.get(ModComponents.FLUIDSTACK).stack().isEmpty())
             return Component.translatable("grammar.aqua_vitae.container_of", super.getName(stack), stack.get(ModComponents.FLUIDSTACK.get()).stack().getHoverName());
         return super.getName(stack);
     }
@@ -38,9 +39,9 @@ public class CupItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-        FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack();
+        FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
         tooltipComponents.add(fluid.getHoverName().copy().append(": " + fluid.getAmount()));
-        tooltipComponents.add(Component.literal(fluid.getOrDefault(ModComponents.STARCH, 0) + " starch"));
+        tooltipComponents.addAll(FluidUtils.getPrecursorTooltip(fluid));
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CupItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack();
+        FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
         if (fluid.getAmount() > 0) {
             player.startUsingItem(usedHand);
             return InteractionResultHolder.consume(stack);
@@ -67,7 +68,7 @@ public class CupItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        stack.remove(ModComponents.FLUIDSTACK.get());
+        stack.remove(ModComponents.FLUIDSTACK);
         return stack;
     }
 

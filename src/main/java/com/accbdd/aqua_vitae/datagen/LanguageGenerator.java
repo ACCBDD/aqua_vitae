@@ -26,6 +26,8 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.KEG, "Keg");
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
+        addItem(ModItems.METER, "Meter");
+        addItem(ModItems.EYEBALL, "Eyeball");
 
         add("grammar.aqua_vitae.container_of", "%s of %s");
     }

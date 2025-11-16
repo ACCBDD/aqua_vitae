@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -23,6 +24,8 @@ public class ItemModelGenerator extends ItemModelProvider {
         simpleBlockItem(ModBlocks.KEG.get());
         basicItem(ModItems.CUP.get());
         basicItem(ModItems.SHOOTER.get());
+        basicItem(ModItems.METER.get());
+        getBuilder(ModItems.EYEBALL.getKey().location().toString()).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", modLoc("item/eyeball_base")).texture("layer1", modLoc("item/eyeball_overlay"));
     }
 
     private void bucketModel(DeferredHolder<Fluid, FlowingFluid> fluid) {

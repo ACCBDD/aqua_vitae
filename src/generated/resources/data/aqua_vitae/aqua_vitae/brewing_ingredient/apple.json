@@ -1,6 +1,4 @@
 {
-  "color": "ccff3300",
-  "diastatic_power": 0.0,
   "flavors": [
     "aqua_vitae:fruity",
     "aqua_vitae:sweet"
@@ -8,8 +6,12 @@
   "input": {
     "item": "minecraft:apple"
   },
-  "starch": 0.02,
-  "sugar": 0.6,
-  "yeast": 0.05,
-  "yeast_tolerance": 0.08
+  "properties": {
+    "color": "ccff3300",
+    "diastatic_power": 0,
+    "starch": 2,
+    "sugar": 60,
+    "yeast": 5,
+    "yeast_tolerance": 0.08
+  }
 }

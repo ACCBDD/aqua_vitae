@@ -1,7 +1,11 @@
 package com.accbdd.aqua_vitae;
 
+import com.accbdd.aqua_vitae.component.FluidStackComponent;
+import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
+import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluidTypes;
 import com.accbdd.aqua_vitae.registry.ModFluids;
+import com.accbdd.aqua_vitae.registry.ModItems;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -98,5 +102,14 @@ public class AquaVitaeClient {
                return event.getItemColors().getColor(new ItemStack(Items.BUCKET), 0);
            }, fluid.get().getBucket());
         });
+
+        event.register((stack, index) -> {
+            if (index == 1) {
+                return stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY)
+                        .stack().getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY)
+                        .properties().color();
+            }
+            return -1;
+        }, ModItems.EYEBALL);
     }
 }

@@ -22,8 +22,7 @@ public class BuiltIn {
         return new AbstractMap.SimpleEntry<>(key, flavor);
     }
 
-    static Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> brewingIngredient(String path, BrewingIngredient.Builder ingredientBuilder) {
-        BrewingIngredient ingredient = ingredientBuilder.build();
+    static Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> brewingIngredient(String path, BrewingIngredient ingredient) {
         ResourceKey<BrewingIngredient> key = ResourceKey.create(AquaVitae.INGREDIENT_REGISTRY, loc(path));
         BREWING_INGREDIENTS.put(key, ingredient);
         return new AbstractMap.SimpleEntry<>(key, ingredient);

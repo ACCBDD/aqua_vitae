@@ -104,18 +104,6 @@ neoForge {
     }
 }
 
-tasks.named('runClient') {
-    classpath += configurations.devRuntime
-}
-
-tasks.named('runServer') {
-    classpath += configurations.devRuntime
-}
-
-configurations {
-    devRuntime //for lame ass mods that break my datagen
-}
-
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
@@ -129,7 +117,8 @@ dependencies {
     runtimeOnly "curse.maven:appleskin-248787:${appleskin_id}"
     runtimeOnly "curse.maven:mekanism-268560:7132168"
     runtimeOnly "curse.maven:create-328085:7178775"
-    devRuntime "curse.maven:fruits-delight-943774:7041466"
+    runtimeOnly "curse.maven:fruits-delight-943774:7041466"
+    runtimeOnly "curse.maven:cuisine-delight-893541:6677783" //fuck you fruits delight
     runtimeOnly "curse.maven:farmers-delight-398521:6917256"
 
     if (runtime_recipe_viewer == "jei") {

@@ -12,11 +12,22 @@ import static com.accbdd.aqua_vitae.datagen.builtin.BuiltIn.brewingIngredient;
 
 public class BuiltInIngredients {
     public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> APPLE = brewingIngredient("apple",
-            new BrewingIngredient.Builder(Ingredient.of(Items.APPLE))
-                    .color(0xCCFF3300)
-                    .starch(0.02f)
-                    .sugar(0.6f)
-                    .yeast(0.05f)
-                    .yeastTolerance(0.08f)
-                    .flavors(List.of(BuiltInFlavors.FRUITY.getKey(), BuiltInFlavors.SWEET.getKey())));
+            new BrewingIngredient(
+                    Ingredient.of(Items.APPLE),
+                    new BrewingIngredient.BrewingProperties.Builder()
+                            .color(0xCCFF3300)
+                            .starch(2)
+                            .sugar(60)
+                            .yeast(5)
+                            .yeastTolerance(0.08f)
+                            .build(),
+                    List.of(BuiltInFlavors.FRUITY.getKey(), BuiltInFlavors.SWEET.getKey())));
+
+    public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> LAPIS = brewingIngredient("lapis",
+            new BrewingIngredient(
+                    Ingredient.of(Items.LAPIS_LAZULI),
+                    new BrewingIngredient.BrewingProperties.Builder()
+                            .color(0xFF0000FF)
+                            .build(),
+                    List.of()));
 }

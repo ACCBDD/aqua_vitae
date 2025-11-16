@@ -5,6 +5,8 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -29,6 +31,34 @@ public class Codecs {
             },
             Integer::toHexString
     );
+
+    public static final StreamCodec<FriendlyByteBuf, Integer> HEX_STREAM_CODEC =
+            StreamCodec.of(
+                    // Writer: Integer -> ByteBuf
+                    (buf, value) -> {
+                        // Ensure 8-char AARRGGBB
+                        String hex = String.format("%08x", value);
+                        buf.writeUtf(hex);
+                    },
+
+                    // Reader: ByteBuf -> Integer
+                    buf -> {
+                        String str = buf.readUtf();
+
+                        if (str.startsWith("#")) {
+                            str = str.substring(1);
+                        }
+                        if (str.length() != 8) {
+                            throw new IllegalArgumentException("Hex color must be 8 characters (AARRGGBB)");
+                        }
+
+                        try {
+                            return (int) Long.parseLong(str, 16);
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("Invalid hex color: " + str);
+                        }
+                    }
+            );
 
     public static final Codec<MobEffectInstance> EFFECT = RecordCodecBuilder.create(instance ->
             instance.group(

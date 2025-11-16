@@ -16,22 +16,22 @@ public class CupHandler extends FluidTank implements IFluidHandlerItem {
     public CupHandler(ItemStack stack, int capacity) {
         super(capacity);
         this.stack = stack;
-        this.fluid = stack.getOrDefault(ModComponents.FLUIDSTACK.get(), FluidStackComponent.EMPTY).stack().copy();
+        this.fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack().copy();
     }
 
     @Override
     public ItemStack getContainer() {
         if (fluid.isEmpty())
-            stack.remove(ModComponents.FLUIDSTACK.get());
+            stack.remove(ModComponents.FLUIDSTACK);
         else
-            stack.set(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(fluid.copy()));
+            stack.set(ModComponents.FLUIDSTACK, new FluidStackComponent(fluid.copy()));
         return stack;
     }
 
     @Override
     protected void onContentsChanged() {
         super.onContentsChanged();
-        stack.set(ModComponents.FLUIDSTACK.get(), new FluidStackComponent(this.fluid.copy()));
+        stack.set(ModComponents.FLUIDSTACK, new FluidStackComponent(this.fluid.copy()));
     }
 
     public void interactWith(IFluidHandler other) {

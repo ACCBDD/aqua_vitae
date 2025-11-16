@@ -5,6 +5,8 @@
   "grammar.aqua_vitae.container_of": "%s of %s",
   "item.aqua_vitae.aqua_vitae_bucket": "Bucket of Aqua Vitae",
   "item.aqua_vitae.cup": "Cup",
+  "item.aqua_vitae.eyeball": "Eyeball",
+  "item.aqua_vitae.meter": "Meter",
   "item.aqua_vitae.shooter": "Shooter",
   "item_group.aqua_vitae": "Aqua Vitae"
 }
