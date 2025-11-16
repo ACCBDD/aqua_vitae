@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "aqua_vitae:block/fermenter_closed"
+  }
+}

@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
+import com.accbdd.aqua_vitae.block.FermenterBlock;
 import com.accbdd.aqua_vitae.block.KegBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -23,6 +24,7 @@ public class ModBlocks {
     public static final DeferredBlock<LiquidBlock> AQUA_VITAE = registerLiquidBlock("aqua_vitae", ModFluids.AQUA_VITAE);
 
     public static final DeferredBlock<Block> KEG = registerBlock("keg", KegBlock::new);
+    public static final DeferredBlock<Block> FERMENTER = registerBlock("fermenter", FermenterBlock::new);
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> blockSupplier) {
         return BLOCKS.register(name, blockSupplier);

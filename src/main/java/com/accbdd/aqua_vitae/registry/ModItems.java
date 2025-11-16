@@ -24,6 +24,7 @@ public class ModItems {
     public static final DeferredItem<BucketItem> AQUA_VITAE_BUCKET = registerBucket("aqua_vitae_bucket", ModFluids.AQUA_VITAE);
 
     public static final DeferredItem<BlockItem> KEG = registerSimpleBlockItem("keg", ModBlocks.KEG);
+    public static final DeferredItem<BlockItem> FERMENTER = registerSimpleBlockItem("fermenter", ModBlocks.FERMENTER);
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));

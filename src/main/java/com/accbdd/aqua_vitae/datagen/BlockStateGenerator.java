@@ -2,7 +2,10 @@ package com.accbdd.aqua_vitae.datagen;
 
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class BlockStateGenerator extends BlockStateProvider {
@@ -15,5 +18,10 @@ public class BlockStateGenerator extends BlockStateProvider {
         simpleBlock(ModBlocks.AQUA_VITAE.get(), models().getExistingFile(mcLoc("water")));
 
         directionalBlock(ModBlocks.KEG.get(), models().getExistingFile(modLoc("keg")));
+
+        VariantBlockStateBuilder builder = getVariantBuilder(ModBlocks.FERMENTER.get());
+        builder.forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(state.getValue(BlockStateProperties.CRAFTING) ? models().getExistingFile(modLoc("fermenter_closed")) : models().getExistingFile(modLoc("fermenter_open")))
+                .build());
     }
 }

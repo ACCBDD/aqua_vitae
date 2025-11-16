@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "crafting=false": {
+      "model": "aqua_vitae:block/fermenter_open"
+    },
+    "crafting=true": {
+      "model": "aqua_vitae:block/fermenter_closed"
+    }
+  }
+}

@@ -12,5 +12,7 @@ public class BlockModelGenerator extends BlockModelProvider {
     @Override
     protected void registerModels() {
         cubeColumnHorizontal("keg", modLoc("block/keg_side"), modLoc("block/keg_end"));
+        cubeAll("fermenter_closed", modLoc("block/fermenter_closed"));
+        cubeAll("fermenter_open", modLoc("block/fermenter_open"));
     }
 }
