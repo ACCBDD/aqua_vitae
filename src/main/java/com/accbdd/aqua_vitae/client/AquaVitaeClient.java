@@ -1,11 +1,10 @@
-package com.accbdd.aqua_vitae;
+package com.accbdd.aqua_vitae.client;
 
+import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
-import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.registry.ModFluidTypes;
-import com.accbdd.aqua_vitae.registry.ModFluids;
-import com.accbdd.aqua_vitae.registry.ModItems;
+import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -23,6 +22,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -121,4 +121,8 @@ public class AquaVitaeClient {
         }, ModItems.EYEBALL);
     }
 
+    @SubscribeEvent
+    public void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.CRUSHING_TUB.get(), CrushingTubRenderer::new);
+    }
 }

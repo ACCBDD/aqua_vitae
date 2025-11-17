@@ -3,12 +3,16 @@ package com.accbdd.aqua_vitae.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSingleFluidTankEntity extends BlockEntity {
     private static final String FLUID_TAG = "fluid";
@@ -26,7 +30,7 @@ public abstract class BaseSingleFluidTankEntity extends BlockEntity {
         return new FluidTank(capacity) {
             @Override
             protected void onContentsChanged() {
-                BaseSingleFluidTankEntity.this.setChanged();
+                setChanged();
             }
         };
     }
@@ -73,6 +77,8 @@ public abstract class BaseSingleFluidTankEntity extends BlockEntity {
         super.loadAdditional(tag, registries);
         if (tag.contains(FLUID_TAG)) {
             setFluid(FluidStack.parseOptional(registries, tag.getCompound(FLUID_TAG)));
+        } else {
+            setFluid(FluidStack.EMPTY);
         }
     }
 
@@ -81,5 +87,18 @@ public abstract class BaseSingleFluidTankEntity extends BlockEntity {
         CompoundTag tag = new CompoundTag();
         saveAdditional(tag, registries);
         return tag;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
 }

@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.CrushingTubBlockEntity;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
+import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -9,6 +10,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -21,13 +24,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
@@ -53,7 +54,7 @@ public class CrushingTubBlock extends BaseEntityBlock {
                 Block.box(2, 1, 1, 14, 9, 2),
                 Block.box(2, 1, 14, 14, 9, 15),
                 Block.box(2, 1, 14, 14, 9, 15)
-        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+        ).reduce(Shapes::or).get();
     }
 
     @Override
@@ -91,18 +92,36 @@ public class CrushingTubBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        super.entityInside(state, level, pos, entity);
+        double motionY = entity.getDeltaMovement().y;
+        if(!level.isClientSide && motionY <= -0.1D && entity.position().y - pos.getY() < 0.2 && entity instanceof LivingEntity) {
+            CrushingTubBlockEntity tub = level.getBlockEntity(pos, ModBlockEntities.CRUSHING_TUB.get()).orElse(null);
+            if (!tub.getItemHandler().getStackInSlot(0).isEmpty() && !tub.getFluid().isEmpty()) {
+                tub.crush();
+            }
+        }
+    }
+
+    @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         CrushingTubBlockEntity tub = level.getBlockEntity(pos, ModBlockEntities.CRUSHING_TUB.get()).orElse(null);
         if (tub == null || stack.isEmpty() || level.isClientSide)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        IItemHandler handler = tub.getItemHandler();
-        ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack.copyWithCount(1), false);
-        if (remainder.isEmpty()) {
-            level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS);
-            stack.shrink(1);
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        if (FluidUtils.handleInteraction(player, hand, stack, tub.getFluidHandler())) {
+            level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+            player.getInventory().setChanged();
+            return ItemInteractionResult.SUCCESS;
+        } else {
+            IItemHandler handler = tub.getItemHandler();
+            ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack.copyWithCount(1), false);
+            if (remainder.isEmpty()) {
+                level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS);
+                stack.shrink(1);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
         }
 
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return ItemInteractionResult.FAIL;
     }
 }
