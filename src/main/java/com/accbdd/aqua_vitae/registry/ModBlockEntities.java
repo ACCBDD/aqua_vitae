@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
+import com.accbdd.aqua_vitae.block.entity.CrushingTubBlockEntity;
 import com.accbdd.aqua_vitae.block.entity.FermenterBlockEntity;
 import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -16,4 +17,6 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(KegBlockEntity::new, ModBlocks.KEG.get()).build(null));
     public static DeferredHolder<BlockEntityType<?>, BlockEntityType<FermenterBlockEntity>> FERMENTER = BLOCK_ENTITY_TYPES.register("fermenter",
             () -> BlockEntityType.Builder.of(FermenterBlockEntity::new, ModBlocks.FERMENTER.get()).build(null));
+    public static DeferredHolder<BlockEntityType<?>, BlockEntityType<CrushingTubBlockEntity>> CRUSHING_TUB = BLOCK_ENTITY_TYPES.register("crushing_tub",
+            () -> BlockEntityType.Builder.of(CrushingTubBlockEntity::new, ModBlocks.CRUSHING_TUB.get()).build(null));
 }

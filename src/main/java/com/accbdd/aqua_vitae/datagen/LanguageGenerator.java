@@ -24,6 +24,7 @@ public class LanguageGenerator extends LanguageProvider {
         addFluidSet("Aqua Vitae", ModBlocks.AQUA_VITAE , ModItems.AQUA_VITAE_BUCKET);
 
         addBlock(ModBlocks.KEG, "Keg");
+        addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");

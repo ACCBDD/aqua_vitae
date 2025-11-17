@@ -122,7 +122,7 @@ public class FluidUtils {
         BrewingProperties brewing = ferment.properties();
 
         double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1); //bigger batches ferment slower, to a point
-        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / brewing.yeastTolerance(), 0); // closer to abb tolerance means slower ferment
+        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / Math.max(brewing.yeastTolerance(), 1), 0); // closer to abb tolerance means slower ferment
         double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
         double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
         double abbDelta = conversionRate / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1

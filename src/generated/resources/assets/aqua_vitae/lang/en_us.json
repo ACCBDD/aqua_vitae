@@ -1,5 +1,6 @@
 {
   "block.aqua_vitae.aqua_vitae": "Aqua Vitae",
+  "block.aqua_vitae.crushing_tub": "Crushing Tub",
   "block.aqua_vitae.keg": "Keg",
   "effect.aqua_vitae.tipsy": "Tipsy",
   "grammar.aqua_vitae.container_of": "%s of %s",

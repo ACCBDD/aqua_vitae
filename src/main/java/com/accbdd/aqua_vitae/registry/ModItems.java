@@ -25,6 +25,7 @@ public class ModItems {
 
     public static final DeferredItem<BlockItem> KEG = registerSimpleBlockItem("keg", ModBlocks.KEG);
     public static final DeferredItem<BlockItem> FERMENTER = registerSimpleBlockItem("fermenter", ModBlocks.FERMENTER);
+    public static final DeferredItem<BlockItem> CRUSHING_TUB = registerSimpleBlockItem("crushing_tub", ModBlocks.CRUSHING_TUB);
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));

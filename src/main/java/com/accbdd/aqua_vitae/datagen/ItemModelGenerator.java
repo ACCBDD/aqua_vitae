@@ -23,6 +23,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         ModFluids.REGISTERED.forEach(this::bucketModel);
         simpleBlockItem(ModBlocks.KEG.get());
         withExistingParent("fermenter", modLoc("block/fermenter_open"));
+        simpleBlockItem(ModBlocks.CRUSHING_TUB.get());
         basicItem(ModItems.CUP.get());
         basicItem(ModItems.SHOOTER.get());
         basicItem(ModItems.METER.get());

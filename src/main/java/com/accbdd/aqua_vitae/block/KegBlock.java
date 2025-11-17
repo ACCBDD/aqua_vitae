@@ -81,7 +81,7 @@ public class KegBlock extends BaseEntityBlock {
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;
         } else {
-            BrewingIngredient ingredient = RegistryUtils.ingredientRegistry().stream().filter(ing -> ing.itemIngredient().test(stack)).findFirst().orElse(null);
+            BrewingIngredient ingredient = RegistryUtils.getIngredient(stack);
             if (ingredient != null) {
                 FluidStack fluid = keg.getFluid();
                 if (!fluid.isEmpty()) {

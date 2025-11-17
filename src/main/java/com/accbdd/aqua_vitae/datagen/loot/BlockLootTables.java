@@ -22,5 +22,6 @@ public class BlockLootTables extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.KEG.get());
         dropSelf(ModBlocks.FERMENTER.get());
+        dropSelf(ModBlocks.CRUSHING_TUB.get());
     }
 }

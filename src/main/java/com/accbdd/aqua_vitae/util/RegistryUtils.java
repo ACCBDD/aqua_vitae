@@ -5,6 +5,7 @@ import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -39,5 +40,10 @@ public class RegistryUtils {
         if (registryAccess() != null)
             return registryAccess().registry(AquaVitae.INGREDIENT_REGISTRY).get();
         return null;
+    }
+
+    @Nullable
+    public static BrewingIngredient getIngredient(ItemStack stack) {
+        return ingredientRegistry().stream().filter(ing -> ing.itemIngredient().test(stack)).findFirst().orElse(null);
     }
 }
