@@ -43,6 +43,11 @@ public class PotStillBlockEntity extends AbstractBEWithData {
                 public FluidStack drain(int maxDrain, FluidAction action) {
                     return FluidStack.EMPTY;
                 }
+
+                @Override
+                public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+                    return FluidStack.EMPTY;
+                }
             }, new AdaptedFluidHandler(outputFluidHandler) {
                 @Override
                 public int fill(FluidStack resource, FluidAction action) {
@@ -85,10 +90,12 @@ public class PotStillBlockEntity extends AbstractBEWithData {
     public void tickServer() {
         if (tickCount++ > CYCLE_LENGTH) {
             tickCount = 0;
-            //todo: stop from voiding distill if can't output to fluid handler
-            FluidStack drained = inputFluidHandler.drain(500, IFluidHandler.FluidAction.EXECUTE);
-            FluidStack distilled = FluidUtils.distill(drained, 0.9f, 0.7f, 900);
-            outputFluidHandler.fill(distilled, IFluidHandler.FluidAction.EXECUTE);
+            if (!inputFluidHandler.isEmpty()) {
+                FluidStack drained = inputFluidHandler.drain(500, IFluidHandler.FluidAction.SIMULATE);
+                FluidStack distilled = FluidUtils.distill(drained, 0.9f, 0.7f, 900);
+                int filled = outputFluidHandler.fill(distilled, IFluidHandler.FluidAction.EXECUTE);
+                inputFluidHandler.drain(filled / distilled.getAmount() * 500, IFluidHandler.FluidAction.EXECUTE);
+            }
         }
     }
 }
