@@ -44,16 +44,12 @@ public class FluidUtils {
             for (int itemTank = 0; itemTank < handler.getTanks(); itemTank++) {
                 FluidStack fluidInItem = handler.getFluidInTank(itemTank);
                 if (fluidInItem.isEmpty()) {
-                    // Try filling from 'other'
-                    for (int otherTank = 0; otherTank < other.getTanks(); otherTank++) {
-                        FluidStack fluidInOther = other.getFluidInTank(otherTank);
-                        if (!fluidInOther.isEmpty()) {
-                            int filled = handler.fill(fluidInOther, IFluidHandler.FluidAction.EXECUTE);
-                            if (filled > 0) {
-                                other.drain(filled, IFluidHandler.FluidAction.EXECUTE);
-                                transfer = true;
-                                break; // move to next item tank
-                            }
+                    FluidStack fluidInOther = other.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                    if (!fluidInOther.isEmpty()) {
+                        int filled = handler.fill(fluidInOther, IFluidHandler.FluidAction.EXECUTE);
+                        if (filled > 0) {
+                            other.drain(filled, IFluidHandler.FluidAction.EXECUTE);
+                            transfer = true;
                         }
                     }
                 }
