@@ -17,6 +17,7 @@ public class BlockStateGenerator extends BlockStateProvider {
     protected void registerStatesAndModels() {
         simpleBlock(ModBlocks.AQUA_VITAE.get(), models().getExistingFile(mcLoc("water")));
         simpleBlock(ModBlocks.CRUSHING_TUB.get(), models().getExistingFile(modLoc("crushing_tub")));
+        horizontalBlock(ModBlocks.POT_STILL.get(), models().getExistingFile(modLoc("pot_still")), -90);
 
         directionalBlock(ModBlocks.KEG.get(), models().getExistingFile(modLoc("keg")));
 

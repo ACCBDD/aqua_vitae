@@ -17,4 +17,9 @@ public class ModFluidImpl {
             ModFluidTypes.ALCOHOL_TYPE::value,
             ModFluids.ALCOHOL::value,
             ModFluids.FLOWING_ALCOHOL::value);
+
+    public static final BaseFlowingFluid.Properties WORT_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.WORT_TYPE::value,
+            ModFluids.WORT::value,
+            ModFluids.FLOWING_WORT::value);
 }

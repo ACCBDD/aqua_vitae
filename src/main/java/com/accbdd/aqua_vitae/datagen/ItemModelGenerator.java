@@ -24,6 +24,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         simpleBlockItem(ModBlocks.KEG.get());
         withExistingParent("fermenter", modLoc("block/fermenter_open"));
         simpleBlockItem(ModBlocks.CRUSHING_TUB.get());
+        simpleBlockItem(ModBlocks.POT_STILL.get());
         basicItem(ModItems.CUP.get());
         basicItem(ModItems.SHOOTER.get());
         basicItem(ModItems.METER.get());

@@ -75,6 +75,12 @@ public class AquaVitae {
                 (entity, side) -> entity.getFluidHandler()
         );
 
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.POT_STILL.get(),
+                (entity, side) -> entity.getFluidHandler()
+        );
+
         ModItems.ITEMS.getEntries().stream().filter(holder -> holder.get() instanceof CupItem)
                 .map(holder -> (CupItem)holder.get())
                 .forEach(cup -> event.registerItem(

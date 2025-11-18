@@ -24,6 +24,9 @@ public class ModFluids {
     public static final DeferredHolder<Fluid, FlowingFluid> ALCOHOL = registerSource("alcohol", () -> ModFluidImpl.ALCOHOL_PROPERTIES);
     public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_ALCOHOL = registerFlowing("flowing_alcohol", () -> ModFluidImpl.ALCOHOL_PROPERTIES);
 
+    public static final DeferredHolder<Fluid, FlowingFluid> WORT = registerSource("wort", () -> ModFluidImpl.WORT_PROPERTIES);
+    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_WORT = registerFlowing("flowing_wort", () -> ModFluidImpl.WORT_PROPERTIES);
+
     private static DeferredHolder<Fluid, FlowingFluid> registerSource(String name, Supplier<BaseFlowingFluid.Properties> properties) {
         DeferredHolder<Fluid, FlowingFluid> register = FLUIDS.register(name, () -> new BaseFlowingFluid.Source(properties.get()));
         REGISTERED.add(register);

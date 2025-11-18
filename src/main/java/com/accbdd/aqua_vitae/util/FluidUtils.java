@@ -16,60 +16,80 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class FluidUtils {
+    public static final Predicate<FluidStack> HAS_ALCOHOL = stack -> stack.has(ModComponents.ALCOHOL_PROPERTIES);
+    public static final Predicate<FluidStack> HAS_FERMENT = stack -> stack.has(ModComponents.FERMENTING_PROPERTIES);
+    public static final Predicate<FluidStack> HAS_PRECURSOR = stack -> stack.has(ModComponents.PRECURSOR_PROPERTIES);
+
     public static boolean handleInteraction(Player player, InteractionHand hand, ItemStack itemStack, IFluidHandler other) {
         if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null) {
             return false;
         } else {
             ItemStack copyStack = itemStack.copyWithCount(1);
             IFluidHandlerItem handler = copyStack.getCapability(Capabilities.FluidHandler.ITEM);
-            FluidStack fluidInOther = other.getFluidInTank(0);
-            if (handler != null) {
-                boolean transfer = false;
-                FluidStack fluidInItem = handler.getFluidInTank(0);
-                if (fluidInItem.isEmpty()) { //handler is empty, try filling it
-                    int filled = handler.fill(fluidInOther, IFluidHandler.FluidAction.EXECUTE);
-                    if (filled > 0) { //if there is space in the item
-                        other.drain(filled, IFluidHandler.FluidAction.EXECUTE);
-                        transfer = true;
-                    }
-                } else { //item has fluid, try emptying it then filling it
-                    FluidStack simulatedExtract = handler.drain(handler.getTankCapacity(0), IFluidHandler.FluidAction.SIMULATE);
-                    int accepted = other.fill(simulatedExtract, IFluidHandler.FluidAction.EXECUTE);
-                    if (accepted > 0) { //other was able to take fluid in item
-                        handler.drain(accepted, IFluidHandler.FluidAction.EXECUTE);
-                        transfer = true;
-                    } else {
-                        int filled = handler.fill(fluidInOther, IFluidHandler.FluidAction.EXECUTE);
-                        if (filled > 0) { //if there is space in the item
-                            other.drain(filled, IFluidHandler.FluidAction.EXECUTE);
-                            transfer = true;
+            if (handler == null) return false;
+
+            boolean transfer = false;
+
+            // Attempt to fill item from 'other' if item is empty
+            for (int itemTank = 0; itemTank < handler.getTanks(); itemTank++) {
+                FluidStack fluidInItem = handler.getFluidInTank(itemTank);
+                if (fluidInItem.isEmpty()) {
+                    // Try filling from 'other'
+                    for (int otherTank = 0; otherTank < other.getTanks(); otherTank++) {
+                        FluidStack fluidInOther = other.getFluidInTank(otherTank);
+                        if (!fluidInOther.isEmpty()) {
+                            int filled = handler.fill(fluidInOther, IFluidHandler.FluidAction.EXECUTE);
+                            if (filled > 0) {
+                                other.drain(filled, IFluidHandler.FluidAction.EXECUTE);
+                                transfer = true;
+                                break; // move to next item tank
+                            }
                         }
                     }
                 }
-
-                ItemStack newContainer = handler.getContainer();
-                if (!player.isCreative()) {
-                    if (itemStack.getCount() > 1) {
-                        itemStack.shrink(1);
-                        player.addItem(newContainer);
-                    } else {
-                        player.setItemInHand(hand, newContainer);
-                    }
-                    player.getInventory().setChanged();
-                }
-
-                return transfer;
             }
 
-            return false;
+            // Attempt to empty item into 'other' if item contains fluid
+            if (!transfer) {
+                for (int itemTank = 0; itemTank < handler.getTanks(); itemTank++) {
+                    FluidStack fluidInItem = handler.getFluidInTank(itemTank);
+                    if (!fluidInItem.isEmpty()) {
+                        int remaining = fluidInItem.getAmount();
+                        for (int otherTank = 0; otherTank < other.getTanks() && remaining > 0; otherTank++) {
+                            FluidStack toFill = fluidInItem.copyWithAmount(remaining);
+                            int filled = other.fill(toFill, IFluidHandler.FluidAction.EXECUTE);
+                            if (filled > 0) {
+                                handler.drain(filled, IFluidHandler.FluidAction.EXECUTE);
+                                remaining -= filled;
+                                transfer = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            ItemStack newContainer = handler.getContainer();
+            if (!player.isCreative()) {
+                if (itemStack.getCount() > 1) {
+                    itemStack.shrink(1);
+                    player.addItem(newContainer);
+                } else {
+                    player.setItemInHand(hand, newContainer);
+                }
+                player.getInventory().setChanged();
+            }
+
+            return transfer;
         }
     }
 
@@ -122,7 +142,7 @@ public class FluidUtils {
         BrewingProperties brewing = ferment.properties();
 
         double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1); //bigger batches ferment slower, to a point
-        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / Math.max(brewing.yeastTolerance(), 1), 0); // closer to abb tolerance means slower ferment
+        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / Math.max(brewing.yeastTolerance(), 1), 0.01); // closer to abb tolerance means slower ferment
         double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
         double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
         double abbDelta = conversionRate / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1
@@ -137,7 +157,7 @@ public class FluidUtils {
                         brewing.diastaticPower()));
 
         AlcoholPropertiesComponent newAlcohol = new AlcoholPropertiesComponent(alcohol.color(),
-                (float) (alcohol.abb() + abbDelta),
+                Math.min((float) (alcohol.abb() + abbDelta), brewing.yeastTolerance()),
                 alcohol.age(),
                 alcohol.flavors(),
                 alcohol.items());
@@ -145,7 +165,7 @@ public class FluidUtils {
         AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
         AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
 
-        if (newFerment.properties().sugar() == 0 || conversionRate == 0)
+        if (newFerment.properties().sugar() == 0 || conversionRate == 0 || alcohol.abb() >= brewing.yeastTolerance())
             newFluid.remove(ModComponents.FERMENTING_PROPERTIES);
         else
             newFluid.set(ModComponents.FERMENTING_PROPERTIES, newFerment);
@@ -159,8 +179,43 @@ public class FluidUtils {
             return fluid;
 
         FluidStack newFluid = fluid.copy();
-        fluid.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(ferment.stress() + 1, ferment.flavors(), ferment.properties()));
+        newFluid.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(ferment.stress() + 1, ferment.flavors(), ferment.properties()));
         return newFluid;
+    }
+
+    public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbb) {
+        AlcoholPropertiesComponent alcohol = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
+        if (alcohol == null)
+            return fluid;
+
+        float currentAbb = alcohol.abb();
+        if (currentAbb >= maxAbb)
+            return fluid;
+
+        float newAbb = Math.min(currentAbb + (1000 - currentAbb) * distillFactor, maxAbb);
+        float abbFraction = (newAbb - currentAbb) / (1000 - currentAbb + 1e-6f);
+        int newVolume = (int) (fluid.getAmount() * (1f - abbFraction * lossFactor));
+        int newColor = HexUtils.lightenColor(alcohol.color(), abbFraction);
+        FluidStack newFluid = fluid.copyWithAmount(Math.max(newVolume, 1));
+        newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(
+                newColor,
+                Math.round(newAbb),
+                alcohol.age(),
+                alcohol.flavors(),
+                alcohol.items()));
+
+        return newFluid;
+    }
+
+    @Nullable
+    public static int getColorOrInvisible(FluidStack stack) {
+        if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
+            return stack.get(ModComponents.ALCOHOL_PROPERTIES).color();
+        if (stack.has(ModComponents.FERMENTING_PROPERTIES))
+            return stack.get(ModComponents.FERMENTING_PROPERTIES).properties().color();
+        if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
+            return stack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
+        return 0x00000000;
     }
 
     public static List<Component> getAlcoholTooltip(FluidStack fluid) {

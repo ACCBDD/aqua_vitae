@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.registry;
 import com.accbdd.aqua_vitae.block.entity.CrushingTubBlockEntity;
 import com.accbdd.aqua_vitae.block.entity.FermenterBlockEntity;
 import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
+import com.accbdd.aqua_vitae.block.entity.PotStillBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -19,4 +20,6 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(FermenterBlockEntity::new, ModBlocks.FERMENTER.get()).build(null));
     public static DeferredHolder<BlockEntityType<?>, BlockEntityType<CrushingTubBlockEntity>> CRUSHING_TUB = BLOCK_ENTITY_TYPES.register("crushing_tub",
             () -> BlockEntityType.Builder.of(CrushingTubBlockEntity::new, ModBlocks.CRUSHING_TUB.get()).build(null));
+    public static DeferredHolder<BlockEntityType<?>, BlockEntityType<PotStillBlockEntity>> POT_STILL = BLOCK_ENTITY_TYPES.register("pot_still",
+            () -> BlockEntityType.Builder.of(PotStillBlockEntity::new, ModBlocks.POT_STILL.get()).build(null));
 }

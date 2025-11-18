@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "aqua_vitae:block/pot_still",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "aqua_vitae:block/pot_still",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aqua_vitae:block/pot_still",
+      "y": -90
+    },
+    "facing=west": {
+      "model": "aqua_vitae:block/pot_still"
+    }
+  }
+}

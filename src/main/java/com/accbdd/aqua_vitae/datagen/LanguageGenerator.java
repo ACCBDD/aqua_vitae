@@ -20,11 +20,13 @@ public class LanguageGenerator extends LanguageProvider {
     protected void addTranslations() {
         add("item_group." + MODID, "Aqua Vitae");
         add("effect.aqua_vitae.tipsy", "Tipsy");
+        add("block.aqua_vitae.wort", "Wort");
 
         addFluidSet("Aqua Vitae", ModBlocks.AQUA_VITAE , ModItems.AQUA_VITAE_BUCKET);
 
         addBlock(ModBlocks.KEG, "Keg");
         addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
+        addBlock(ModBlocks.POT_STILL, "Pot Still");
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");

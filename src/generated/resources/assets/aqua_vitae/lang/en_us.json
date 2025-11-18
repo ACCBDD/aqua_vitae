@@ -2,6 +2,8 @@
   "block.aqua_vitae.aqua_vitae": "Aqua Vitae",
   "block.aqua_vitae.crushing_tub": "Crushing Tub",
   "block.aqua_vitae.keg": "Keg",
+  "block.aqua_vitae.pot_still": "Pot Still",
+  "block.aqua_vitae.wort": "Wort",
   "effect.aqua_vitae.tipsy": "Tipsy",
   "grammar.aqua_vitae.container_of": "%s of %s",
   "item.aqua_vitae.aqua_vitae_bucket": "Bucket of Aqua Vitae",

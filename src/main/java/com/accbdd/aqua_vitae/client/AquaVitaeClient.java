@@ -3,8 +3,8 @@ package com.accbdd.aqua_vitae.client;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
-import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.*;
+import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -55,13 +55,7 @@ public class AquaVitaeClient {
 
             @Override
             public int getTintColor(FluidStack stack) {
-                if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
-                    return stack.get(ModComponents.ALCOHOL_PROPERTIES).color();
-                if (stack.has(ModComponents.FERMENTING_PROPERTIES))
-                    return stack.get(ModComponents.FERMENTING_PROPERTIES).properties().color();
-                if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
-                    return stack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
-                return getTintColor();
+                return FluidUtils.getColorOrInvisible(stack);
             }
 
             @Override
@@ -102,20 +96,17 @@ public class AquaVitaeClient {
 
     @SubscribeEvent
     public void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
-        ModFluids.REGISTERED.forEach(fluid -> {
-           event.register((stack, index) -> {
-               if (index == 1) {
-                   return ModFluidTypes.REGISTERED.get(fluid.get().getFluidType().getDescriptionId()).color();
-               }
-               return event.getItemColors().getColor(new ItemStack(Items.BUCKET), 0);
-           }, fluid.get().getBucket());
-        });
+        ModFluids.REGISTERED.forEach(fluid -> event.register((stack, index) -> {
+            if (index == 1) {
+                return ModFluidTypes.REGISTERED.get(fluid.get().getFluidType().getDescriptionId()).color();
+            }
+            return event.getItemColors().getColor(new ItemStack(Items.BUCKET), 0);
+        }, fluid.get().getBucket()));
 
         event.register((stack, index) -> {
             if (index == 1) {
-                return stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY)
-                        .stack().getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY)
-                        .properties().color();
+                FluidStack fluidStack = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
+                return FluidUtils.getColorOrInvisible(fluidStack);
             }
             return -1;
         }, ModItems.EYEBALL);

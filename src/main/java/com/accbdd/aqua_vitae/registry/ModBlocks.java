@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.registry;
 import com.accbdd.aqua_vitae.block.CrushingTubBlock;
 import com.accbdd.aqua_vitae.block.FermenterBlock;
 import com.accbdd.aqua_vitae.block.KegBlock;
+import com.accbdd.aqua_vitae.block.PotStillBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -27,6 +28,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> KEG = registerBlock("keg", KegBlock::new);
     public static final DeferredBlock<Block> FERMENTER = registerBlock("fermenter", FermenterBlock::new);
     public static final DeferredBlock<Block> CRUSHING_TUB = registerBlock("crushing_tub", CrushingTubBlock::new);
+    public static final DeferredBlock<Block> POT_STILL = registerBlock("pot_still", PotStillBlock::new);
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> blockSupplier) {
         return BLOCKS.register(name, blockSupplier);

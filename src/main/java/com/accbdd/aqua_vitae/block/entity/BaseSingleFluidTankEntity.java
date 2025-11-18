@@ -3,18 +3,13 @@ package com.accbdd.aqua_vitae.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseSingleFluidTankEntity extends BlockEntity {
+public abstract class BaseSingleFluidTankEntity extends AbstractBEWithData {
     private static final String FLUID_TAG = "fluid";
 
     private final int capacity;
@@ -80,25 +75,5 @@ public abstract class BaseSingleFluidTankEntity extends BlockEntity {
         } else {
             setFluid(FluidStack.EMPTY);
         }
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, registries);
-        return tag;
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        if (level != null && !level.isClientSide)
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
 }

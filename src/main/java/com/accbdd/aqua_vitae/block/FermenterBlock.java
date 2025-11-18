@@ -69,15 +69,14 @@ public class FermenterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide) {
-            return null;
-        } else {
+        if (!level.isClientSide) {
             return (lvl, pos, st, blockEntity) -> {
                 if (blockEntity instanceof FermenterBlockEntity be) {
                     be.tickServer();
                 }
             };
         }
+        return null;
     }
 
     @Override
