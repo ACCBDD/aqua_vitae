@@ -13,10 +13,10 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class PotStillBlockEntity extends AbstractBEWithData {
-    private static final String INPUT_TAG = "input";
-    private static final String OUTPUT_TAG = "output";
-    private static final int CAPACITY = 4000;
-    private static final int CYCLE_LENGTH = 20;
+    public static final String INPUT_TAG = "input";
+    public static final String OUTPUT_TAG = "output";
+    public static final int CAPACITY = 4000;
+    public static final int CYCLE_LENGTH = 20;
 
     private final FluidTank inputFluidHandler;
     private final FluidTank outputFluidHandler;
