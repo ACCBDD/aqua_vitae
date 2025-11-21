@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.mixin.client;
 
+import com.accbdd.aqua_vitae.registry.ModAttachments;
 import com.accbdd.aqua_vitae.registry.ModEffects;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,11 +30,11 @@ public class TipsyRendererMixin {
     @ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix4f;mul(Lorg/joml/Matrix4fc;)Lorg/joml/Matrix4f;"))
     private PoseStack aqua_vitae$renderTipsySpin(PoseStack pose, @Local(argsOnly = true) DeltaTracker delta) {
         Player player = Minecraft.getInstance().player;
-        if (player != null && player.hasEffect(ModEffects.TIPSY)) {
-            float distortionScale = minecraft.options.screenEffectScale().get().floatValue();
+        if (player != null) {
+            float distortionScale = minecraft.options.screenEffectScale().get().floatValue() * player.getData(ModAttachments.INTOXICATION);
             if (distortionScale > 0) {
                 float ticks = ((LevelRendererAccessor)minecraft.levelRenderer).aqua_vitae$getTicks() + delta.getGameTimeDeltaPartialTick(false);
-                int strength = Math.min(player.getEffect(ModEffects.TIPSY).getAmplifier(), 11);
+                int strength = player.getEffect(ModEffects.TIPSY).getAmplifier() + 1;
                 float scaledStrength = strength * distortionScale;
 
                 // left and right

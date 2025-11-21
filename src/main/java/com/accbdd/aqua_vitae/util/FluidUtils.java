@@ -191,7 +191,7 @@ public class FluidUtils {
         float newAbb = Math.min(currentAbb + (1000 - currentAbb) * distillFactor, maxAbb);
         float abbFraction = (newAbb - currentAbb) / (1000 - currentAbb + 1e-6f);
         int newVolume = (int) (fluid.getAmount() * (1f - abbFraction * lossFactor));
-        int newColor = HexUtils.lightenColor(alcohol.color(), abbFraction);
+        int newColor = NumUtils.lightenColor(alcohol.color(), abbFraction);
         FluidStack newFluid = fluid.copyWithAmount(Math.max(newVolume, 1));
         newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(
                 newColor,

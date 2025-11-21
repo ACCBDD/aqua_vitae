@@ -42,6 +42,7 @@ public class AquaVitae {
         ModEffects.EFFECTS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITY_TYPES.register(modEventBus);
         ModComponents.COMPONENTS.register(modEventBus);
+        ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
 
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);
@@ -59,6 +60,29 @@ public class AquaVitae {
             if (player.level().getFluidState(BlockPos.containing(player.getEyePosition())).is(FluidTagGenerator.AQUA_VITAE)) {
                 player.addEffect(new MobEffectInstance(ModEffects.TIPSY, 200, 4));
             }
+            int bloodAlcohol = player.getData(ModAttachments.BLOOD_ALCOHOL);
+            int intoxication = player.getData(ModAttachments.INTOXICATION);
+            int hangover = player.getData(ModAttachments.HANGOVER);
+
+            if (bloodAlcohol > 0) {
+                bloodAlcohol -= 2 + (bloodAlcohol / 250);
+                intoxication += 1 + (bloodAlcohol / 500);
+                hangover -= 1;
+            } else if (intoxication > 0) {
+                intoxication -= 1;
+                hangover += 1;
+            } else if (hangover > 0) {
+                hangover -= 1;
+            }
+
+            if (intoxication > 0) {
+                player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500));
+            } else {
+                player.removeEffect(ModEffects.TIPSY);
+            }
+            player.setData(ModAttachments.BLOOD_ALCOHOL, Math.max(bloodAlcohol, 0));
+            player.setData(ModAttachments.INTOXICATION, Math.max(intoxication, 0));
+            player.setData(ModAttachments.HANGOVER, Math.max(hangover, 0));
         }
     }
 
