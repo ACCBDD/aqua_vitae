@@ -80,7 +80,7 @@ public class AquaVitae {
                 if (intoxication > 0) {
                     if (curAmp != intoxication / 500)
                         player.removeEffect(ModEffects.TIPSY);
-                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500));
+                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500, false, false, true));
                 } else {
                     player.removeEffect(ModEffects.TIPSY);
                 }
