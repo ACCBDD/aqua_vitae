@@ -46,6 +46,7 @@ public class BuiltInIngredients {
                     new BrewingIngredient.BrewingProperties.Builder()
                             .color(0x00FFFFFF)
                             .yeast(200)
+                            .yeastTolerance(80)
                             .build(),
                     List.of()));
 }

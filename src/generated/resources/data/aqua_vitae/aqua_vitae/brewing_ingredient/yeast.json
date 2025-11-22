@@ -9,6 +9,6 @@
     "starch": 0,
     "sugar": 0,
     "yeast": 200,
-    "yeast_tolerance": 0
+    "yeast_tolerance": 80
   }
 }

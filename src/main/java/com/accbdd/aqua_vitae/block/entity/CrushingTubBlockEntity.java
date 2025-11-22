@@ -87,10 +87,10 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
             Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
             BrewingIngredient.BrewingProperties properties = new BrewingIngredient.BrewingProperties.Builder().build();
             for (int i = 0; i < items.getSlots(); i++) {
-                ((ServerLevel)getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, getItemHandler().getStackInSlot(i)), (float)getBlockPos().getX() + 0.5F, (float)getBlockPos().getY() + 0.1F, (float)getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
                 ItemStack stack = items.extractItem(i, 1, false);
                 if (stack.isEmpty())
                     continue;
+                ((ServerLevel)getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float)getBlockPos().getX() + 0.5F, (float)getBlockPos().getY() + 0.1F, (float)getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
                 inputs.add(stack);
                 BrewingIngredient ing = RegistryUtils.getIngredient(stack);
                 if (ing == null)

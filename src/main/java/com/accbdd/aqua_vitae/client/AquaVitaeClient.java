@@ -29,6 +29,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
@@ -126,54 +127,5 @@ public class AquaVitaeClient {
     @SubscribeEvent
     public void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.CRUSHING_TUB.get(), CrushingTubRenderer::new);
-    }
-
-    @SubscribeEvent
-    public void swayCamera(ViewportEvent.ComputeCameraAngles event) {
-        //todo implement
-        Player player = Minecraft.getInstance().player;
-
-        if (Minecraft.getInstance().player == null) {
-            SWAY_FACTOR = 0;
-            PREV_X_SWAY = 0;
-            PREV_Y_SWAY = 0;
-            return;
-        }
-
-        float frameTime = Minecraft.getInstance().getFrameTimeNs();
-        double effect = Minecraft.getInstance().player.getEffect(ModEffects.TIPSY).getAmplifier();
-
-        if (!Minecraft.getInstance().isPaused()) {
-            float targetFactor = (float) NumUtils.blend(0, 20, effect, 0, 1);
-            targetFactor *= Minecraft.getInstance().options.screenEffectScale().get().floatValue();
-
-            float interpolationSpeed = 0.05f * frameTime;
-            SWAY_FACTOR = SWAY_FACTOR + (targetFactor - SWAY_FACTOR) * interpolationSpeed;
-
-            // Set random sway speed every once in a while
-            if (TIME_SINCE_NEW_SWAY > 100 || X_SWAY_SPEED == 0 || Y_SWAY_SPEED == 0)
-            {
-                TIME_SINCE_NEW_SWAY = 0;
-                X_SWAY_SPEED = (float) ((Math.random() * 0.002f + 0.0025f));
-                Y_SWAY_SPEED = (float) ((Math.random() * 0.002f + 0.0025f));
-            }
-            TIME_SINCE_NEW_SWAY += frameTime;
-
-            // Blend to the new sway speed
-            X_SWAY_PHASE += 2 * Math.PI * frameTime * X_SWAY_SPEED;
-            Y_SWAY_PHASE += 2 * Math.PI * frameTime * Y_SWAY_SPEED;
-
-            // Apply the sway speed to a sin function using the smoothed factor
-            float xOffs = (float) (Math.sin(X_SWAY_PHASE) * SWAY_FACTOR);
-            float yOffs = (float) ((Math.sin(Y_SWAY_PHASE) + Math.cos(Y_SWAY_PHASE / 4) * 2) * SWAY_FACTOR * 3);
-
-            // Apply the sway
-            player.setXRot(player.getXRot() + xOffs - PREV_X_SWAY);
-            player.setYRot(player.getYRot() + yOffs - PREV_Y_SWAY);
-
-            // Save the previous sway
-            PREV_X_SWAY = xOffs;
-            PREV_Y_SWAY = yOffs;
-        }
     }
 }

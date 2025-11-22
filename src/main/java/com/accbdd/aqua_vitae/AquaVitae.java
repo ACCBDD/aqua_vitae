@@ -63,11 +63,12 @@ public class AquaVitae {
             int bloodAlcohol = player.getData(ModAttachments.BLOOD_ALCOHOL);
             int intoxication = player.getData(ModAttachments.INTOXICATION);
             int hangover = player.getData(ModAttachments.HANGOVER);
+            int curAmp = player.getEffect(ModEffects.TIPSY) == null ? 0 : player.getEffect(ModEffects.TIPSY).getAmplifier();
 
             if (bloodAlcohol > 0) {
                 bloodAlcohol -= 2 + (bloodAlcohol / 250);
                 intoxication += 1 + (bloodAlcohol / 500);
-                hangover -= 1;
+                hangover -= 2;
             } else if (intoxication > 0) {
                 intoxication -= 1;
                 hangover += 1;
@@ -75,10 +76,14 @@ public class AquaVitae {
                 hangover -= 1;
             }
 
-            if (intoxication > 0) {
-                player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500));
-            } else {
-                player.removeEffect(ModEffects.TIPSY);
+            if (!player.hasEffect(ModEffects.TIPSY) || player.getEffect(ModEffects.TIPSY).isInfiniteDuration()) {
+                if (intoxication > 0) {
+                    if (curAmp != intoxication / 500)
+                        player.removeEffect(ModEffects.TIPSY);
+                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500));
+                } else {
+                    player.removeEffect(ModEffects.TIPSY);
+                }
             }
             player.setData(ModAttachments.BLOOD_ALCOHOL, Math.max(bloodAlcohol, 0));
             player.setData(ModAttachments.INTOXICATION, Math.max(intoxication, 0));

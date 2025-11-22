@@ -103,8 +103,6 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
 
         private int blendColor(BrewingProperties other, int weight) {
             int aN = (other.color >>> 24) & 0xFF;
-            if (aN == 0)
-                return this.color;
             int rN = (other.color >>> 16) & 0xFF;
             int gN = (other.color >>> 8 ) & 0xFF;
             int bN =  other.color & 0xFF;

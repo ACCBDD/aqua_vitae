@@ -141,13 +141,14 @@ public class FluidUtils {
         double abbFactor = Math.max(1.0 - (double) alcohol.abb() / Math.max(brewing.yeastTolerance(), 1), 0.01); // closer to abb tolerance means slower ferment
         double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
         double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
-        double abbDelta = conversionRate / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1
+        double converted = conversionRate - Math.max(conversionRate - brewing.sugar(), 0);
+        double abbDelta = converted / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1
 
         FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
                 ferment.flavors(),
                 new BrewingProperties(brewing.color(),
                         brewing.starch(),
-                        Math.max(0, (int) (brewing.sugar() - conversionRate)),
+                        Math.max(0, (int) (brewing.sugar() - converted)),
                         brewing.yeast(),
                         brewing.yeastTolerance(),
                         brewing.diastaticPower()));
@@ -161,7 +162,7 @@ public class FluidUtils {
         AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
         AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
 
-        if (newFerment.properties().sugar() == 0 || conversionRate == 0 || alcohol.abb() >= brewing.yeastTolerance())
+        if (newFerment.properties().sugar() == 0 || abbDelta == 0 || alcohol.abb() >= brewing.yeastTolerance())
             newFluid.remove(ModComponents.FERMENTING_PROPERTIES);
         else
             newFluid.set(ModComponents.FERMENTING_PROPERTIES, newFerment);
