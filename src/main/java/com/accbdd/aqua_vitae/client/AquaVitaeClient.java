@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.client;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.client.event.SwayCamera;
 import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.*;
@@ -35,16 +36,9 @@ import org.joml.Vector3f;
 
 @Mod(value = AquaVitae.MODID, dist = {Dist.CLIENT})
 public class AquaVitaeClient {
-    static float PREV_X_SWAY = 0;
-    static float PREV_Y_SWAY = 0;
-    static float X_SWAY_SPEED = 0;
-    static float Y_SWAY_SPEED = 0;
-    static float X_SWAY_PHASE = 0;
-    static float Y_SWAY_PHASE = 0;
-    static float TIME_SINCE_NEW_SWAY = 0;
-    static float SWAY_FACTOR = 0;
     public AquaVitaeClient(IEventBus modEventBus, ModContainer container) {
         modEventBus.register(this);
+        NeoForge.EVENT_BUS.addListener(SwayCamera::swayCamera);
     }
 
     @SubscribeEvent

@@ -4,6 +4,8 @@ import com.accbdd.aqua_vitae.capability.CupHandler;
 import com.accbdd.aqua_vitae.datagen.FluidTagGenerator;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
+import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
@@ -22,6 +24,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import org.slf4j.Logger;
 
@@ -47,6 +52,7 @@ public class AquaVitae {
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerDatapackRegistries);
+        modEventBus.addListener(this::registerPayloadHandlers);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -56,39 +62,7 @@ public class AquaVitae {
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
-        if (!player.level().isClientSide) {
-            if (player.level().getFluidState(BlockPos.containing(player.getEyePosition())).is(FluidTagGenerator.AQUA_VITAE)) {
-                player.addEffect(new MobEffectInstance(ModEffects.TIPSY, 200, 4));
-            }
-            int bloodAlcohol = player.getData(ModAttachments.BLOOD_ALCOHOL);
-            int intoxication = player.getData(ModAttachments.INTOXICATION);
-            int hangover = player.getData(ModAttachments.HANGOVER);
-            int curAmp = player.getEffect(ModEffects.TIPSY) == null ? 0 : player.getEffect(ModEffects.TIPSY).getAmplifier();
-
-            if (bloodAlcohol > 0) {
-                bloodAlcohol -= 2 + (bloodAlcohol / 250);
-                intoxication += 1 + (bloodAlcohol / 500);
-                hangover -= 2;
-            } else if (intoxication > 0) {
-                intoxication -= 1;
-                hangover += 1;
-            } else if (hangover > 0) {
-                hangover -= 1;
-            }
-
-            if (!player.hasEffect(ModEffects.TIPSY) || player.getEffect(ModEffects.TIPSY).isInfiniteDuration()) {
-                if (intoxication > 0) {
-                    if (curAmp != intoxication / 500)
-                        player.removeEffect(ModEffects.TIPSY);
-                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, -1, intoxication / 500, false, false, true));
-                } else {
-                    player.removeEffect(ModEffects.TIPSY);
-                }
-            }
-            player.setData(ModAttachments.BLOOD_ALCOHOL, Math.max(bloodAlcohol, 0));
-            player.setData(ModAttachments.INTOXICATION, Math.max(intoxication, 0));
-            player.setData(ModAttachments.HANGOVER, Math.max(hangover, 0));
-        }
+        PlayerAlcoholManager.tickPlayer(player);
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -132,5 +106,10 @@ public class AquaVitae {
                 BrewingIngredient.CODEC,
                 BrewingIngredient.CODEC
         );
+    }
+
+    public void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToClient(AlcoholSyncPacket.TYPE, AlcoholSyncPacket.STREAM_CODEC, AlcoholSyncPacket::handle);
     }
 }

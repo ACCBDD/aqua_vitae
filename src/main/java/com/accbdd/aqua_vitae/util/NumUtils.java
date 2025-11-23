@@ -31,8 +31,7 @@ public class NumUtils {
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
-    public static double blend(double blendFrom, double blendTo, double factor, double rangeMin, double rangeMax)
-    {
+    public static double blend(double blendFrom, double blendTo, double factor, double rangeMin, double rangeMax) {
         if (rangeMin > rangeMax) return blend(blendTo, blendFrom, factor, rangeMax, rangeMin);
 
         if (factor <= rangeMin) return blendFrom;
