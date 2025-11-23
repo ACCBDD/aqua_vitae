@@ -106,24 +106,36 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
 
         private int blendColor(BrewingProperties other, int weight) {
-            int aN = (other.color >>> 24) & 0xFF;
-            int rN = (other.color >>> 16) & 0xFF;
-            int gN = (other.color >>> 8) & 0xFF;
-            int bN = other.color & 0xFF;
-            int aT = (this.color >>> 24) & 0xFF;
-            int rT = (this.color >>> 16) & 0xFF;
-            int gT = (this.color >>> 8) & 0xFF;
-            int bT = this.color & 0xFF;
+            if (weight <= 0) return other.color();
 
-            float strength = aN / 255f;
+            int c1 = this.color();
+            int a1 = (c1 >>> 24) & 0xFF;
+            int r1 = (c1 >>> 16) & 0xFF;
+            int g1 = (c1 >>> 8) & 0xFF;
+            int b1 = (c1 & 0xFF);
 
-            float mix = strength / (weight + 1);
+            int c2 = other.color();
+            int a2 = (c2 >>> 24) & 0xFF;
+            int r2 = (c2 >>> 16) & 0xFF;
+            int g2 = (c2 >>> 8) & 0xFF;
+            int b2 = (c2 & 0xFF);
 
-            int a = (int) (aT * (1 - mix) + aN * mix);
-            int r = (int) (rT * (1 - mix) + rN * mix);
-            int g = (int) (gT * (1 - mix) + gN * mix);
-            int b = (int) (bT * (1 - mix) + bN * mix);
-            return (a << 24) | (r << 16) | (g << 8) | b;
+            float alphaAsStrength = a2 / 255.0f;
+            float totalWeightedAmount = weight + alphaAsStrength;
+            float weightCurrentRGB = weight / totalWeightedAmount;
+            float weightAddedRGB = alphaAsStrength / totalWeightedAmount;
+
+            float totalAmountVolume = weight + 1.0f;
+            float weightCurrentAlpha = weight / totalAmountVolume;
+            float weightAddedAlpha = 1.0f / totalAmountVolume;
+
+            int a = (int) (a1 * weightCurrentAlpha + a2 * weightAddedAlpha);
+            
+            int r = (int) (r1 * weightCurrentRGB + r2 * weightAddedRGB);
+            int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
+            int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);
+
+            return (Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b;
         }
 
         public static class Builder {
@@ -135,7 +147,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             int diastaticPower;
 
             public Builder() {
-                this.color = 0x00000000;
+                this.color = 0xDDFFFFFF;
                 this.starch = 0;
                 this.sugar = 0;
                 this.yeast = 0;

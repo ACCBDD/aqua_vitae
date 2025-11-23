@@ -91,13 +91,13 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
                 if (stack.isEmpty())
                     continue;
                 ((ServerLevel) getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float) getBlockPos().getX() + 0.5F, (float) getBlockPos().getY() + 0.1F, (float) getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
-                inputs.add(stack);
+
                 BrewingIngredient ing = RegistryUtils.getIngredient(stack);
                 if (ing == null)
                     continue;
                 flavors.addAll(ing.flavors());
-                properties = properties.add(ing.properties(), i);
-
+                properties = properties.add(ing.properties(), inputs.size());
+                inputs.add(stack);
             }
             fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
             setFluid(fluid);
