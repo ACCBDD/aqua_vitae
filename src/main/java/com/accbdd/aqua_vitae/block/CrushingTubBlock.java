@@ -95,7 +95,7 @@ public class CrushingTubBlock extends BaseEntityBlock {
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
         double motionY = entity.getDeltaMovement().y;
-        if(!level.isClientSide && motionY <= -0.1D && entity.position().y - pos.getY() < 0.2 && entity instanceof LivingEntity) {
+        if (!level.isClientSide && motionY <= -0.1D && entity.position().y - pos.getY() < 0.2 && entity instanceof LivingEntity) {
             CrushingTubBlockEntity tub = level.getBlockEntity(pos, ModBlockEntities.CRUSHING_TUB.get()).orElse(null);
             if (!tub.getItemHandler().getStackInSlot(0).isEmpty() && !tub.getFluid().isEmpty()) {
                 tub.crush();

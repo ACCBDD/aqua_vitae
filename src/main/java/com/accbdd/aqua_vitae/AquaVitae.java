@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae;
 
 import com.accbdd.aqua_vitae.capability.CupHandler;
-import com.accbdd.aqua_vitae.datagen.FluidTagGenerator;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
@@ -9,11 +8,9 @@ import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,7 +22,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import org.slf4j.Logger;
@@ -85,12 +81,12 @@ public class AquaVitae {
         );
 
         ModItems.ITEMS.getEntries().stream().filter(holder -> holder.get() instanceof CupItem)
-                .map(holder -> (CupItem)holder.get())
+                .map(holder -> (CupItem) holder.get())
                 .forEach(cup -> event.registerItem(
-                        Capabilities.FluidHandler.ITEM,
-                        (c, dir) -> new CupHandler(c, cup.getCapacity()),
-                        cup
-                    )
+                                Capabilities.FluidHandler.ITEM,
+                                (c, dir) -> new CupHandler(c, cup.getCapacity()),
+                                cup
+                        )
                 );
     }
 

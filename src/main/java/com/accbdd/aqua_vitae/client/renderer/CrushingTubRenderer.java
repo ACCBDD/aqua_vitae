@@ -32,16 +32,16 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
         FluidStack fluid = tub.getFluid();
 
         IItemHandler inventory = tub.getItemHandler();
-        int posLong = (int)tub.getBlockPos().asLong();
+        int posLong = (int) tub.getBlockPos().asLong();
         ItemStack stack = inventory.getStackInSlot(0);
         this.random.setSeed(stack.isEmpty() ? 187 : Item.getId(stack.getItem()) + (long) tub.getBlockPos().hashCode() * tub.crush);
         if (!stack.isEmpty()) {
-            for(int i = 0; i < inventory.getSlots(); ++i) {
+            for (int i = 0; i < inventory.getSlots(); ++i) {
                 stack = inventory.getStackInSlot(i);
                 poseStack.pushPose();
                 float xOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.14F;
                 float zOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.14F;
-                poseStack.translate(0.5 + (double)xOffset, 0.1 + 0.03 * (double)(i + 1), 0.5 + (double)zOffset);
+                poseStack.translate(0.5 + (double) xOffset, 0.1 + 0.03 * (double) (i + 1), 0.5 + (double) zOffset);
                 poseStack.mulPose(Axis.YP.rotationDegrees(this.random.nextFloat() * 360F));
                 poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
                 poseStack.scale(0.5F, 0.5F, 0.5F);
@@ -64,17 +64,17 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
         int color = props.getTintColor(fluid);
 
         poseStack.pushPose();
-        poseStack.translate(0, height + 1f/16f, 0);
+        poseStack.translate(0, height + 1f / 16f, 0);
 
         VertexConsumer vc = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 
         float min = 2f / 16f;
         float max = 14f / 16f;
 
-        vc.addVertex(poseStack.last().pose(), min, 0, min).setColor(color).setUv(sprite.getU0(), sprite.getV0()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0,1,0);
-        vc.addVertex(poseStack.last().pose(), min, 0, max).setColor(color).setUv(sprite.getU0(), sprite.getV1()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0,1,0);
-        vc.addVertex(poseStack.last().pose(), max, 0, max).setColor(color).setUv(sprite.getU1(), sprite.getV1()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0,1,0);
-        vc.addVertex(poseStack.last().pose(), max, 0, min).setColor(color).setUv(sprite.getU1(), sprite.getV0()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0,1,0);
+        vc.addVertex(poseStack.last().pose(), min, 0, min).setColor(color).setUv(sprite.getU0(), sprite.getV0()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0, 1, 0);
+        vc.addVertex(poseStack.last().pose(), min, 0, max).setColor(color).setUv(sprite.getU0(), sprite.getV1()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0, 1, 0);
+        vc.addVertex(poseStack.last().pose(), max, 0, max).setColor(color).setUv(sprite.getU1(), sprite.getV1()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0, 1, 0);
+        vc.addVertex(poseStack.last().pose(), max, 0, min).setColor(color).setUv(sprite.getU1(), sprite.getV0()).setLight(packedLight).setOverlay(packedOverlay).setNormal(0, 1, 0);
 
         poseStack.popPose();
     }

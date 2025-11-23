@@ -11,7 +11,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 public class AlcoholFluidType extends FluidType {
     public AlcoholFluidType(String name) {
         super(FluidType.Properties.create()
-                .descriptionId("block.aqua_vitae."+name)
+                .descriptionId("block.aqua_vitae." + name)
                 .fallDistanceModifier(0)
                 .canConvertToSource(false)
                 .supportsBoating(true)

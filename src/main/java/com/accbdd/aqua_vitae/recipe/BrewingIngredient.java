@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable FluidIngredient fluidIngredient, BrewingProperties properties, BrewingProperties maltProperties, List<ResourceKey<Flavor>> flavors) {
+public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable FluidIngredient fluidIngredient,
+                                BrewingProperties properties, BrewingProperties maltProperties,
+                                List<ResourceKey<Flavor>> flavors) {
 
     public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, List<ResourceKey<Flavor>> flavors) {
         this(itemIngredient, null, properties, null, flavors);
@@ -48,9 +50,9 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     BrewingProperties.CODEC.optionalFieldOf("malt_properties").forGetter(i -> Optional.ofNullable(i.maltProperties())),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().fieldOf("flavors").forGetter(BrewingIngredient::flavors)
             ).apply(instance, (i, properties, malt, flavors) ->
-                i.map(
-                        item -> new BrewingIngredient(item, null, properties, malt.orElse(null), flavors),
-                        fluid -> new BrewingIngredient(null, fluid, properties, malt.orElse(null), flavors))
+                    i.map(
+                            item -> new BrewingIngredient(item, null, properties, malt.orElse(null), flavors),
+                            fluid -> new BrewingIngredient(null, fluid, properties, malt.orElse(null), flavors))
             )
     );
 
@@ -62,7 +64,8 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
      * @param yeastTolerance in terms of alcohol per bucket
      * @param diastaticPower
      */
-    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
+    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance,
+                                    int diastaticPower) {
         public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingProperties::color),
@@ -86,7 +89,8 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
 
         /**
          * Adds two BrewingProperties together with a weight
-         * @param other to add
+         *
+         * @param other  to add
          * @param weight the weight this object should have in comparison to the other
          * @return a new combined BrewingProperties object
          */
@@ -104,21 +108,21 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         private int blendColor(BrewingProperties other, int weight) {
             int aN = (other.color >>> 24) & 0xFF;
             int rN = (other.color >>> 16) & 0xFF;
-            int gN = (other.color >>> 8 ) & 0xFF;
-            int bN =  other.color & 0xFF;
+            int gN = (other.color >>> 8) & 0xFF;
+            int bN = other.color & 0xFF;
             int aT = (this.color >>> 24) & 0xFF;
             int rT = (this.color >>> 16) & 0xFF;
             int gT = (this.color >>> 8) & 0xFF;
-            int bT =  this.color & 0xFF;
+            int bT = this.color & 0xFF;
 
             float strength = aN / 255f;
 
             float mix = strength / (weight + 1);
 
-            int a = (int)(aT * (1 - mix) + aN * mix);
-            int r = (int)(rT * (1 - mix) + rN * mix);
-            int g = (int)(gT * (1 - mix) + gN * mix);
-            int b = (int)(bT * (1 - mix) + bN * mix);
+            int a = (int) (aT * (1 - mix) + aN * mix);
+            int r = (int) (rT * (1 - mix) + rN * mix);
+            int g = (int) (gT * (1 - mix) + gN * mix);
+            int b = (int) (bT * (1 - mix) + bN * mix);
             return (a << 24) | (r << 16) | (g << 8) | b;
         }
 

@@ -6,7 +6,6 @@ import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.util.FluidUtils;
-import com.accbdd.aqua_vitae.util.NumUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -16,7 +15,6 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
@@ -27,7 +25,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -38,7 +35,7 @@ import org.joml.Vector3f;
 public class AquaVitaeClient {
     public AquaVitaeClient(IEventBus modEventBus, ModContainer container) {
         modEventBus.register(this);
-        NeoForge.EVENT_BUS.addListener(SwayCamera::swayCamera);
+        NeoForge.EVENT_BUS.addListener(SwayCamera::onComputeCameraAngles);
     }
 
     @SubscribeEvent

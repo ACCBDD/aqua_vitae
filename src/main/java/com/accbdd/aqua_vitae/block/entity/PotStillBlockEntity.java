@@ -38,22 +38,22 @@ public class PotStillBlockEntity extends AbstractBEWithData {
             }
         };
         fluidHandler = new CombinedFluidHandler(
-            new AdaptedFluidHandler(inputFluidHandler) {
-                @Override
-                public FluidStack drain(int maxDrain, FluidAction action) {
-                    return FluidStack.EMPTY;
-                }
+                new AdaptedFluidHandler(inputFluidHandler) {
+                    @Override
+                    public FluidStack drain(int maxDrain, FluidAction action) {
+                        return FluidStack.EMPTY;
+                    }
 
-                @Override
-                public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-                    return FluidStack.EMPTY;
-                }
-            }, new AdaptedFluidHandler(outputFluidHandler) {
-                @Override
-                public int fill(FluidStack resource, FluidAction action) {
-                    return 0;
-                }
+                    @Override
+                    public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+                        return FluidStack.EMPTY;
+                    }
+                }, new AdaptedFluidHandler(outputFluidHandler) {
+            @Override
+            public int fill(FluidStack resource, FluidAction action) {
+                return 0;
             }
+        }
         );
     }
 

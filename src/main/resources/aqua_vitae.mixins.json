@@ -6,8 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "client.LevelRendererAccessor",
-    "client.TipsyRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

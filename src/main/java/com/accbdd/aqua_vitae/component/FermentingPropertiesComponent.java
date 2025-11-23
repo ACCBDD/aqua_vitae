@@ -13,7 +13,8 @@ import net.minecraft.resources.ResourceKey;
 import java.util.List;
 import java.util.Set;
 
-public record FermentingPropertiesComponent(int stress, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, BrewingIngredient.BrewingProperties properties) {
+public record FermentingPropertiesComponent(int stress, Set<ResourceKey<BrewingIngredient.Flavor>> flavors,
+                                            BrewingIngredient.BrewingProperties properties) {
 
     public static final Codec<FermentingPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(

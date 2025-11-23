@@ -25,7 +25,7 @@ public class CombinedFluidHandler implements IFluidHandler {
         if (tank < 0) {
             return -1;
         } else {
-            for(int i = 0; i < this.baseIndex.length; ++i) {
+            for (int i = 0; i < this.baseIndex.length; ++i) {
                 if (tank - this.baseIndex[i] < 0) {
                     return i;
                 }

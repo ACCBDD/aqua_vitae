@@ -91,9 +91,10 @@ public class FluidUtils {
 
     /**
      * Modifies a FluidStack {@param stack}'s precursor component according to {@param ingredient}
-     * @param fluid the FluidStack to modify
+     *
+     * @param fluid      the FluidStack to modify
      * @param ingredient the ingredient to modify by
-     * @param itemStack the itemStack to modify by
+     * @param itemStack  the itemStack to modify by
      * @see com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent
      */
     public static void modifyPrecursor(FluidStack fluid, BrewingIngredient ingredient, ItemStack itemStack) {

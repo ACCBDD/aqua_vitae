@@ -18,6 +18,7 @@ public class LootTableGenerator extends LootTableProvider {
                     LootContextParamSets.BLOCK
             )
     );
+
     public LootTableGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, Set.of(), entries, registries);
     }

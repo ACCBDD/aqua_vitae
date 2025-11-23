@@ -21,9 +21,10 @@ public class ModFluidTypes {
 
     public static DeferredHolder<FluidType, FluidType> register(String name, int color) {
         DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new AlcoholFluidType(name));
-        REGISTERED.put("block.aqua_vitae."+name, new FluidSet(name, registered, color));
+        REGISTERED.put("block.aqua_vitae." + name, new FluidSet(name, registered, color));
         return registered;
     }
 
-    public record FluidSet(String name, DeferredHolder<FluidType, FluidType> type, int color) {}
+    public record FluidSet(String name, DeferredHolder<FluidType, FluidType> type, int color) {
+    }
 }

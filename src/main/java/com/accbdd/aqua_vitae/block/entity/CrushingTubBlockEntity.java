@@ -90,7 +90,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
                 ItemStack stack = items.extractItem(i, 1, false);
                 if (stack.isEmpty())
                     continue;
-                ((ServerLevel)getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float)getBlockPos().getX() + 0.5F, (float)getBlockPos().getY() + 0.1F, (float)getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
+                ((ServerLevel) getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float) getBlockPos().getX() + 0.5F, (float) getBlockPos().getY() + 0.1F, (float) getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
                 inputs.add(stack);
                 BrewingIngredient ing = RegistryUtils.getIngredient(stack);
                 if (ing == null)
@@ -105,7 +105,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS);
             for (int i = 0; i < getItemHandler().getSlots(); i++) {
                 if (!getItemHandler().getStackInSlot(i).isEmpty())
-                    ((ServerLevel)getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, getItemHandler().getStackInSlot(i)), (float)getBlockPos().getX() + 0.5F, (float)getBlockPos().getY() + 0.1F, (float)getBlockPos().getZ() + 0.5F, 10, 0.25, 0.25, 0.25, 0.0);
+                    ((ServerLevel) getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, getItemHandler().getStackInSlot(i)), (float) getBlockPos().getX() + 0.5F, (float) getBlockPos().getY() + 0.1F, (float) getBlockPos().getZ() + 0.5F, 10, 0.25, 0.25, 0.25, 0.0);
             }
         }
     }

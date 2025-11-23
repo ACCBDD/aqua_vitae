@@ -4,14 +4,11 @@ import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
-import com.accbdd.aqua_vitae.registry.ModAttachments;
 import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.registry.ModEffects;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -80,7 +77,7 @@ public class CupItem extends Item {
         var fluid = stack.remove(ModComponents.FLUIDSTACK).stack();
         if (fluid.has(ModComponents.ALCOHOL_PROPERTIES) && livingEntity instanceof Player player) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-            PlayerAlcoholManager.addBloodAlcohol(player, (int)(props.abb() * fluid.getAmount() / 10));
+            PlayerAlcoholManager.addBloodAlcohol(player, (int) (props.abb() * fluid.getAmount() / 10));
             props.flavors().stream().map(key -> level.registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get().get(key))
                     .forEach(flavor -> flavor.effects().forEach(livingEntity::addEffect));
         }

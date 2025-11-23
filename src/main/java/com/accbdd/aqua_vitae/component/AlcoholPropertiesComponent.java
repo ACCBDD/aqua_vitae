@@ -16,12 +16,13 @@ import java.util.Set;
 
 /**
  * @param color
- * @param abb alcohol per bucket - 1000 should be granular enough?
- * @param age TODO: what unit?
+ * @param abb     alcohol per bucket - 1000 should be granular enough?
+ * @param age     TODO: what unit?
  * @param flavors
- * @param items TODO: support fluidstacks
+ * @param items   TODO: support fluidstacks
  */
-public record AlcoholPropertiesComponent(int color, float abb, int age, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<ItemStack> items) {
+public record AlcoholPropertiesComponent(int color, float abb, int age,
+                                         Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<ItemStack> items) {
 
     public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), List.of());
 

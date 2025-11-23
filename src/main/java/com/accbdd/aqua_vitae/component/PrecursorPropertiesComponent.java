@@ -16,11 +16,14 @@ import java.util.Set;
 
 /**
  * Stores the ingredients and properties of a precursor fluid for fermentation
+ *
  * @param ingredients the items used to make this precursor
- * @param properties the overall properties of the precursor
+ * @param properties  the overall properties of the precursor
  * @see com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties
  */
-public record PrecursorPropertiesComponent(List<ItemStack> ingredients, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, BrewingIngredient.BrewingProperties properties) {
+public record PrecursorPropertiesComponent(List<ItemStack> ingredients,
+                                           Set<ResourceKey<BrewingIngredient.Flavor>> flavors,
+                                           BrewingIngredient.BrewingProperties properties) {
     public static final PrecursorPropertiesComponent EMPTY = new PrecursorPropertiesComponent(List.of(), Set.of(), new BrewingIngredient.BrewingProperties.Builder().build());
 
     public static final Codec<PrecursorPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
