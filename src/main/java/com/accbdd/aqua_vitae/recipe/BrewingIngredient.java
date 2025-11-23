@@ -95,7 +95,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * @return a new combined BrewingProperties object
          */
         public BrewingProperties add(BrewingProperties other, int weight) {
-            int newColor = blendColor(other, weight);
+            int newColor = blendColor(other);
 
             return new BrewingProperties(newColor,
                     this.starch + other.starch,
@@ -105,8 +105,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     (this.diastaticPower * weight + other.diastaticPower) / (weight + 1)); //average DP
         }
 
-        private int blendColor(BrewingProperties other, int weight) {
-            if (weight <= 0) return other.color();
+        private int blendColor(BrewingProperties other) {
 
             int c1 = this.color();
             int a1 = (c1 >>> 24) & 0xFF;
@@ -120,17 +119,13 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             int g2 = (c2 >>> 8) & 0xFF;
             int b2 = (c2 & 0xFF);
 
-            float alphaAsStrength = a2 / 255.0f;
-            float totalWeightedAmount = weight + alphaAsStrength;
-            float weightCurrentRGB = weight / totalWeightedAmount;
-            float weightAddedRGB = alphaAsStrength / totalWeightedAmount;
+            float otherWeight = a2 / 255.0f;
+            float thisWeight = a1 / 255.0f;
+            float totalWeight = otherWeight + thisWeight;
+            float weightCurrentRGB = thisWeight / totalWeight;
+            float weightAddedRGB = otherWeight / totalWeight;
 
-            float totalAmountVolume = weight + 1.0f;
-            float weightCurrentAlpha = weight / totalAmountVolume;
-            float weightAddedAlpha = 1.0f / totalAmountVolume;
-
-            int a = (int) (a1 * weightCurrentAlpha + a2 * weightAddedAlpha);
-            
+            int a = (int) (a1 * weightCurrentRGB + a2 * weightAddedRGB);
             int r = (int) (r1 * weightCurrentRGB + r2 * weightAddedRGB);
             int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
             int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);

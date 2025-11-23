@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -32,7 +33,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
                     Codec.FLOAT.fieldOf("abb").forGetter(AlcoholPropertiesComponent::abb),
                     Codec.INT.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(AlcoholPropertiesComponent::flavors),
-                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(AlcoholPropertiesComponent::items)
+                    Codecs.SORTED_ITEM_LIST.fieldOf("items").forGetter(AlcoholPropertiesComponent::items)
             ).apply(instance, AlcoholPropertiesComponent::new)
     );
 
@@ -41,7 +42,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
             ByteBufCodecs.FLOAT, AlcoholPropertiesComponent::abb,
             ByteBufCodecs.INT, AlcoholPropertiesComponent::age,
             ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), AlcoholPropertiesComponent::flavors,
-            ItemStack.LIST_STREAM_CODEC, AlcoholPropertiesComponent::items,
+            Codecs.SORTED_ITEM_LIST_STREAM, AlcoholPropertiesComponent::items,
             AlcoholPropertiesComponent::new
     );
 }

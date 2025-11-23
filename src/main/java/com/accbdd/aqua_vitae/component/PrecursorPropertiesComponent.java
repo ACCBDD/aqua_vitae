@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Stores the ingredients and properties of a precursor fluid for fermentation
@@ -24,18 +26,25 @@ import java.util.Set;
 public record PrecursorPropertiesComponent(List<ItemStack> ingredients,
                                            Set<ResourceKey<BrewingIngredient.Flavor>> flavors,
                                            BrewingIngredient.BrewingProperties properties) {
+
+    public PrecursorPropertiesComponent(List<ItemStack> ingredients, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, BrewingIngredient.BrewingProperties properties) {
+        this.ingredients = ingredients.stream().sorted(Codecs.STACK_COMPARATOR).collect(Collectors.toList());
+        this.flavors = flavors;
+        this.properties = properties;
+    }
+
     public static final PrecursorPropertiesComponent EMPTY = new PrecursorPropertiesComponent(List.of(), Set.of(), new BrewingIngredient.BrewingProperties.Builder().build());
 
     public static final Codec<PrecursorPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    ItemStack.CODEC.listOf().fieldOf("items").forGetter(PrecursorPropertiesComponent::ingredients),
+                    Codecs.SORTED_ITEM_LIST.fieldOf("items").forGetter(PrecursorPropertiesComponent::ingredients),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(PrecursorPropertiesComponent::flavors),
                     BrewingIngredient.BrewingProperties.CODEC.fieldOf("properties").forGetter(PrecursorPropertiesComponent::properties)
             ).apply(instance, PrecursorPropertiesComponent::new)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PrecursorPropertiesComponent> STREAM_CODEC = StreamCodec.composite(
-            ItemStack.LIST_STREAM_CODEC, PrecursorPropertiesComponent::ingredients,
+            Codecs.SORTED_ITEM_LIST_STREAM, PrecursorPropertiesComponent::ingredients,
             ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), PrecursorPropertiesComponent::flavors,
             BrewingIngredient.BrewingProperties.STREAM_CODEC, PrecursorPropertiesComponent::properties,
             PrecursorPropertiesComponent::new
