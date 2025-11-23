@@ -92,7 +92,7 @@ public class PotStillBlockEntity extends AbstractBEWithData {
             tickCount = 0;
             if (!inputFluidHandler.isEmpty()) {
                 FluidStack drained = inputFluidHandler.drain(500, IFluidHandler.FluidAction.SIMULATE);
-                FluidStack distilled = FluidUtils.distill(drained, 0.9f, 0.7f, 900);
+                FluidStack distilled = FluidUtils.distill(drained, 0.9f, 4f, 900);
                 int filled = outputFluidHandler.fill(distilled, IFluidHandler.FluidAction.EXECUTE);
                 inputFluidHandler.drain(filled / distilled.getAmount() * 500, IFluidHandler.FluidAction.EXECUTE);
             }

@@ -181,20 +181,40 @@ public class FluidUtils {
         return newFluid;
     }
 
+    /**
+     * distills a fluid with an {@link AlcoholPropertiesComponent}
+     * @param fluid the fluid to distill
+     * @param lossFactor the amount of alcohol kept in distilling (complement of angel's share)
+     * @param distillFactor the factor to distill by - higher values mean less passes needed to hit max
+     * @param maxAbb the maximum abb this distillation can hit
+     * @return a new representing the distilled fluid, with color and properties changed
+     */
     public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbb) {
         AlcoholPropertiesComponent alcohol = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-        if (alcohol == null)
+        if (alcohol == null )
             return fluid;
 
         float currentAbb = alcohol.abb();
-        if (currentAbb >= maxAbb)
+        if (currentAbb <= 0 || currentAbb >= maxAbb)
             return fluid;
 
-        float newAbb = Math.min(currentAbb + (1000 - currentAbb) * distillFactor, maxAbb);
-        float abbFraction = (newAbb - currentAbb) / (1000 - currentAbb + 1e-6f);
-        int newVolume = (int) (fluid.getAmount() * (1f - abbFraction * lossFactor));
-        int newColor = NumUtils.lightenColor(alcohol.color(), abbFraction);
-        FluidStack newFluid = fluid.copyWithAmount(Math.max(newVolume, 1));
+        float x = currentAbb / 1000f;
+        float numerator = distillFactor * x;
+        float denominator = 1.0f + (distillFactor - 1.0f) * x;
+        float y = numerator / denominator;
+        float potentialAbb = y * 1000f;
+        float newAbb = Math.min(potentialAbb, maxAbb);
+
+        int newVolume;
+        float totalAlcoholUnits = fluid.getAmount() * currentAbb;
+        float retainedAlcoholUnits = totalAlcoholUnits * lossFactor;
+        newVolume = (int) (retainedAlcoholUnits / newAbb);
+        newVolume = Math.clamp(newVolume, 1, fluid.getAmount());
+
+        float improvementRatio = (newAbb - currentAbb) / (maxAbb - currentAbb + 1e-6f);
+        int newColor = NumUtils.lightenColor(alcohol.color(), improvementRatio);
+
+        FluidStack newFluid = fluid.copyWithAmount(newVolume);
         newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(
                 newColor,
                 Math.round(newAbb),
