@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -10,7 +11,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Set;
@@ -20,10 +20,10 @@ import java.util.Set;
  * @param abb     alcohol per bucket - 1000 should be granular enough?
  * @param age     TODO: what unit?
  * @param flavors
- * @param items   TODO: support fluidstacks
+ * @param inputs
  */
 public record AlcoholPropertiesComponent(int color, float abb, int age,
-                                         Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<ItemStack> items) {
+                                         Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<WortInput> inputs) {
 
     public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), List.of());
 
@@ -33,7 +33,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
                     Codec.FLOAT.fieldOf("abb").forGetter(AlcoholPropertiesComponent::abb),
                     Codec.INT.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(AlcoholPropertiesComponent::flavors),
-                    Codecs.SORTED_ITEM_LIST.fieldOf("items").forGetter(AlcoholPropertiesComponent::items)
+                    Codecs.SORTED_WORT_INPUT_LIST.fieldOf("inputs").forGetter(AlcoholPropertiesComponent::inputs)
             ).apply(instance, AlcoholPropertiesComponent::new)
     );
 
@@ -42,7 +42,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
             ByteBufCodecs.FLOAT, AlcoholPropertiesComponent::abb,
             ByteBufCodecs.INT, AlcoholPropertiesComponent::age,
             ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), AlcoholPropertiesComponent::flavors,
-            Codecs.SORTED_ITEM_LIST_STREAM, AlcoholPropertiesComponent::items,
+            Codecs.SORTED_WORT_INPUT_LIST_STREAM, AlcoholPropertiesComponent::inputs,
             AlcoholPropertiesComponent::new
     );
 }

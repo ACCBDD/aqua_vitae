@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluids;
@@ -28,7 +29,7 @@ import java.util.Set;
 
 public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
     public static final int CAPACITY = 1000;
-    public static final String ITEMS_TAG = "items";
+    public static final String ITEMS_TAG = "inputs";
     public static final String CRUSH_TAG = "crush";
 
     private final ItemStackHandler items;
@@ -83,7 +84,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
         if (crush++ > 5) {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS);
             FluidStack fluid = new FluidStack(ModFluids.AQUA_VITAE, getFluid().getAmount());
-            List<ItemStack> inputs = new ArrayList<>();
+            List<WortInput> inputs = new ArrayList<>();
             Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
             BrewingIngredient.BrewingProperties properties = new BrewingIngredient.BrewingProperties.Builder().build();
             for (int i = 0; i < items.getSlots(); i++) {
@@ -97,7 +98,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
                     continue;
                 flavors.addAll(ing.flavors());
                 properties = properties.add(ing.properties(), inputs.size());
-                inputs.add(stack);
+                inputs.add(WortInput.of(stack));
             }
             fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
             setFluid(fluid);

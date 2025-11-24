@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.util;
 
+import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,19 +15,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Codecs {
-    public static final Comparator<ItemStack> STACK_COMPARATOR = Comparator
-            .<ItemStack, String>comparing(
-                    // Primary sort: Item registry name (e.g., "minecraft:diamond")
-                    stack -> stack.getItem().builtInRegistryHolder().key().location().toString()
-            )
-            // Secondary sort: Stack size (optional, but good for consistency)
-            .thenComparingInt(ItemStack::getCount);
-
     //hex string parser (no alpha)
     public static final Codec<Integer> HEX_STRING = Codec.STRING.comapFlatMap(
             str -> {
@@ -70,31 +62,31 @@ public class Codecs {
         }
     );
 
-    public static final Codec<List<ItemStack>> SORTED_ITEM_LIST = ItemStack.CODEC.listOf().xmap(
-            list -> list.stream().sorted(STACK_COMPARATOR).collect(Collectors.toList()),
-            list -> list.stream().sorted(STACK_COMPARATOR).collect(Collectors.toList())
+    public static final Codec<List<WortInput>> SORTED_WORT_INPUT_LIST = WortInput.CODEC.listOf().xmap(
+            list -> list.stream().sorted(WortInput.COMPARATOR).collect(Collectors.toList()),
+            list -> list.stream().sorted(WortInput.COMPARATOR).collect(Collectors.toList())
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, List<ItemStack>> SORTED_ITEM_LIST_STREAM = StreamCodec.of(
-        (buf, stacks) -> {
-            List<ItemStack> sortedStacks = stacks.stream()
-                    .sorted(STACK_COMPARATOR)
+    public static final StreamCodec<RegistryFriendlyByteBuf, List<WortInput>> SORTED_WORT_INPUT_LIST_STREAM = StreamCodec.of(
+        (buf, inputs) -> {
+            List<WortInput> sortedInputs = inputs.stream()
+                    .sorted(WortInput.COMPARATOR)
                     .toList();
 
-            buf.writeVarInt(sortedStacks.size());
-            for (ItemStack stack : sortedStacks) {
-                ItemStack.STREAM_CODEC.encode(buf, stack);
+            buf.writeVarInt(sortedInputs.size());
+            for (WortInput input : sortedInputs) {
+                WortInput.STREAM_CODEC.encode(buf, input);
             }
         },
         buf -> {
             int size = buf.readVarInt();
-            NonNullList<ItemStack> readStacks = NonNullList.withSize(size, ItemStack.EMPTY);
+            NonNullList<WortInput> readStacks = NonNullList.withSize(size, WortInput.of(ItemStack.EMPTY));
             for (int i = 0; i < size; i++) {
-                readStacks.set(i, ItemStack.STREAM_CODEC.decode(buf));
+                readStacks.set(i, WortInput.STREAM_CODEC.decode(buf));
             }
 
             return readStacks.stream()
-                    .sorted(STACK_COMPARATOR)
+                    .sorted(WortInput.COMPARATOR)
                     .toList();
         }
     );

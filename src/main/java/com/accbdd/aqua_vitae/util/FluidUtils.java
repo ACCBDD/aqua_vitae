@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
+import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -99,11 +100,11 @@ public class FluidUtils {
      */
     public static void modifyPrecursor(FluidStack fluid, BrewingIngredient ingredient, ItemStack itemStack) {
         PrecursorPropertiesComponent component = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
-        List<ItemStack> items = new ArrayList<>(component.ingredients());
+        List<WortInput> items = new ArrayList<>(component.ingredients());
         Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
         flavors.addAll(ingredient.flavors());
         flavors.addAll(component.flavors());
-        items.add(itemStack.copyWithCount(1));
+        items.add(WortInput.of(itemStack.copyWithCount(1)));
         BrewingProperties initial = component.properties();
         BrewingProperties toAdd = ingredient.properties();
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().size())));
@@ -158,7 +159,7 @@ public class FluidUtils {
                 Math.min((float) (alcohol.abb() + abbDelta), brewing.yeastTolerance()),
                 alcohol.age(),
                 alcohol.flavors(),
-                alcohol.items());
+                alcohol.inputs());
 
         AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
         AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
@@ -220,7 +221,7 @@ public class FluidUtils {
                 Math.round(newAbb),
                 alcohol.age(),
                 alcohol.flavors(),
-                alcohol.items()));
+                alcohol.inputs()));
 
         return newFluid;
     }
@@ -244,7 +245,7 @@ public class FluidUtils {
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(Component.literal(String.format("color: %s, abb: %s, age: %s", Integer.toHexString(component.color()), component.abb(), component.age())));
         tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
-        tooltip.add(Component.literal(String.format("ingredients: %s", component.items())));
+        tooltip.add(Component.literal(String.format("ingredients: %s", component.inputs())));
         return tooltip;
     }
 }

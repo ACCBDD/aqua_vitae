@@ -65,9 +65,9 @@ public class PotStillBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
         if (state.getValue(BlockStateProperties.HORIZONTAL_FACING) == Direction.WEST || state.getValue(BlockStateProperties.HORIZONTAL_FACING) == Direction.EAST)
-            return Block.box(4, 0, 1, 12, 11, 15);
+            return Block.box(4, 0, 1, 12, 12, 15);
         else
-            return Block.box(1, 0, 4, 15, 11, 12);
+            return Block.box(1, 0, 4, 15, 12, 12);
     }
 
     @Override
