@@ -35,7 +35,6 @@ public class SwayCamera {
 
         if (!Minecraft.getInstance().isPaused() && player.getData(ModAttachments.INTOXICATION) > 0) {
             float targetFactor = player.getData(ModAttachments.INTOXICATION) / 1000f * Minecraft.getInstance().options.screenEffectScale().get().floatValue();
-            ;
 
             float interpolationSpeed = 0.05f * frameTime;
             SWAY_FACTOR = SWAY_FACTOR + (targetFactor - SWAY_FACTOR) * interpolationSpeed;

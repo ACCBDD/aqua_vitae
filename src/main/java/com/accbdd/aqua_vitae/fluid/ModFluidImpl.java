@@ -22,4 +22,9 @@ public class ModFluidImpl {
             ModFluidTypes.WORT_TYPE::value,
             ModFluids.WORT::value,
             ModFluids.FLOWING_WORT::value);
+
+    public static final BaseFlowingFluid.Properties MASH_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.MASH_TYPE::value,
+            ModFluids.MASH::value,
+            ModFluids.FLOWING_MASH::value);
 }

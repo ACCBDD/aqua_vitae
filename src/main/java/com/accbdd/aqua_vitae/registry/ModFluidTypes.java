@@ -18,6 +18,7 @@ public class ModFluidTypes {
     public static final DeferredHolder<FluidType, FluidType> AQUA_VITAE_TYPE = register("aqua_vitae", 0xAAFFFFFF);
     public static final DeferredHolder<FluidType, FluidType> ALCOHOL_TYPE = register("alcohol", 0xEEDDDDDD);
     public static final DeferredHolder<FluidType, FluidType> WORT_TYPE = register("wort", 0xEE4F2500);
+    public static final DeferredHolder<FluidType, FluidType> MASH_TYPE = register("mash", 0xEE452600);
 
     public static DeferredHolder<FluidType, FluidType> register(String name, int color) {
         DeferredHolder<FluidType, FluidType> registered = FLUID_TYPES.register(name, () -> new AlcoholFluidType(name));

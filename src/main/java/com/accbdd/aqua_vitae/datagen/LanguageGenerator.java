@@ -21,6 +21,7 @@ public class LanguageGenerator extends LanguageProvider {
         add("item_group." + MODID, "Aqua Vitae");
         add("effect.aqua_vitae.tipsy", "Tipsy");
         add("block.aqua_vitae.wort", "Wort");
+        add("config.jade.plugin_aqua_vitae.pot_still", "Pot Still");
 
         addFluidSet("Aqua Vitae", ModBlocks.AQUA_VITAE, ModItems.AQUA_VITAE_BUCKET);
 
@@ -31,6 +32,7 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");
         addItem(ModItems.EYEBALL, "Eyeball");
+        addItem(ModItems.BREW_BUCKET, "Brew Bucket");
 
         add("grammar.aqua_vitae.container_of", "%s of %s");
     }

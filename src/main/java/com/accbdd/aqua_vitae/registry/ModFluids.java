@@ -27,6 +27,9 @@ public class ModFluids {
     public static final DeferredHolder<Fluid, FlowingFluid> WORT = registerSource("wort", () -> ModFluidImpl.WORT_PROPERTIES);
     public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_WORT = registerFlowing("flowing_wort", () -> ModFluidImpl.WORT_PROPERTIES);
 
+    public static final DeferredHolder<Fluid, FlowingFluid> MASH = registerSource("mash", () -> ModFluidImpl.WORT_PROPERTIES);
+    public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_MASH = registerFlowing("flowing_mash", () -> ModFluidImpl.WORT_PROPERTIES);
+
     private static DeferredHolder<Fluid, FlowingFluid> registerSource(String name, Supplier<BaseFlowingFluid.Properties> properties) {
         DeferredHolder<Fluid, FlowingFluid> register = FLUIDS.register(name, () -> new BaseFlowingFluid.Source(properties.get()));
         REGISTERED.add(register);

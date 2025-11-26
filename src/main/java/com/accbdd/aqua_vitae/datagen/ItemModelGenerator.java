@@ -28,6 +28,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         basicItem(ModItems.CUP.get());
         basicItem(ModItems.SHOOTER.get());
         basicItem(ModItems.METER.get());
+        basicItem(ModItems.BREW_BUCKET.get());
         getBuilder(ModItems.EYEBALL.getKey().location().toString()).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", modLoc("item/eyeball_base")).texture("layer1", modLoc("item/eyeball_overlay"));
     }
 

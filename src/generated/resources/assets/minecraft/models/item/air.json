@@ -3,6 +3,6 @@
   "apply_fluid_luminosity": true,
   "cover_is_mask": false,
   "flip_gas": false,
-  "fluid": "aqua_vitae:flowing_wort",
+  "fluid": "aqua_vitae:flowing_mash",
   "loader": "neoforge:fluid_container"
 }

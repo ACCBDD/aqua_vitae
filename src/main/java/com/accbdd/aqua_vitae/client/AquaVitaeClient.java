@@ -4,6 +4,7 @@ import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.client.event.SwayCamera;
 import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
+import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.blaze3d.shaders.FogShape;
@@ -106,13 +107,13 @@ public class AquaVitaeClient {
             return event.getItemColors().getColor(new ItemStack(Items.BUCKET), 0);
         }, fluid.get().getBucket()));
 
-        event.register((stack, index) -> {
+        ModItems.CREATIVE_TAB_ITEMS.stream().filter(item -> item.get() instanceof CupItem).forEach(item -> event.register((stack, index) -> {
             if (index == 1) {
                 FluidStack fluidStack = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
                 return FluidUtils.getColorOrInvisible(fluidStack);
             }
             return -1;
-        }, ModItems.EYEBALL);
+        }, item));
     }
 
     @SubscribeEvent

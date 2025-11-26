@@ -83,7 +83,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
 
         if (crush++ > 5) {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS);
-            FluidStack fluid = new FluidStack(ModFluids.AQUA_VITAE, getFluid().getAmount());
+            FluidStack fluid = new FluidStack(ModFluids.WORT, getFluid().getAmount());
             List<WortInput> inputs = new ArrayList<>();
             Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
             BrewingIngredient.BrewingProperties properties = new BrewingIngredient.BrewingProperties.Builder().build();

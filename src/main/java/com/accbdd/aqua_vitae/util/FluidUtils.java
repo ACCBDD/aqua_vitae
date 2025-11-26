@@ -144,7 +144,7 @@ public class FluidUtils {
         double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
         double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
         double converted = conversionRate - Math.max(conversionRate - brewing.sugar(), 0);
-        double abbDelta = converted / fluid.getAmount() * 500; //500 means sugar/bucket is converted to alcohol at 2:1
+        double abbDelta = converted / 2; //sugar is converted to alcohol at 2:1
 
         FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
                 ferment.flavors(),
