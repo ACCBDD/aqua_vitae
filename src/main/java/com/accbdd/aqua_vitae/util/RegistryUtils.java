@@ -40,7 +40,6 @@ public class RegistryUtils {
     @Nullable
     public static Registry<BrewingIngredient> ingredientRegistry() {
         if (registryAccess() != null)
-
             return registryAccess().registry(AquaVitae.INGREDIENT_REGISTRY).get();
         return null;
     }
