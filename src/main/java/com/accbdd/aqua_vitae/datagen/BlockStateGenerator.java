@@ -5,7 +5,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class BlockStateGenerator extends BlockStateProvider {
@@ -18,12 +17,16 @@ public class BlockStateGenerator extends BlockStateProvider {
         simpleBlock(ModBlocks.AQUA_VITAE.get(), models().getExistingFile(mcLoc("water")));
         simpleBlock(ModBlocks.CRUSHING_TUB.get(), models().getExistingFile(modLoc("crushing_tub")));
         horizontalBlock(ModBlocks.POT_STILL.get(), models().getExistingFile(modLoc("pot_still")), -90);
-
         directionalBlock(ModBlocks.KEG.get(), models().getExistingFile(modLoc("keg")));
 
-        VariantBlockStateBuilder builder = getVariantBuilder(ModBlocks.FERMENTER.get());
-        builder.forAllStates(state -> ConfiguredModel.builder()
-                .modelFile(state.getValue(BlockStateProperties.CRAFTING) ? models().getExistingFile(modLoc("fermenter_closed")) : models().getExistingFile(modLoc("fermenter_open")))
+        getVariantBuilder(ModBlocks.FERMENTER.get()).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(state.getValue(BlockStateProperties.CRAFTING) ? models().getExistingFile(modLoc("fermenter_closed")) : models().getExistingFile(modLoc("fermenter")))
                 .build());
+
+        getVariantBuilder(ModBlocks.MALT_KILN.get()).forAllStates(state ->
+                ConfiguredModel.builder()
+                        .modelFile(state.getValue(BlockStateProperties.LIT) ? models().getExistingFile(modLoc("malt_kiln_on")) : models().getExistingFile(modLoc("malt_kiln")))
+                        .rotationY((int) state.getValue(BlockStateProperties.FACING).toYRot())
+                        .build());
     }
 }

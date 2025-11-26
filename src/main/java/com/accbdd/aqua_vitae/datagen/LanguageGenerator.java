@@ -19,7 +19,6 @@ public class LanguageGenerator extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("item_group." + MODID, "Aqua Vitae");
-        add("effect.aqua_vitae.tipsy", "Tipsy");
         add("block.aqua_vitae.wort", "Wort");
         add("config.jade.plugin_aqua_vitae.pot_still", "Pot Still");
 
@@ -28,6 +27,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.KEG, "Keg");
         addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
         addBlock(ModBlocks.POT_STILL, "Pot Still");
+        addBlock(ModBlocks.MALT_KILN, "Malt Kiln");
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");

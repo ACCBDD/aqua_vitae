@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.registry.*;
+import com.accbdd.aqua_vitae.screen.MaltKilnScreen;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -26,6 +27,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -119,5 +121,10 @@ public class AquaVitaeClient {
     @SubscribeEvent
     public void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.CRUSHING_TUB.get(), CrushingTubRenderer::new);
+    }
+
+    @SubscribeEvent
+    public void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(ModMenus.MALT_KILN.get(), MaltKilnScreen::new);
     }
 }

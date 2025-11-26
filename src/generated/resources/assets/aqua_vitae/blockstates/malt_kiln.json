@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln",
+      "y": 270
+    },
+    "facing=down,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on",
+      "y": 270
+    },
+    "facing=east,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln",
+      "y": 270
+    },
+    "facing=east,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on",
+      "y": 270
+    },
+    "facing=north,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln",
+      "y": 180
+    },
+    "facing=north,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on",
+      "y": 180
+    },
+    "facing=south,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln"
+    },
+    "facing=south,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on"
+    },
+    "facing=up,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln",
+      "y": 270
+    },
+    "facing=up,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on",
+      "y": 270
+    },
+    "facing=west,lit=false": {
+      "model": "aqua_vitae:block/malt_kiln",
+      "y": 90
+    },
+    "facing=west,lit=true": {
+      "model": "aqua_vitae:block/malt_kiln_on",
+      "y": 90
+    }
+  }
+}

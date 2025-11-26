@@ -13,6 +13,20 @@ public class BlockModelGenerator extends BlockModelProvider {
     protected void registerModels() {
         cubeColumnHorizontal("keg", modLoc("block/keg_side"), modLoc("block/keg_end"));
         cubeAll("fermenter_closed", modLoc("block/fermenter_closed"));
-        cubeAll("fermenter_open", modLoc("block/fermenter_open"));
+        cubeAll("fermenter", modLoc("block/fermenter_open"));
+        cube("malt_kiln",
+                modLoc("block/malt_kiln_end"),
+                modLoc("block/malt_kiln_end"),
+                modLoc("block/malt_kiln_front_off"),
+                modLoc("block/malt_kiln_side"),
+                modLoc("block/malt_kiln_side"),
+                modLoc("block/malt_kiln_side")).texture("particle", modLoc("block/malt_kiln_side"));
+        cube("malt_kiln_on",
+                modLoc("block/malt_kiln_end"),
+                modLoc("block/malt_kiln_end"),
+                modLoc("block/malt_kiln_front_on"),
+                modLoc("block/malt_kiln_side"),
+                modLoc("block/malt_kiln_side"),
+                modLoc("block/malt_kiln_side")).texture("particle", modLoc("block/malt_kiln_side"));
     }
 }

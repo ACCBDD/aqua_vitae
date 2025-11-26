@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "aqua_vitae:block/malt_kiln_end",
+    "east": "aqua_vitae:block/malt_kiln_side",
+    "north": "aqua_vitae:block/malt_kiln_front_on",
+    "particle": "aqua_vitae:block/malt_kiln_side",
+    "south": "aqua_vitae:block/malt_kiln_side",
+    "up": "aqua_vitae:block/malt_kiln_end",
+    "west": "aqua_vitae:block/malt_kiln_side"
+  }
+}

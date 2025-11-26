@@ -44,6 +44,7 @@ public class AquaVitae {
         ModBlockEntities.BLOCK_ENTITY_TYPES.register(modEventBus);
         ModComponents.COMPONENTS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        ModMenus.MENU_TYPES.register(modEventBus);
 
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);
@@ -88,6 +89,12 @@ public class AquaVitae {
                                 cup
                         )
                 );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.MALT_KILN.get(),
+                (entity, side) -> entity.getWrappedItemHandler()
+        );
     }
 
     public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {

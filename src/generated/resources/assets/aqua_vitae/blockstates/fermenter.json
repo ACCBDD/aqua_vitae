@@ -1,7 +1,7 @@
 {
   "variants": {
     "crafting=false": {
-      "model": "aqua_vitae:block/fermenter_open"
+      "model": "aqua_vitae:block/fermenter"
     },
     "crafting=true": {
       "model": "aqua_vitae:block/fermenter_closed"
