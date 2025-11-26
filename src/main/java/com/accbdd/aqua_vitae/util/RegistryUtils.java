@@ -8,6 +8,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +45,13 @@ public class RegistryUtils {
 
     @Nullable
     public static BrewingIngredient getIngredient(ItemStack stack) {
-        return ingredientRegistry().stream().filter(ing -> ing.itemIngredient().test(stack)).findFirst().orElse(null);
+        Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
+        return brewingIngredients != null ? brewingIngredients.stream().filter(ing -> ing.itemIngredient() != null && ing.itemIngredient().test(stack)).findFirst().orElse(null) : null;
+    }
+
+    @Nullable
+    public static BrewingIngredient getIngredient(FluidStack stack) {
+        Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
+        return brewingIngredients != null ? ingredientRegistry().stream().filter(ing -> ing.fluidIngredient() != null && ing.fluidIngredient().test(stack)).findFirst().orElse(null) : null;
     }
 }
