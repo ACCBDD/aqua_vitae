@@ -14,14 +14,16 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class MaltKilnMenu extends AbstractBaseInventoryMenu {
     private final ContainerLevelAccess containerLevelAccess;
+    private final ContainerData data;
 
     public MaltKilnMenu(int windowId, Inventory inventory) {
-        this(windowId, inventory, ContainerLevelAccess.NULL, MaltKilnBlockEntity.createItemHandler(), new SimpleContainerData(2));
+        this(windowId, inventory, ContainerLevelAccess.NULL, MaltKilnBlockEntity.createClientItemHandler(), new SimpleContainerData(3));
     }
 
     public MaltKilnMenu(int windowId, Inventory inventory, ContainerLevelAccess containerLevelAccess, IItemHandler items, ContainerData data) {
         super(ModMenus.MALT_KILN.get(), windowId, inventory, 3, 8, 84);
         this.containerLevelAccess = containerLevelAccess;
+        this.data = data;
         this.addSlot(new SlotItemHandler(items, 0, 56, 17));
         this.addSlot(new SlotItemHandler(items, 1, 56, 53));
         this.addSlot(new SlotItemHandler(items, 2, 116, 35));
@@ -32,5 +34,17 @@ public class MaltKilnMenu extends AbstractBaseInventoryMenu {
     @Override
     public boolean stillValid(Player player) {
         return AbstractContainerMenu.stillValid(containerLevelAccess, player, ModBlocks.MALT_KILN.get());
+    }
+
+    public int getProgress() {
+        return data.get(0);
+    }
+
+    public int getBurnTime() {
+        return data.get(1);
+    }
+
+    public int getMaxBurnTime() {
+        return data.get(2);
     }
 }

@@ -39,29 +39,6 @@ public class Codecs {
             val -> String.format("%08X", val)
     );
 
-    public static final StreamCodec<FriendlyByteBuf, Integer> HEX_STREAM_CODEC = StreamCodec.of(
-        (buf, value) -> {
-            String hex = String.format("%08x", value);
-            buf.writeUtf(hex);
-        },
-        buf -> {
-            String str = buf.readUtf();
-
-            if (str.startsWith("#")) {
-                str = str.substring(1);
-            }
-            if (str.length() != 8) {
-                throw new IllegalArgumentException("Hex color must be 8 characters (AARRGGBB)");
-            }
-
-            try {
-                return (int) Long.parseLong(str, 16);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid hex color: " + str);
-            }
-        }
-    );
-
     public static final Codec<List<WortInput>> SORTED_WORT_INPUT_LIST = WortInput.CODEC.listOf().xmap(
             list -> list.stream().sorted(WortInput.COMPARATOR).collect(Collectors.toList()),
             list -> list.stream().sorted(WortInput.COMPARATOR).collect(Collectors.toList())

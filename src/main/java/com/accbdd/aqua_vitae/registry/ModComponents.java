@@ -1,9 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
-import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
-import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
-import com.accbdd.aqua_vitae.component.FluidStackComponent;
-import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
+import com.accbdd.aqua_vitae.component.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -25,4 +22,7 @@ public class ModComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<AlcoholPropertiesComponent>> ALCOHOL_PROPERTIES = COMPONENTS.registerComponentType("alcohol_properties",
             builder -> builder.persistent(AlcoholPropertiesComponent.CODEC).networkSynchronized(AlcoholPropertiesComponent.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BrewingIngredientComponent>> BREWING_INGREDIENT = COMPONENTS.registerComponentType("brewing_ingredient",
+            builder -> builder.persistent(BrewingIngredientComponent.CODEC).networkSynchronized(BrewingIngredientComponent.STREAM_CODEC));
 }

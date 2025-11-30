@@ -3,6 +3,14 @@
   "input": {
     "item": "minecraft:wheat"
   },
+  "malt_properties": {
+    "color": "00FFCC00",
+    "diastatic_power": 50,
+    "starch": 100,
+    "sugar": 10,
+    "yeast": 50,
+    "yeast_tolerance": 80
+  },
   "properties": {
     "color": "00FFFFFF",
     "diastatic_power": 0,

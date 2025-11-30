@@ -7,6 +7,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.accbdd.aqua_vitae.datagen.builtin.BuiltIn.brewingIngredient;
 
@@ -21,7 +22,7 @@ public class BuiltInIngredients {
                             .yeast(5)
                             .yeastTolerance(80)
                             .build(),
-                    List.of(BuiltInFlavors.FRUITY.getKey(), BuiltInFlavors.SWEET.getKey())));
+                    Set.of(BuiltInFlavors.FRUITY.getKey(), BuiltInFlavors.SWEET.getKey())));
 
     public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> LAPIS = brewingIngredient("lapis",
             new BrewingIngredient(
@@ -29,7 +30,7 @@ public class BuiltInIngredients {
                     new BrewingIngredient.BrewingProperties.Builder()
                             .color(0xFF0000FF)
                             .build(),
-                    List.of()));
+                    Set.of()));
 
     public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> SUGAR = brewingIngredient("sugar",
             new BrewingIngredient(
@@ -38,7 +39,7 @@ public class BuiltInIngredients {
                             .color(0x00FFFFFF)
                             .sugar(200)
                             .build(),
-                    List.of()));
+                    Set.of()));
 
     public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> YEAST = brewingIngredient("yeast",
             new BrewingIngredient(
@@ -48,5 +49,6 @@ public class BuiltInIngredients {
                             .yeast(200)
                             .yeastTolerance(80)
                             .build(),
-                    List.of()));
+                    new BrewingIngredient.BrewingProperties(0x00FFCC00, 100, 10, 50, 80, 50),
+                    Set.of()));
 }

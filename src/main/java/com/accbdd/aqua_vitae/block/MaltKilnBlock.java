@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.MaltKilnBlockEntity;
+import com.accbdd.aqua_vitae.block.entity.PotStillBlockEntity;
 import com.accbdd.aqua_vitae.screen.MaltKilnMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -69,5 +72,18 @@ public class MaltKilnBlock extends BaseEntityBlock {
             ));
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (!level.isClientSide) {
+            return (lvl, pos, st, blockEntity) -> {
+                if (blockEntity instanceof MaltKilnBlockEntity be) {
+                    be.tickServer();
+                }
+            };
+        }
+        return null;
     }
 }

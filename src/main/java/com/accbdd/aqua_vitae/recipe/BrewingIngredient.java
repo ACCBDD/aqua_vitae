@@ -1,15 +1,20 @@
 package com.accbdd.aqua_vitae.recipe;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.registry.ModItems;
 import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
@@ -17,23 +22,27 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable FluidIngredient fluidIngredient,
-                                BrewingProperties properties, BrewingProperties maltProperties,
-                                List<ResourceKey<Flavor>> flavors) {
+                                BrewingProperties properties, @Nullable BrewingProperties maltProperties,
+                                Set<ResourceKey<Flavor>> flavors) {
 
-    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, List<ResourceKey<Flavor>> flavors) {
-        this(itemIngredient, null, properties, null, flavors);
-    }
-
-    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, BrewingProperties maltProperties, List<ResourceKey<Flavor>> flavors) {
+    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, BrewingProperties maltProperties, Set<ResourceKey<Flavor>> flavors) {
         this(itemIngredient, null, properties, maltProperties, flavors);
     }
 
-    public BrewingIngredient(FluidIngredient fluidIngredient, BrewingProperties properties, List<ResourceKey<Flavor>> flavors) {
-        this(null, fluidIngredient, properties, null, flavors);
+    public BrewingIngredient(FluidIngredient fluidIngredient, BrewingProperties properties, BrewingProperties maltProperties, Set<ResourceKey<Flavor>> flavors) {
+        this(null, fluidIngredient, properties, maltProperties, flavors);
     }
 
+    public BrewingIngredient(Ingredient itemIngredient, BrewingProperties properties, Set<ResourceKey<Flavor>> flavors) {
+        this(itemIngredient, properties, null, flavors);
+    }
+
+    public BrewingIngredient(FluidIngredient fluidIngredient, BrewingProperties properties, Set<ResourceKey<Flavor>> flavors) {
+        this(fluidIngredient, properties, null, flavors);
+    }
 
     public Either<Ingredient, FluidIngredient> input() {
         if (itemIngredient == null) {
@@ -43,12 +52,18 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
     }
 
+    public ItemStack maltOutput() {
+        ItemStack stack = new ItemStack(ModItems.MALT.get(), 1);
+        stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors));
+        return stack;
+    }
+
     public static Codec<BrewingIngredient> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.either(Ingredient.CODEC, FluidIngredient.CODEC).fieldOf("input").forGetter(BrewingIngredient::input),
                     BrewingProperties.CODEC.fieldOf("properties").forGetter(BrewingIngredient::properties),
                     BrewingProperties.CODEC.optionalFieldOf("malt_properties").forGetter(i -> Optional.ofNullable(i.maltProperties())),
-                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().fieldOf("flavors").forGetter(BrewingIngredient::flavors)
+                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(BrewingIngredient::flavors)
             ).apply(instance, (i, properties, malt, flavors) ->
                     i.map(
                             item -> new BrewingIngredient(item, null, properties, malt.orElse(null), flavors),
@@ -66,6 +81,8 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
      */
     public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance,
                                     int diastaticPower) {
+        public static BrewingProperties DEFAULT = new BrewingProperties(0x00000000, 0, 0, 0, 0, 0);
+
         public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingProperties::color),
@@ -78,7 +95,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         );
 
         public static StreamCodec<FriendlyByteBuf, BrewingProperties> STREAM_CODEC = StreamCodec.composite(
-                Codecs.HEX_STREAM_CODEC, BrewingProperties::color,
+                ByteBufCodecs.INT, BrewingProperties::color,
                 ByteBufCodecs.INT, BrewingProperties::starch,
                 ByteBufCodecs.INT, BrewingProperties::sugar,
                 ByteBufCodecs.INT, BrewingProperties::yeast,
