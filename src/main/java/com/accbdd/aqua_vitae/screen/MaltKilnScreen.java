@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae.screen;
 
 import com.accbdd.aqua_vitae.block.entity.MaltKilnBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -28,17 +27,15 @@ public class MaltKilnScreen extends AbstractContainerScreen<MaltKilnMenu> {
         renderBurnBar(guiGraphics, this.leftPos, this.topPos);
         renderProgress(guiGraphics, this.leftPos, this.topPos);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
-        guiGraphics.drawString(Minecraft.getInstance().font, String.valueOf(menu.getProgress()), leftPos, topPos - 20, 0xFFFFFF);
-        guiGraphics.drawString(Minecraft.getInstance().font, String.valueOf(menu.getBurnTime()), leftPos, topPos - 10, 0xFFFFFF);
     }
 
     public void renderBurnBar(GuiGraphics graphics, int x, int y) {
         int burnScaled = getScaled(menu.getBurnTime(), menu.getMaxBurnTime(), 14);
         graphics.blit(BACKGROUND,
                 x + 56,
-                y + 37 + (14 - burnScaled),
+                y + 35 + (14 - burnScaled),
                 176,
-                14 - burnScaled,
+                13 - burnScaled,
                 14,
                 burnScaled);
     }
