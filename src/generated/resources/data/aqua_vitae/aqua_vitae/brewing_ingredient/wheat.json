@@ -4,7 +4,7 @@
     "item": "minecraft:wheat"
   },
   "malt_properties": {
-    "color": "00FFCC00",
+    "color": "CCFFCC00",
     "diastatic_power": 50,
     "starch": 100,
     "sugar": 10,

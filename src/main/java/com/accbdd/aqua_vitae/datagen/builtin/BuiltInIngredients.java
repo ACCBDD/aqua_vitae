@@ -40,7 +40,7 @@ public class BuiltInIngredients {
                             .build(),
                     Set.of()));
 
-    public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> YEAST = brewingIngredient("yeast",
+    public static final Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> WHEAT = brewingIngredient("wheat",
             new BrewingIngredient(
                     Ingredient.of(Items.WHEAT),
                     new BrewingIngredient.BrewingProperties.Builder()
@@ -48,6 +48,6 @@ public class BuiltInIngredients {
                             .yeast(200)
                             .yeastTolerance(80)
                             .build(),
-                    new BrewingIngredient.BrewingProperties(0x00FFCC00, 100, 10, 50, 80, 50),
+                    new BrewingIngredient.BrewingProperties(0xCCFFCC00, 100, 10, 50, 80, 50),
                     Set.of()));
 }

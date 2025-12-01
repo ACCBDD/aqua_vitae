@@ -5,6 +5,7 @@ import com.accbdd.aqua_vitae.client.event.SwayCamera;
 import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.item.MaltItem;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.screen.MaltKilnScreen;
 import com.accbdd.aqua_vitae.util.FluidUtils;
@@ -116,6 +117,8 @@ public class AquaVitaeClient {
             }
             return -1;
         }, item));
+
+        event.register(MaltItem::getColor, ModItems.MALT);
     }
 
     @SubscribeEvent

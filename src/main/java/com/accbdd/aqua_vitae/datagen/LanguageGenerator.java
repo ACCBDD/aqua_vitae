@@ -33,6 +33,7 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.METER, "Meter");
         addItem(ModItems.EYEBALL, "Eyeball");
         addItem(ModItems.BREW_BUCKET, "Brew Bucket");
+        addItem(ModItems.MALT, "Malt");
 
         add("grammar.aqua_vitae.container_of", "%s of %s");
     }
