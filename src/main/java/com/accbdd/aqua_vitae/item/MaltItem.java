@@ -16,6 +16,13 @@ public class MaltItem extends Item {
     }
 
     @Override
+    public Component getName(ItemStack stack) {
+        if (stack.has(ModComponents.BREWING_INGREDIENT) && stack.get(ModComponents.BREWING_INGREDIENT).origin() != null)
+            return Component.translatable("grammar.aqua_vitae.malt", stack.get(ModComponents.BREWING_INGREDIENT).originDescriptionId(), super.getName(stack));
+        return super.getName(stack);
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         if (stack.has(ModComponents.BREWING_INGREDIENT))

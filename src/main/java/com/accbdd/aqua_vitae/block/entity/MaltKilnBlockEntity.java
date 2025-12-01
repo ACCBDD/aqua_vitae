@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.capability.WrappedItemHandler;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.util.RegistryUtils;
 import net.minecraft.core.BlockPos;
@@ -17,7 +18,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class MaltKilnBlockEntity extends AbstractBEWithData {
-    public static final int MAX_PROGRESS = 200;
+    public static final int MAX_PROGRESS = 50;
 
     private static final String ITEM_TAG = "items";
     private static final String PROGRESS_TAG = "progress";

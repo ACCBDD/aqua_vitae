@@ -7,6 +7,8 @@ import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.api.distmarker.Dist;
@@ -49,6 +51,14 @@ public class RegistryUtils {
     }
 
     @Nullable
+    public static BrewingIngredient getIngredient(ResourceKey<BrewingIngredient> key) {
+        Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
+        if (brewingIngredients != null)
+            return brewingIngredients.get(key);
+        return null;
+    }
+
+    @Nullable
     public static BrewingIngredient getIngredient(ItemStack stack) {
         if (stack.isEmpty())
             return null;
@@ -69,5 +79,13 @@ public class RegistryUtils {
         }
         Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
         return brewingIngredients != null ? ingredientRegistry().stream().filter(ing -> ing.fluidIngredient() != null && ing.fluidIngredient().test(stack)).findFirst().orElse(null) : null;
+    }
+
+    @Nullable
+    public static ResourceLocation getIngredientKey(BrewingIngredient ingredient) {
+        Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
+        if (brewingIngredients != null)
+            return brewingIngredients.getKey(ingredient);
+        return null;
     }
 }

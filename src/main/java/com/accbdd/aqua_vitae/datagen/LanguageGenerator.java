@@ -1,12 +1,16 @@
 package com.accbdd.aqua_vitae.datagen;
 
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
+import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
@@ -28,6 +32,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
         addBlock(ModBlocks.POT_STILL, "Pot Still");
         addBlock(ModBlocks.MALT_KILN, "Malt Kiln");
+
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");
@@ -35,7 +40,10 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.BREW_BUCKET, "Brew Bucket");
         addItem(ModItems.MALT, "Malt");
 
-        add("grammar.aqua_vitae.container_of", "%s of %s");
+        addIngredient(BuiltInIngredients.WHEAT, "Wheat");
+
+        add("grammar.aqua_vitae.container_of", "%1$s of %2$s");
+        add("grammar.aqua_vitae.malt", "%1$s %2$s");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {
@@ -45,5 +53,9 @@ public class LanguageGenerator extends LanguageProvider {
         if (bucket != null) {
             addItem(bucket, "Bucket of " + name);
         }
+    }
+
+    private void addIngredient(Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> ingredient, String name) {
+        add("ingredient.aqua_vitae." + ingredient.getKey().location(), name);
     }
 }
