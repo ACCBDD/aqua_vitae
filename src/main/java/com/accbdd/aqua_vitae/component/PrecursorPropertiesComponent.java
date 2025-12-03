@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.serialization.Codec;
@@ -24,10 +25,10 @@ import java.util.stream.Collectors;
  * @see com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties
  */
 public record PrecursorPropertiesComponent(List<WortInput> ingredients,
-                                           Set<ResourceKey<BrewingIngredient.Flavor>> flavors,
+                                           Set<ResourceKey<Flavor>> flavors,
                                            BrewingIngredient.BrewingProperties properties) {
 
-    public PrecursorPropertiesComponent(List<WortInput> ingredients, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, BrewingIngredient.BrewingProperties properties) {
+    public PrecursorPropertiesComponent(List<WortInput> ingredients, Set<ResourceKey<Flavor>> flavors, BrewingIngredient.BrewingProperties properties) {
         this.ingredients = ingredients.stream().sorted(WortInput.COMPARATOR).collect(Collectors.toList());
         this.flavors = flavors;
         this.properties = properties;

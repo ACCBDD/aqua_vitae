@@ -48,6 +48,6 @@ public class BuiltInIngredients {
                             .yeast(200)
                             .yeastTolerance(80)
                             .build(),
-                    new BrewingIngredient.BrewingProperties(0xCCFFCC00, 100, 10, 50, 80, 50),
+                    new BrewingIngredient.BrewingProperties(0xCCDCBB65, 100, 10, 50, 80, 50),
                     Set.of()));
 }

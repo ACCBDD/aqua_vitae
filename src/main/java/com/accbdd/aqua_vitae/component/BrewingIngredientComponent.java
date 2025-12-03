@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -24,7 +25,7 @@ import java.util.Set;
  * @param flavors
  * @param origin the originating brewing ingredient, if this is a malt
  */
-public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties properties, @Nullable BrewingIngredient.BrewingProperties maltProperties, Set<ResourceKey<BrewingIngredient.Flavor>> flavors, @Nullable ResourceLocation origin) {
+public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties properties, @Nullable BrewingIngredient.BrewingProperties maltProperties, Set<ResourceKey<Flavor>> flavors, @Nullable ResourceLocation origin) {
     public static BrewingIngredientComponent DEFAULT = new BrewingIngredientComponent(BrewingIngredient.BrewingProperties.DEFAULT, null, Set.of(), null);
 
     public static final Codec<BrewingIngredientComponent> CODEC = RecordCodecBuilder.create(instance ->

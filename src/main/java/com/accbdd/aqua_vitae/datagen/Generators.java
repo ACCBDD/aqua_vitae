@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
@@ -48,7 +49,7 @@ public class Generators {
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
                 AquaVitae.FLAVOR_REGISTRY,
                 bootstrap -> {
-                    for (Map.Entry<ResourceKey<BrewingIngredient.Flavor>, BrewingIngredient.Flavor> entry : BuiltIn.FLAVORS.entrySet())
+                    for (Map.Entry<ResourceKey<Flavor>, Flavor> entry : BuiltIn.FLAVORS.entrySet())
                         bootstrap.register(
                                 entry.getKey(),
                                 entry.getValue()

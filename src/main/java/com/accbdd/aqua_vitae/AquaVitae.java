@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.Registry;
@@ -31,7 +32,7 @@ public class AquaVitae {
     public static final String MODID = "aqua_vitae";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static ResourceKey<Registry<BrewingIngredient.Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
+    public static ResourceKey<Registry<Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
     public static ResourceKey<Registry<BrewingIngredient>> INGREDIENT_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "brewing_ingredient"));
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
@@ -100,8 +101,8 @@ public class AquaVitae {
     public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(
                 FLAVOR_REGISTRY,
-                BrewingIngredient.Flavor.CODEC,
-                BrewingIngredient.Flavor.CODEC
+                Flavor.CODEC,
+                Flavor.CODEC
         );
 
         event.dataPackRegistry(

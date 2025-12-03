@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.util;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -36,7 +37,7 @@ public class RegistryUtils {
     }
 
     @Nullable
-    public static Registry<BrewingIngredient.Flavor> flavorRegistry() {
+    public static Registry<Flavor> flavorRegistry() {
         if (registryAccess() != null) {
             return registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get();
         }

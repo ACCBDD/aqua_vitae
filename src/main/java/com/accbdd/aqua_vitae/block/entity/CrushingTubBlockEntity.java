@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
@@ -85,8 +86,8 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS);
             FluidStack fluid = new FluidStack(ModFluids.WORT, getFluid().getAmount());
             List<WortInput> inputs = new ArrayList<>();
-            Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
-            BrewingIngredient.BrewingProperties properties = new BrewingIngredient.BrewingProperties.Builder().build();
+            Set<ResourceKey<Flavor>> flavors = new HashSet<>();
+            BrewingIngredient.BrewingProperties properties = null;
             for (int i = 0; i < items.getSlots(); i++) {
                 ItemStack stack = items.extractItem(i, 1, false);
                 if (stack.isEmpty())
@@ -97,7 +98,10 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
                 if (ing == null)
                     continue;
                 flavors.addAll(ing.flavors());
-                properties = properties.add(ing.properties(), inputs.size());
+                if (inputs.isEmpty())
+                    properties = ing.properties().copy();
+                else
+                    properties = properties.add(ing.properties(), inputs.size());
                 inputs.add(WortInput.of(stack));
             }
             fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));

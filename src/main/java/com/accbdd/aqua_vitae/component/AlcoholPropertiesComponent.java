@@ -1,7 +1,7 @@
 package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.util.Codecs;
 import com.mojang.serialization.Codec;
@@ -23,7 +23,7 @@ import java.util.Set;
  * @param inputs
  */
 public record AlcoholPropertiesComponent(int color, float abb, int age,
-                                         Set<ResourceKey<BrewingIngredient.Flavor>> flavors, List<WortInput> inputs) {
+                                         Set<ResourceKey<Flavor>> flavors, List<WortInput> inputs) {
 
     public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), List.of());
 

@@ -1,9 +1,11 @@
 package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.capability.WrappedItemHandler;
+import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
+import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.RegistryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -18,7 +20,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class MaltKilnBlockEntity extends AbstractBEWithData {
-    public static final int MAX_PROGRESS = 50;
+    public static final int MAX_PROGRESS = 10;
 
     private static final String ITEM_TAG = "items";
     private static final String PROGRESS_TAG = "progress";
@@ -155,18 +157,17 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
 
         ItemStack input = itemHandler.getStackInSlot(0);
         ItemStack fuel = itemHandler.getStackInSlot(1);
-
-        BrewingIngredient inputIngredient = RegistryUtils.getIngredient(input);
-        if (inputIngredient != null && inputIngredient.maltProperties() != null && canOutput(inputIngredient.maltOutput())) { //we have a maltable ingredient
+        ItemStack output = getRecipeOutput();
+        if (!output.isEmpty() && canOutput(output)) { //we have a maltable ingredient
             tryBurn();
             if (isLit()) {
                 this.progress++;
                 if (this.progress >= MAX_PROGRESS) {
                     this.progress = 0;
                     input.shrink(1);
-                    ItemStack output = itemHandler.getStackInSlot(2);
-                    if (output.isEmpty())
-                        itemHandler.setStackInSlot(2, inputIngredient.maltOutput());
+                    ItemStack outputSlot = itemHandler.getStackInSlot(2);
+                    if (outputSlot.isEmpty())
+                        itemHandler.setStackInSlot(2, output);
                     else
                         itemHandler.getStackInSlot(2).grow(1);
                 }
@@ -176,6 +177,36 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
         } else {
             decrementProgress();
         }
+    }
+
+    /**
+     * @return malt output or empty itemstack if no recipe found
+     */
+    private ItemStack getRecipeOutput() {
+        ItemStack input = itemHandler.getStackInSlot(0);
+        if (input.isEmpty())
+            return ItemStack.EMPTY;
+
+        BrewingIngredient inputIngredient = RegistryUtils.getIngredient(input);
+        if (inputIngredient == null)
+            return ItemStack.EMPTY;
+
+        ItemStack output = inputIngredient.maltOutput();
+        if (!output.isEmpty())
+            return output;
+
+        if (input.has(ModComponents.ROAST_COUNTER) && input.get(ModComponents.ROAST_COUNTER).roast() < 5) {
+            output = input.copyWithCount(1);
+            if (output.has(ModComponents.BREWING_INGREDIENT)) {
+                BrewingIngredientComponent old = output.get(ModComponents.BREWING_INGREDIENT);
+                BrewingIngredient.BrewingProperties oldProps = old.properties();
+                output.set(ModComponents.BREWING_INGREDIENT, new BrewingIngredientComponent(oldProps.kilnDarken(), null, old.flavors(), old.origin()));
+            }
+            output.set(ModComponents.ROAST_COUNTER, new RoastCountComponent(output.get(ModComponents.ROAST_COUNTER).roast() + 1));
+            return output;
+        }
+
+        return ItemStack.EMPTY;
     }
 
     private boolean canOutput(ItemStack output) {

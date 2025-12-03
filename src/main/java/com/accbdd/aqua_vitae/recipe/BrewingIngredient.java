@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import com.accbdd.aqua_vitae.util.Codecs;
+import com.accbdd.aqua_vitae.util.NumUtils;
 import com.accbdd.aqua_vitae.util.RegistryUtils;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -14,13 +15,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,7 +52,13 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
     }
 
+    /**
+     * @return malt output itemstack, or empty if nonexistent
+     */
     public ItemStack maltOutput() {
+        if (maltProperties() == null)
+            return ItemStack.EMPTY;
+
         ItemStack stack = new ItemStack(ModItems.MALT.get(), 1);
         stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, RegistryUtils.getIngredientKey(this)));
         stack.set(ModComponents.ROAST_COUNTER.get(), new RoastCountComponent(1));
@@ -81,8 +86,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
      * @param yeastTolerance in terms of alcohol per bucket
      * @param diastaticPower
      */
-    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance,
-                                    int diastaticPower) {
+    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
         public static BrewingProperties DEFAULT = new BrewingProperties(0x00000000, 0, 0, 0, 0, 0);
 
         public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
@@ -106,6 +110,10 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 BrewingProperties::new
         );
 
+        public BrewingProperties copy() {
+            return new BrewingProperties(color, starch, sugar, yeast, yeastTolerance, diastaticPower);
+        }
+
         /**
          * Adds two BrewingProperties together with a weight
          *
@@ -122,6 +130,20 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     this.yeast + other.yeast,
                     Math.max(this.yeastTolerance, other.yeastTolerance), //max for yeast
                     (this.diastaticPower * weight + other.diastaticPower) / (weight + 1)); //average DP
+        }
+
+        /**
+         * @return a kiln-darkened version of the property - darker colors, lower diastatic power, etc.
+         */
+        public BrewingProperties kilnDarken() {
+            //todo: impl flavor transition
+            int kilnColor = NumUtils.saturateColor(this.color, 0.4f);
+            return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.25f),
+                    (int) (this.starch * 0.95),
+                    (int) (this.sugar * 0.95),
+                    (int) (this.yeast * 0.95),
+                    this.yeastTolerance,
+                    (int) (this.diastaticPower * 0.75));
         }
 
         private int blendColor(BrewingProperties other) {
@@ -214,28 +236,5 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 return this;
             }
         }
-    }
-
-    public record Flavor(List<MobEffectInstance> effects) {
-
-        public static class Builder {
-            List<MobEffectInstance> effects;
-
-            public Builder() {
-                this.effects = new ArrayList<>();
-            }
-
-            public Flavor build() {
-                return new Flavor(effects);
-            }
-
-            public Builder effect(MobEffectInstance effect) {
-                this.effects.add(effect);
-                return this;
-            }
-        }
-
-        public static Codec<Flavor> CODEC = Codecs.EFFECT.listOf().xmap(Flavor::new, Flavor::effects);
-
     }
 }

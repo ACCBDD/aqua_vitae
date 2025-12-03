@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.network.chat.Component;
@@ -101,7 +102,7 @@ public class FluidUtils {
     public static void modifyPrecursor(FluidStack fluid, BrewingIngredient ingredient, ItemStack itemStack) {
         PrecursorPropertiesComponent component = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
         List<WortInput> items = new ArrayList<>(component.ingredients());
-        Set<ResourceKey<BrewingIngredient.Flavor>> flavors = new HashSet<>();
+        Set<ResourceKey<Flavor>> flavors = new HashSet<>();
         flavors.addAll(ingredient.flavors());
         flavors.addAll(component.flavors());
         items.add(WortInput.of(itemStack.copyWithCount(1)));

@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -13,7 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import java.util.List;
 import java.util.Set;
 
-public record FermentingPropertiesComponent(int stress, Set<ResourceKey<BrewingIngredient.Flavor>> flavors,
+public record FermentingPropertiesComponent(int stress, Set<ResourceKey<Flavor>> flavors,
                                             BrewingIngredient.BrewingProperties properties) {
 
     public static final Codec<FermentingPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->

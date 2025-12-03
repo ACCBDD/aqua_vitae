@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.datagen.builtin;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,12 +13,12 @@ import java.util.Map;
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
 public class BuiltIn {
-    public static final Map<ResourceKey<BrewingIngredient.Flavor>, BrewingIngredient.Flavor> FLAVORS = new HashMap<>();
+    public static final Map<ResourceKey<Flavor>, Flavor> FLAVORS = new HashMap<>();
     public static final Map<ResourceKey<BrewingIngredient>, BrewingIngredient> BREWING_INGREDIENTS = new HashMap<>();
 
-    static Map.Entry<ResourceKey<BrewingIngredient.Flavor>, BrewingIngredient.Flavor> flavor(String path, BrewingIngredient.Flavor.Builder flavorBuilder) {
-        BrewingIngredient.Flavor flavor = flavorBuilder.build();
-        ResourceKey<BrewingIngredient.Flavor> key = ResourceKey.create(AquaVitae.FLAVOR_REGISTRY, loc(path));
+    static Map.Entry<ResourceKey<Flavor>, Flavor> flavor(String path, Flavor.Builder flavorBuilder) {
+        Flavor flavor = flavorBuilder.build();
+        ResourceKey<Flavor> key = ResourceKey.create(AquaVitae.FLAVOR_REGISTRY, loc(path));
         FLAVORS.put(key, flavor);
         return new AbstractMap.SimpleEntry<>(key, flavor);
     }
