@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.recipe;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import com.accbdd.aqua_vitae.util.Codecs;
@@ -55,6 +56,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
     public ItemStack maltOutput() {
         ItemStack stack = new ItemStack(ModItems.MALT.get(), 1);
         stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, RegistryUtils.getIngredientKey(this)));
+        stack.set(ModComponents.ROAST_COUNTER.get(), new RoastCountComponent(1));
         return stack;
     }
 

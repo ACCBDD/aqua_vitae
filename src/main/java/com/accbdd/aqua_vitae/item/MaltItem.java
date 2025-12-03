@@ -23,10 +23,12 @@ public class MaltItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (stack.has(ModComponents.BREWING_INGREDIENT))
-            tooltipComponents.add(Component.literal("Color: " + String.format("%08X", stack.get(ModComponents.BREWING_INGREDIENT).properties().color())));
+            tooltip.add(Component.literal("Color: " + String.format("%08X", stack.get(ModComponents.BREWING_INGREDIENT).properties().color())));
+        if (stack.has(ModComponents.ROAST_COUNTER))
+            stack.addToTooltip(ModComponents.ROAST_COUNTER, context, tooltip::add, tooltipFlag);
     }
 
     public static int getColor(ItemStack stack, int index) {

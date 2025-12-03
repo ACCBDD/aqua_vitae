@@ -25,4 +25,7 @@ public class ModComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<BrewingIngredientComponent>> BREWING_INGREDIENT = COMPONENTS.registerComponentType("brewing_ingredient",
             builder -> builder.persistent(BrewingIngredientComponent.CODEC).networkSynchronized(BrewingIngredientComponent.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<RoastCountComponent>> ROAST_COUNTER = COMPONENTS.registerComponentType("roast_counter",
+            builder -> builder.persistent(RoastCountComponent.CODEC).networkSynchronized(RoastCountComponent.STREAM_CODEC));
 }

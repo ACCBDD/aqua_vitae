@@ -42,8 +42,14 @@ public class LanguageGenerator extends LanguageProvider {
 
         addIngredient(BuiltInIngredients.WHEAT, "Wheat");
 
-        add("grammar.aqua_vitae.container_of", "%1$s of %2$s");
-        add("grammar.aqua_vitae.malt", "%1$s %2$s");
+        addGrammar("container_of", "%1$s of %2$s");
+        addGrammar("malt", "%1$s %2$s");
+
+        add("ingredient.aqua_vitae.roast.1", "Pale");
+        add("ingredient.aqua_vitae.roast.2", "Amber");
+        add("ingredient.aqua_vitae.roast.3", "Brown");
+        add("ingredient.aqua_vitae.roast.4", "Chocolate");
+        add("ingredient.aqua_vitae.roast.5", "Black");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {
@@ -57,5 +63,9 @@ public class LanguageGenerator extends LanguageProvider {
 
     private void addIngredient(Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> ingredient, String name) {
         add("ingredient.aqua_vitae." + ingredient.getKey().location(), name);
+    }
+
+    private void addGrammar(String name, String text) {
+        add("grammar.aqua_vitae." + name, text);
     }
 }
