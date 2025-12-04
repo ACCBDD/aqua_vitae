@@ -16,8 +16,7 @@ public class BuiltIn {
     public static final Map<ResourceKey<Flavor>, Flavor> FLAVORS = new HashMap<>();
     public static final Map<ResourceKey<BrewingIngredient>, BrewingIngredient> BREWING_INGREDIENTS = new HashMap<>();
 
-    static Map.Entry<ResourceKey<Flavor>, Flavor> flavor(String path, Flavor.Builder flavorBuilder) {
-        Flavor flavor = flavorBuilder.build();
+    static Map.Entry<ResourceKey<Flavor>, Flavor> flavor(String path, Flavor flavor) {
         ResourceKey<Flavor> key = ResourceKey.create(AquaVitae.FLAVOR_REGISTRY, loc(path));
         FLAVORS.put(key, flavor);
         return new AbstractMap.SimpleEntry<>(key, flavor);
