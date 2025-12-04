@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferment, @Nullable Transition distill, @Nullable Transition age, @Nullable Transition kiln, @Nullable Transition malt) {
     public static class Builder {
@@ -75,13 +76,18 @@ public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferme
 
     public static Codec<Flavor> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codecs.EFFECT.listOf().fieldOf("effects").forGetter(Flavor::effects),
-                    Transition.CODEC.optionalFieldOf("ferment", null).forGetter(Flavor::ferment),
-                    Transition.CODEC.optionalFieldOf("distill", null).forGetter(Flavor::distill),
-                    Transition.CODEC.optionalFieldOf("age", null).forGetter(Flavor::age),
-                    Transition.CODEC.optionalFieldOf("kiln", null).forGetter(Flavor::kiln),
-                    Transition.CODEC.optionalFieldOf("malt", null).forGetter(Flavor::malt)
-            ).apply(instance, Flavor::new)
+                    Codecs.EFFECT.listOf().optionalFieldOf("effects", List.of()).forGetter(Flavor::effects),
+                    Transition.CODEC.optionalFieldOf("ferment").forGetter(flavor -> Optional.ofNullable(flavor.ferment)),
+                    Transition.CODEC.optionalFieldOf("distill").forGetter(flavor -> Optional.ofNullable(flavor.distill)),
+                    Transition.CODEC.optionalFieldOf("age").forGetter(flavor -> Optional.ofNullable(flavor.age)),
+                    Transition.CODEC.optionalFieldOf("kiln").forGetter(flavor -> Optional.ofNullable(flavor.kiln)),
+                    Transition.CODEC.optionalFieldOf("malt").forGetter(flavor -> Optional.ofNullable(flavor.malt))
+            ).apply(instance, (effects, ferment, distill, age, kiln, malt) -> new Flavor(effects,
+                    ferment.orElse(null),
+                    distill.orElse(null),
+                    age.orElse(null),
+                    kiln.orElse(null),
+                    malt.orElse(null)))
     );
 
     public record Transition(ResourceKey<Flavor> flavor, int transitionPoint) {

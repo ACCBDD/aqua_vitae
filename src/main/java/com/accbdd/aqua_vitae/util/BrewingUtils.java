@@ -19,7 +19,12 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class RegistryUtils {
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class BrewingUtils {
 
     @Nullable
     public static RegistryAccess registryAccess() {
@@ -88,5 +93,27 @@ public class RegistryUtils {
         if (brewingIngredients != null)
             return brewingIngredients.getKey(ingredient);
         return null;
+    }
+
+    @Nullable
+    public static Flavor getFlavor(ResourceKey<Flavor> flavorKey) {
+        Registry<Flavor> flavors = flavorRegistry();
+        if (flavors != null)
+            return flavors.get(flavorKey);
+        return null;
+    }
+
+    public static Set<ResourceKey<Flavor>> kilnFlavors(Set<ResourceKey<Flavor>> flavors, int kilnCount) {
+        Set<ResourceKey<Flavor>> newFlavors = Set.copyOf(flavors);
+        return newFlavors.stream().map(key -> {
+            Flavor flavor = getFlavor(key);
+            if (flavor != null) {
+                if (flavor.kiln() != null && flavor.kiln().transitionPoint() <= kilnCount) {
+                    return flavor.kiln().flavor();
+                }
+                return key;
+            }
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 }

@@ -1,5 +1,7 @@
 {
-  "flavors": [],
+  "flavors": [
+    "aqua_vitae:bready"
+  ],
   "input": {
     "item": "minecraft:wheat"
   },

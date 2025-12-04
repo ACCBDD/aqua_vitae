@@ -1,7 +1,9 @@
 package com.accbdd.aqua_vitae.datagen;
 
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import net.minecraft.data.PackOutput;
@@ -42,6 +44,12 @@ public class LanguageGenerator extends LanguageProvider {
 
         addIngredient(BuiltInIngredients.WHEAT, "Wheat");
 
+        addFlavor(BuiltInFlavors.BREADY, "Bready");
+        addFlavor(BuiltInFlavors.NUTTY, "Nutty");
+        addFlavor(BuiltInFlavors.TOASTY, "Toasty");
+        addFlavor(BuiltInFlavors.CHOCOLATE, "Chocolate");
+        addFlavor(BuiltInFlavors.LICORICE, "Licorice");
+
         addGrammar("container_of", "%1$s of %2$s");
         addGrammar("malt", "%1$s %2$s");
 
@@ -63,6 +71,10 @@ public class LanguageGenerator extends LanguageProvider {
 
     private void addIngredient(Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> ingredient, String name) {
         add("ingredient.aqua_vitae." + ingredient.getKey().location(), name);
+    }
+
+    private void addFlavor(Map.Entry<ResourceKey<Flavor>, Flavor> flavor, String name) {
+        add("flavor.aqua_vitae." + flavor.getKey().location(), name);
     }
 
     private void addGrammar(String name, String text) {

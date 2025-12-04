@@ -7,7 +7,7 @@ import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluids;
-import com.accbdd.aqua_vitae.util.RegistryUtils;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -41,7 +41,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
         this.items = new ItemStackHandler(4) {
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
-                return RegistryUtils.getIngredient(stack) != null;
+                return BrewingUtils.getIngredient(stack) != null;
             }
 
             @Override
@@ -94,7 +94,7 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
                     continue;
                 ((ServerLevel) getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float) getBlockPos().getX() + 0.5F, (float) getBlockPos().getY() + 0.1F, (float) getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
 
-                BrewingIngredient ing = RegistryUtils.getIngredient(stack);
+                BrewingIngredient ing = BrewingUtils.getIngredient(stack);
                 if (ing == null)
                     continue;
                 flavors.addAll(ing.flavors());

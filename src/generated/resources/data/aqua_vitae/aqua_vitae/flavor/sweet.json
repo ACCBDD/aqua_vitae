@@ -1,7 +1,9 @@
-[
-  {
-    "amplifier": 0,
-    "duration": 200,
-    "effect": "minecraft:regeneration"
-  }
-]
+{
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 200,
+      "effect": "minecraft:regeneration"
+    }
+  ]
+}

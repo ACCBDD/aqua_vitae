@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MaltItem extends Item {
     public MaltItem() {
@@ -26,7 +27,7 @@ public class MaltItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (stack.has(ModComponents.BREWING_INGREDIENT))
-            tooltip.add(Component.literal("Color: " + String.format("%08X", stack.get(ModComponents.BREWING_INGREDIENT).properties().color())));
+            tooltip.addAll(stack.get(ModComponents.BREWING_INGREDIENT).flavors().stream().map(key -> Component.translatable("flavor.aqua_vitae."+key.location())).toList());
         if (stack.has(ModComponents.ROAST_COUNTER))
             stack.addToTooltip(ModComponents.ROAST_COUNTER, context, tooltip::add, tooltipFlag);
     }

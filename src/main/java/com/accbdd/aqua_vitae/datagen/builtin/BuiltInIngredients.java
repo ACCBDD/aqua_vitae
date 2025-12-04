@@ -49,5 +49,5 @@ public class BuiltInIngredients {
                             .yeastTolerance(80)
                             .build(),
                     new BrewingIngredient.BrewingProperties(0xCCDCBB65, 100, 10, 50, 80, 50),
-                    Set.of()));
+                    Set.of(BuiltInFlavors.BREADY.getKey())));
 }

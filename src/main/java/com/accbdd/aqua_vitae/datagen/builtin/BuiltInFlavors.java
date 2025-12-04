@@ -10,11 +10,34 @@ import java.util.Map;
 import static com.accbdd.aqua_vitae.datagen.builtin.BuiltIn.flavor;
 
 public class BuiltInFlavors {
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> BREADY;
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> NUTTY;
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> TOASTY;
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> CHOCOLATE;
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> LICORICE;
+    public static final Map.Entry<ResourceKey<Flavor>, Flavor> ACRID;
     public static final Map.Entry<ResourceKey<Flavor>, Flavor> FRUITY;
     public static final Map.Entry<ResourceKey<Flavor>, Flavor> SOUR;
     public static final Map.Entry<ResourceKey<Flavor>, Flavor> SWEET;
 
     static {
+        ACRID = flavor("acrid", new Flavor.Builder()
+                .effect(new MobEffectInstance(MobEffects.HARM, 1, 0))
+                .build());
+        LICORICE = flavor("licorice", new Flavor.Builder()
+                .build());
+        CHOCOLATE = flavor("chocolate", new Flavor.Builder()
+                .kiln(LICORICE.getKey(), 4)
+                .build());
+        TOASTY = flavor("toasty", new Flavor.Builder()
+                .kiln(CHOCOLATE.getKey(), 3)
+                .build());
+        NUTTY = flavor("nutty", new Flavor.Builder()
+                .kiln(TOASTY.getKey(), 2)
+                .build());
+        BREADY = flavor("bready", new Flavor.Builder()
+                .kiln(NUTTY.getKey(), 1)
+                .build());
         FRUITY = flavor("fruity", new Flavor.Builder()
                 .effect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 0))
                 .build());

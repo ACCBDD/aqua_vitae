@@ -4,7 +4,7 @@ import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.util.FluidUtils;
-import com.accbdd.aqua_vitae.util.RegistryUtils;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -81,7 +81,7 @@ public class KegBlock extends BaseEntityBlock {
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;
         } else {
-            BrewingIngredient ingredient = RegistryUtils.getIngredient(stack);
+            BrewingIngredient ingredient = BrewingUtils.getIngredient(stack);
             if (ingredient != null) {
                 FluidStack fluid = keg.getFluid();
                 if (!fluid.isEmpty()) {

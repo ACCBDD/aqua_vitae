@@ -7,7 +7,7 @@ import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import com.accbdd.aqua_vitae.util.Codecs;
 import com.accbdd.aqua_vitae.util.NumUtils;
-import com.accbdd.aqua_vitae.util.RegistryUtils;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -60,7 +60,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             return ItemStack.EMPTY;
 
         ItemStack stack = new ItemStack(ModItems.MALT.get(), 1);
-        stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, RegistryUtils.getIngredientKey(this)));
+        stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, BrewingUtils.getIngredientKey(this)));
         stack.set(ModComponents.ROAST_COUNTER.get(), new RoastCountComponent(1));
         return stack;
     }
@@ -133,9 +133,9 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
 
         /**
-         * @return a kiln-darkened version of the property - darker colors, lower diastatic power, etc.
+         * @return a kilned version of the property - darker colors, lower diastatic power, etc.
          */
-        public BrewingProperties kilnDarken() {
+        public BrewingProperties kiln() {
             //todo: impl flavor transition
             int kilnColor = NumUtils.saturateColor(this.color, 0.4f);
             return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.25f),
