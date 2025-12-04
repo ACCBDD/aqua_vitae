@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MaltItem extends Item {
     public MaltItem() {
