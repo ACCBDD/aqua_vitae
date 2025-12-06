@@ -5,5 +5,9 @@
       "duration": 200,
       "effect": "minecraft:absorption"
     }
-  ]
+  ],
+  "kiln": {
+    "flavors": [],
+    "transition_point": 1
+  }
 }

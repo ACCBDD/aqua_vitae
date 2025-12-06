@@ -136,7 +136,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * @return a kilned version of the property - darker colors, lower diastatic power, etc.
          */
         public BrewingProperties kiln() {
-            //todo: impl flavor transition
+            //todo: impl flavors transition
             int kilnColor = NumUtils.saturateColor(this.color, 0.4f);
             return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.25f),
                     (int) (this.starch * 0.95),

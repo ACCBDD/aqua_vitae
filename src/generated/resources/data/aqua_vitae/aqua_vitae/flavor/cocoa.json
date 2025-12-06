@@ -1,0 +1,9 @@
+{
+  "kiln": {
+    "flavors": [
+      "aqua_vitae:licorice",
+      "aqua_vitae:acrid"
+    ],
+    "transition_point": 4
+  }
+}

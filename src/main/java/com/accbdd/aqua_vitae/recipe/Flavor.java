@@ -12,6 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * <p>An entry for a 'flavors' - a group of effects applied when a drink is drunk - containing transition information. Transition information is broken up into separate transition categories.</p>
+ * <p>When a transition list is null, the flavors is unchanged; when a transition list is empty, the flavors is removed.</p>
+ * <p>See also: {@link Transition}</p>
+ * @param effects the effects applied when drank
+ * @param ferment transition point is ABB content
+ * @param distill transition point is ABB content
+ * @param age transition point is days
+ * @param kiln transition point is kiln count
+ * @param malt transition point is ignored
+ */
 public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferment, @Nullable Transition distill, @Nullable Transition age, @Nullable Transition kiln, @Nullable Transition malt) {
     public static class Builder {
         List<MobEffectInstance> effects;
@@ -27,12 +38,12 @@ public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferme
         }
 
         private Builder(List<MobEffectInstance> effects, Transition ferment, Transition distill, Transition age, Transition kiln, Transition malt) {
-            this.effects = List.copyOf(effects);
-            this.ferment = ferment;
-            this.distill = distill;
-            this.age = age;
-            this.kiln = kiln;
-            this.malt = malt;
+            this.effects = new ArrayList<>(effects);
+            this.ferment = null;
+            this.distill = null;
+            this.age = null;
+            this.kiln = null;
+            this.malt = null;
         }
 
         public static Builder of(Flavor flavor) {
@@ -48,27 +59,27 @@ public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferme
             return this;
         }
 
-        public Builder ferment(ResourceKey<Flavor> ferment, int transition) {
+        public Builder ferment(List<ResourceKey<Flavor>> ferment, int transition) {
             this.ferment = new Transition(ferment, transition);
             return this;
         }
 
-        public Builder distill(ResourceKey<Flavor> distill, int transition) {
+        public Builder distill(List<ResourceKey<Flavor>> distill, int transition) {
             this.distill = new Transition(distill, transition);
             return this;
         }
 
-        public Builder age(ResourceKey<Flavor> age, int transition) {
+        public Builder age(List<ResourceKey<Flavor>> age, int transition) {
             this.age = new Transition(age, transition);
             return this;
         }
 
-        public Builder kiln(ResourceKey<Flavor> kiln, int transition) {
+        public Builder kiln(List<ResourceKey<Flavor>> kiln, int transition) {
             this.kiln = new Transition(kiln, transition);
             return this;
         }
 
-        public Builder malt(ResourceKey<Flavor> malt, int transition) {
+        public Builder malt(List<ResourceKey<Flavor>> malt, int transition) {
             this.malt = new Transition(malt, transition);
             return this;
         }
@@ -90,10 +101,10 @@ public record Flavor(List<MobEffectInstance> effects, @Nullable Transition ferme
                     malt.orElse(null)))
     );
 
-    public record Transition(ResourceKey<Flavor> flavor, int transitionPoint) {
+    public record Transition(List<ResourceKey<Flavor>> flavors, int transitionPoint) {
         public static final Codec<Transition> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).fieldOf("flavor").forGetter(Transition::flavor),
+                        ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().fieldOf("flavors").forGetter(Transition::flavors),
                         Codec.INT.fieldOf("transition_point").forGetter(Transition::transitionPoint)
                 ).apply(instance, Transition::new));
     }

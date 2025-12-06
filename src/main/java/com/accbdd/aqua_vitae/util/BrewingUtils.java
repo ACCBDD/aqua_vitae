@@ -8,6 +8,8 @@ import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -19,9 +21,9 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BrewingUtils {
 
@@ -102,17 +104,38 @@ public class BrewingUtils {
         return null;
     }
 
-    public static Set<ResourceKey<Flavor>> kilnFlavors(Set<ResourceKey<Flavor>> flavors, int kilnCount) {
-        Set<ResourceKey<Flavor>> newFlavors = Set.copyOf(flavors);
-        return newFlavors.stream().map(key -> {
-            Flavor flavor = getFlavor(key);
-            if (flavor != null) {
-                if (flavor.kiln() != null && flavor.kiln().transitionPoint() <= kilnCount) {
-                    return flavor.kiln().flavor();
-                }
-                return key;
+    public static Component flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
+        MutableComponent component = Component.empty();
+
+        Iterator<ResourceKey<Flavor>> iterator = flavors.iterator();
+        while (iterator.hasNext()) {
+            ResourceKey<Flavor> key = iterator.next();
+            component.append(Component.translatable("flavors.aqua_vitae." + key.location()));
+            if (iterator.hasNext()) {
+                component.append(Component.literal(", "));
             }
-            return null;
-        }).filter(Objects::nonNull).collect(Collectors.toSet());
+        }
+
+        return component;
+    }
+
+    public static Set<ResourceKey<Flavor>> kilnFlavors(Set<ResourceKey<Flavor>> flavors, int kilnCount) {
+        Set<ResourceKey<Flavor>> newFlavors = new HashSet<>();
+        for (ResourceKey<Flavor> flavorKey : flavors) {
+            Flavor flavor = getFlavor(flavorKey);
+            if (flavor != null) {
+                if (flavor.kiln() == null) {
+                    newFlavors.add(flavorKey);
+                } else {
+                    Flavor.Transition transition = flavor.kiln();
+                    transition.flavors().forEach(flavorEntry -> {
+                        if (kilnCount >= transition.transitionPoint()) {
+                            newFlavors.add(flavorEntry);
+                        }
+                    });
+                }
+            }
+        }
+        return newFlavors;
     }
 }

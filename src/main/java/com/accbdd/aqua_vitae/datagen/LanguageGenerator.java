@@ -47,7 +47,7 @@ public class LanguageGenerator extends LanguageProvider {
         addFlavor(BuiltInFlavors.BREADY, "Bready");
         addFlavor(BuiltInFlavors.NUTTY, "Nutty");
         addFlavor(BuiltInFlavors.TOASTY, "Toasty");
-        addFlavor(BuiltInFlavors.CHOCOLATE, "Chocolate");
+        addFlavor(BuiltInFlavors.COCOA, "Cocoa");
         addFlavor(BuiltInFlavors.LICORICE, "Licorice");
 
         addGrammar("container_of", "%1$s of %2$s");
@@ -74,7 +74,7 @@ public class LanguageGenerator extends LanguageProvider {
     }
 
     private void addFlavor(Map.Entry<ResourceKey<Flavor>, Flavor> flavor, String name) {
-        add("flavor.aqua_vitae." + flavor.getKey().location(), name);
+        add("flavors.aqua_vitae." + flavor.getKey().location(), name);
     }
 
     private void addGrammar(String name, String text) {

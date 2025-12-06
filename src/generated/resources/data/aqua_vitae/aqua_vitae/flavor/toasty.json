@@ -1,6 +1,8 @@
 {
   "kiln": {
-    "flavor": "aqua_vitae:chocolate",
+    "flavors": [
+      "aqua_vitae:cocoa"
+    ],
     "transition_point": 3
   }
 }
