@@ -9,13 +9,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class MaltKilnMenu extends AbstractBaseInventoryMenu {
     private final ContainerLevelAccess containerLevelAccess;
     private final ContainerData data;
-    private MaltKilnBlockEntity blockEntity;
 
     public MaltKilnMenu(int windowId, Inventory inventory) {
         this(windowId, inventory, ContainerLevelAccess.NULL, MaltKilnBlockEntity.createClientItemHandler(), new SimpleContainerData(4));
@@ -27,10 +27,14 @@ public class MaltKilnMenu extends AbstractBaseInventoryMenu {
         this.data = data;
         this.addSlot(new SlotItemHandler(items, 0, 56, 17));
         this.addSlot(new SlotItemHandler(items, 1, 56, 53));
-        this.addSlot(new SlotItemHandler(items, 2, 116, 35));
+        this.addSlot(new SlotItemHandler(items, 2, 116, 35) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
         this.addDataSlots(data);
         layoutPlayerInventorySlots(inventory);
-        this.blockEntity = null;
     }
 
     @Override

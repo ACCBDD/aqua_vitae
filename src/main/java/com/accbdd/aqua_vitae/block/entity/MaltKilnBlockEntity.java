@@ -38,7 +38,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     private static final String MAX_BURN_TIME_TAG = "max_burn_time";
 
     private final ItemStackHandler itemHandler; //0 - input, 1 - fuel, 2 - output
-    private final WrappedItemHandler wrappedItemHandler;
+    private final WrappedItemHandler wrappedItemHandler; //
     private final FluidTank fluidHandler;
     private int progress, burnTime, maxBurnTime, fluidAmount;
 
@@ -111,7 +111,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                     return BrewingUtils.getIngredient(stack) != null;
                 if (slot == 1)
                     return stack.getBurnTime(RecipeType.SMELTING) > 0;
-                return false;
+                return true;
             }
 
             @Override
@@ -240,7 +240,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     }
 
     private boolean canOutput(ItemStack output) {
-        return itemHandler.getStackInSlot(2).isEmpty() || ItemStack.isSameItemSameComponents(itemHandler.getStackInSlot(2), output);
+        return itemHandler.insertItem(2, output, true).isEmpty();
     }
 
     private void decrementProgress() {
