@@ -106,7 +106,6 @@ public class BrewingUtils {
 
     public static Component flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
         MutableComponent component = Component.empty();
-
         Iterator<ResourceKey<Flavor>> iterator = flavors.iterator();
         while (iterator.hasNext()) {
             ResourceKey<Flavor> key = iterator.next();

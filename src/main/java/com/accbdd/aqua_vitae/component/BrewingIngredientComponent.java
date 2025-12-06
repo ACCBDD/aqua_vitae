@@ -55,6 +55,9 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
 
     @Override
     public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        consumer.accept(BrewingUtils.flavorTooltip(this.flavors));
+        Component component = BrewingUtils.flavorTooltip(this.flavors);
+        if (component.equals(Component.empty()))
+            return;
+        consumer.accept(component);
     }
 }
