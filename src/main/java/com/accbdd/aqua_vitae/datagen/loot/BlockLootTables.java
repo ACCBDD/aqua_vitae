@@ -25,5 +25,6 @@ public class BlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.CRUSHING_TUB.get());
         dropSelf(ModBlocks.POT_STILL.get());
         dropSelf(ModBlocks.MALT_KILN.get());
+        dropSelf(ModBlocks.MASH_TUN.get());
     }
 }

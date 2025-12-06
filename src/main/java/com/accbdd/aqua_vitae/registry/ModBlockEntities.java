@@ -21,4 +21,6 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(PotStillBlockEntity::new, ModBlocks.POT_STILL.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MaltKilnBlockEntity>> MALT_KILN = BLOCK_ENTITY_TYPES.register("malt_kiln",
             () -> BlockEntityType.Builder.of(MaltKilnBlockEntity::new, ModBlocks.MALT_KILN.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MashTunBlockEntity>> MASH_TUN = BLOCK_ENTITY_TYPES.register("mash_tun",
+            () -> BlockEntityType.Builder.of(MashTunBlockEntity::new, ModBlocks.MASH_TUN.get()).build(null));
 }

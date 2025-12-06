@@ -27,6 +27,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CRUSHING_TUB = registerBlock("crushing_tub", CrushingTubBlock::new);
     public static final DeferredBlock<Block> POT_STILL = registerBlock("pot_still", PotStillBlock::new);
     public static final DeferredBlock<Block> MALT_KILN = registerBlock("malt_kiln", MaltKilnBlock::new);
+    public static final DeferredBlock<Block> MASH_TUN = registerBlock("mash_tun", MashTunBlock::new);
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> blockSupplier) {
         return BLOCKS.register(name, blockSupplier);

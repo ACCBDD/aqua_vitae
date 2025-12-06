@@ -29,6 +29,7 @@ public class ModItems {
     public static final DeferredItem<BlockItem> CRUSHING_TUB = registerSimpleBlockItem("crushing_tub", ModBlocks.CRUSHING_TUB);
     public static final DeferredItem<BlockItem> POT_STILL = registerSimpleBlockItem("pot_still", ModBlocks.POT_STILL);
     public static final DeferredItem<BlockItem> MALT_KILN = registerSimpleBlockItem("malt_kiln", ModBlocks.MALT_KILN);
+    public static final DeferredItem<BlockItem> MASH_TUN = registerSimpleBlockItem("mash_tun", ModBlocks.MASH_TUN);
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));
