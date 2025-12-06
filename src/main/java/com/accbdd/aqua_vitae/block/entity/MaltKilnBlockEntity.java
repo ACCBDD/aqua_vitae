@@ -17,6 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,21 +28,31 @@ import java.util.Set;
 
 public class MaltKilnBlockEntity extends AbstractBEWithData {
     public static final int MAX_PROGRESS = 10;
+    public static final int MAX_FLUID = 4000;
+    public static final int WATER_USAGE = 100;
 
     private static final String ITEM_TAG = "items";
+    private static final String FLUID_TAG = "fluid";
     private static final String PROGRESS_TAG = "progress";
     private static final String BURN_TIME_TAG = "burn_time";
     private static final String MAX_BURN_TIME_TAG = "max_burn_time";
 
     private final ItemStackHandler itemHandler; //0 - input, 1 - fuel, 2 - output
     private final WrappedItemHandler wrappedItemHandler;
-    private int progress, burnTime, maxBurnTime;
+    private final FluidTank fluidHandler;
+    private int progress, burnTime, maxBurnTime, fluidAmount;
 
     private final ContainerData containerData;
 
     public MaltKilnBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MALT_KILN.get(), pos, blockState);
         this.itemHandler = createItemHandler();
+        this.fluidHandler = new FluidTank(MAX_FLUID, fluidStack -> fluidStack.is(Fluids.WATER)) {
+            @Override
+            protected void onContentsChanged() {
+                MaltKilnBlockEntity.this.setChanged();
+            }
+        };
 
         this.wrappedItemHandler = new WrappedItemHandler(itemHandler) {
             @Override
@@ -63,7 +76,9 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                 return switch (i) {
                     case 0 -> MaltKilnBlockEntity.this.progress;
                     case 1 -> MaltKilnBlockEntity.this.burnTime;
-                    default -> MaltKilnBlockEntity.this.maxBurnTime;
+                    case 2 -> MaltKilnBlockEntity.this.maxBurnTime;
+                    case 3 -> MaltKilnBlockEntity.this.fluidHandler.getFluidAmount();
+                    default -> 0;
                 };
             }
 
@@ -73,14 +88,16 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                 switch (i) {
                     case 0 -> MaltKilnBlockEntity.this.progress = val;
                     case 1 -> MaltKilnBlockEntity.this.burnTime = val;
-                    default -> MaltKilnBlockEntity.this.maxBurnTime = val;
+                    case 2 -> MaltKilnBlockEntity.this.maxBurnTime = val;
+                    case 3 -> {}
+                    default -> {}
                 }
                 MaltKilnBlockEntity.this.setChanged();
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
         };
     }
@@ -122,6 +139,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put(ITEM_TAG, itemHandler.serializeNBT(registries));
+        fluidHandler.writeToNBT(registries, tag);
         tag.putInt(PROGRESS_TAG, progress);
         tag.putInt(BURN_TIME_TAG, burnTime);
         tag.putInt(MAX_BURN_TIME_TAG, maxBurnTime);
@@ -130,6 +148,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        fluidHandler.readFromNBT(registries, tag);
         if (tag.contains(ITEM_TAG))
             itemHandler.deserializeNBT(registries, tag.getCompound(ITEM_TAG));
         if (tag.contains(PROGRESS_TAG))
@@ -148,6 +167,10 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
         return wrappedItemHandler;
     }
 
+    public FluidTank getFluidHandler() {
+        return fluidHandler;
+    }
+
     public ContainerData getContainerData() {
         return containerData;
     }
@@ -164,10 +187,11 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
         ItemStack output = getRecipeOutput();
         if (!output.isEmpty() && canOutput(output)) { //we have a maltable ingredient
             tryBurn();
-            if (isLit()) {
+            if (isLit() && fluidHandler.getFluidAmount() >= WATER_USAGE) {
                 this.progress++;
                 if (this.progress >= MAX_PROGRESS) {
                     this.progress = 0;
+                    fluidHandler.drain(WATER_USAGE, IFluidHandler.FluidAction.EXECUTE);
                     input.shrink(1);
                     ItemStack outputSlot = itemHandler.getStackInSlot(2);
                     if (outputSlot.isEmpty())
