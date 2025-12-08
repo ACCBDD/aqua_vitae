@@ -2,11 +2,12 @@ package com.accbdd.aqua_vitae.capability;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
-public class WrappedItemHandler implements IItemHandler {
-    private final IItemHandler wrapped;
+public class AdaptedItemHandler implements IItemHandlerModifiable {
+    private final IItemHandlerModifiable wrapped;
 
-    public WrappedItemHandler(IItemHandler wrapped) {
+    public AdaptedItemHandler(IItemHandlerModifiable wrapped) {
         this.wrapped = wrapped;
     }
 
@@ -38,5 +39,10 @@ public class WrappedItemHandler implements IItemHandler {
     @Override
     public boolean isItemValid(int i, ItemStack itemStack) {
         return wrapped.isItemValid(i, itemStack);
+    }
+
+    @Override
+    public void setStackInSlot(int i, ItemStack itemStack) {
+        this.wrapped.setStackInSlot(i, itemStack);
     }
 }

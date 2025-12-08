@@ -1,4 +1,4 @@
-package com.accbdd.aqua_vitae.fluid;
+package com.accbdd.aqua_vitae.capability;
 
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;

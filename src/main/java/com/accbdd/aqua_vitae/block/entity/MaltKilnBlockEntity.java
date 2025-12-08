@@ -1,6 +1,6 @@
 package com.accbdd.aqua_vitae.block.entity;
 
-import com.accbdd.aqua_vitae.capability.WrappedItemHandler;
+import com.accbdd.aqua_vitae.capability.AdaptedItemHandler;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
@@ -38,7 +38,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     private static final String MAX_BURN_TIME_TAG = "max_burn_time";
 
     private final ItemStackHandler itemHandler; //0 - input, 1 - fuel, 2 - output
-    private final WrappedItemHandler wrappedItemHandler; //
+    private final AdaptedItemHandler adaptedItemHandler; //
     private final FluidTank fluidHandler;
     private int progress, burnTime, maxBurnTime, fluidAmount;
 
@@ -54,7 +54,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
             }
         };
 
-        this.wrappedItemHandler = new WrappedItemHandler(itemHandler) {
+        this.adaptedItemHandler = new AdaptedItemHandler(itemHandler) {
             @Override
             public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
                 if (slot == 2)
@@ -164,7 +164,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
     }
 
     public IItemHandler getWrappedItemHandler() {
-        return wrappedItemHandler;
+        return adaptedItemHandler;
     }
 
     public FluidTank getFluidHandler() {

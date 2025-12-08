@@ -34,6 +34,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
         addBlock(ModBlocks.POT_STILL, "Pot Still");
         addBlock(ModBlocks.MALT_KILN, "Malt Kiln");
+        addBlock(ModBlocks.MASH_TUN, "Mash Tun");
 
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
@@ -49,6 +50,10 @@ public class LanguageGenerator extends LanguageProvider {
         addFlavor(BuiltInFlavors.TOASTY, "Toasty");
         addFlavor(BuiltInFlavors.COCOA, "Cocoa");
         addFlavor(BuiltInFlavors.LICORICE, "Licorice");
+        addFlavor(BuiltInFlavors.FRUITY, "Fruity");
+        addFlavor(BuiltInFlavors.ACRID, "Acrid");
+        addFlavor(BuiltInFlavors.SOUR, "Sour");
+        addFlavor(BuiltInFlavors.SWEET, "Sweet");
 
         addGrammar("container_of", "%1$s of %2$s");
         addGrammar("malt", "%1$s %2$s");
@@ -58,6 +63,12 @@ public class LanguageGenerator extends LanguageProvider {
         add("ingredient.aqua_vitae.roast.3", "Brown");
         add("ingredient.aqua_vitae.roast.4", "Chocolate");
         add("ingredient.aqua_vitae.roast.5", "Black");
+
+        add("properties.aqua_vitae.sugar", "Sugar: %s");
+        add("properties.aqua_vitae.starch", "Starch: %s");
+        add("properties.aqua_vitae.diastatic_power", "DP: %s");
+        add("properties.aqua_vitae.yeast", "Yeast: %1$s, Tolerance: %2$s");
+        add("properties.aqua_vitae.color", "#%s");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {

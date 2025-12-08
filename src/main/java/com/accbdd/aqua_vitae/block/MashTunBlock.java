@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.MashTunBlockEntity;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
+import com.accbdd.aqua_vitae.screen.MashTunMenu;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -77,7 +78,7 @@ public class MashTunBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof MashTunBlockEntity mash) {
             serverPlayer.openMenu(new SimpleMenuProvider(
-                    (id, inv, plr) -> new MashTunMenu(id, inv, ContainerLevelAccess.create(level, pos), mash.getItemHandler(), mash.getContainerData()),
+                    (id, inv, plr) -> new MashTunMenu(id, inv, ContainerLevelAccess.create(level, pos), mash.getItems(), mash.getContainerData()),
                     Component.translatable("block.aqua_vitae.mash_tun")
             ));
         }

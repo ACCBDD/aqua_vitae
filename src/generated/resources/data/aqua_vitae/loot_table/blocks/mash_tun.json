@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aqua_vitae:mash_tun"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "aqua_vitae:blocks/mash_tun"
+}

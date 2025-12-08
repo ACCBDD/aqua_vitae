@@ -59,5 +59,6 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
         if (component.equals(Component.empty()))
             return;
         consumer.accept(component);
+        BrewingUtils.propertiesTooltip(this.properties).forEach(consumer);
     }
 }

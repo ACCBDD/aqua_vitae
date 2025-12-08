@@ -8,6 +8,7 @@ import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.item.MaltItem;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.screen.MaltKilnScreen;
+import com.accbdd.aqua_vitae.screen.MashTunScreen;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -129,5 +130,6 @@ public class AquaVitaeClient {
     @SubscribeEvent
     public void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.MALT_KILN.get(), MaltKilnScreen::new);
+        event.register(ModMenus.MASH_TUN.get(), MashTunScreen::new);
     }
 }

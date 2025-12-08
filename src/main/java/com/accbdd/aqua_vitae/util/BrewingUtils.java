@@ -21,9 +21,7 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class BrewingUtils {
 
@@ -116,6 +114,24 @@ public class BrewingUtils {
         }
 
         return component;
+    }
+
+    public static List<MutableComponent> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
+        List<MutableComponent> tooltips = new ArrayList<>();
+        if (properties.sugar() > 0) {
+            tooltips.add(Component.translatable("properties.aqua_vitae.sugar", properties.sugar()));
+        }
+        if (properties.starch() > 0) {
+            tooltips.add(Component.translatable("properties.aqua_vitae.starch", properties.starch()));
+        }
+        if (properties.diastaticPower() > 0) {
+            tooltips.add(Component.translatable("properties.aqua_vitae.diastatic_power", properties.diastaticPower()));
+        }
+        if (properties.yeast() > 0 && properties.yeastTolerance() > 0) {
+            tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), properties.yeastTolerance()));
+        }
+        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color())).withColor(properties.color() | 0xFF000000));
+        return tooltips;
     }
 
     public static Set<ResourceKey<Flavor>> kilnFlavors(Set<ResourceKey<Flavor>> flavors, int kilnCount) {
