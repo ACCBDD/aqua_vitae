@@ -7,7 +7,7 @@ import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
 import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.recipe.WortInput;
+import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -101,14 +101,14 @@ public class FluidUtils {
      */
     public static void modifyPrecursor(FluidStack fluid, BrewingIngredient ingredient, ItemStack itemStack) {
         PrecursorPropertiesComponent component = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
-        List<WortInput> items = new ArrayList<>(component.ingredients());
+        IngredientMap items = component.ingredients();
         Set<ResourceKey<Flavor>> flavors = new HashSet<>();
         flavors.addAll(ingredient.flavors());
         flavors.addAll(component.flavors());
-        items.add(WortInput.of(itemStack.copyWithCount(1)));
+        items.add(itemStack);
         BrewingProperties initial = component.properties();
         BrewingProperties toAdd = ingredient.properties();
-        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().size())));
+        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().getIngredientCount())));
     }
 
     public static List<Component> getPrecursorTooltip(FluidStack fluid) {
@@ -122,7 +122,7 @@ public class FluidUtils {
         tooltip.add(Component.literal(String.format("color: %s, starch: %s, sugar: %s", Integer.toHexString(props.color()), props.starch(), props.sugar())));
         tooltip.add(Component.literal(String.format("yeast: %s, yeast_tol: %s, dp: %s", props.yeast(), props.yeastTolerance(), props.diastaticPower())));
         tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
-        tooltip.add(Component.literal(String.format("ingredients: %s", component.ingredients())));
+        tooltip.add(component.ingredients().getTooltipComponent());
         return tooltip;
     }
 

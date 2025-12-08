@@ -2,9 +2,12 @@ package com.accbdd.aqua_vitae.util;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.registry.ModFluids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -152,5 +155,27 @@ public class BrewingUtils {
             }
         }
         return newFlavors;
+    }
+
+    public static FluidStack createWort(int amount, ItemStack... ingredients) {
+        FluidStack fluid = new FluidStack(ModFluids.WORT, amount);
+        IngredientMap inputs = new IngredientMap();
+        Set<ResourceKey<Flavor>> flavors = new HashSet<>();
+        BrewingIngredient.BrewingProperties properties = null;
+        for (ItemStack stack : ingredients) {
+            if (stack.isEmpty())
+                continue;
+            BrewingIngredient ing = BrewingUtils.getIngredient(stack);
+            if (ing == null)
+                continue;
+            flavors.addAll(ing.flavors());
+            if (inputs.isEmpty())
+                properties = ing.properties().copy();
+            else
+                properties = properties.add(ing.properties(), inputs.getIngredientCount());
+            inputs.add(stack);
+        }
+        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
+        return fluid;
     }
 }

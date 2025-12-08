@@ -2,19 +2,13 @@ package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.capability.AdaptedFluidHandler;
 import com.accbdd.aqua_vitae.capability.AdaptedItemHandler;
-import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.fluid.CombinedFluidHandler;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
-import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.registry.ModFluids;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,9 +20,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class MashTunBlockEntity extends AbstractBEWithData {
     public static final int MAX_PROGRESS = 10;
@@ -137,26 +129,16 @@ public class MashTunBlockEntity extends AbstractBEWithData {
     public void tickServer() {
         if (isLit() && canOutput()) {
             if (inputFluid.getFluidAmount() > 0) {
-                FluidStack outputFluidStack = new FluidStack(ModFluids.WORT, inputFluid.getFluidAmount());
-                BrewingIngredient.BrewingProperties properties = BrewingIngredient.BrewingProperties.DEFAULT;
-                List<WortInput> inputs = new ArrayList<>();
-                Set<ResourceKey<Flavor>> flavors = new HashSet<>();
+                List<ItemStack> inputs = new ArrayList<>();
                 for (int i = 0; i < inputItems.getSlots(); i++) {
                     ItemStack stack = inputItems.getStackInSlot(i);
                     BrewingIngredient ing = BrewingUtils.getIngredient(stack);
                     if (ing == null)
                         continue;
-                    flavors.addAll(ing.flavors());
-                    if (inputs.isEmpty())
-                        properties = ing.properties().mash().copy();
-                    else
-                        properties = properties.add(ing.properties().mash(), inputs.size());
-                    inputs.add(WortInput.of(stack));
                     stack.shrink(1);
                 }
-                outputFluidStack.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
-                this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE);
-                this.outputFluid.setFluid(outputFluidStack);
+                int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
+                this.outputFluid.setFluid(BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0])));
             }
         }
     }

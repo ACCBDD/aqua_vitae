@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -23,7 +24,7 @@ public record RoastCountComponent(int roast) implements TooltipProvider {
 
     @Override
     public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        MutableComponent component = roast < 5 ? Component.translatable("ingredient.aqua_vitae.roast." + roast) : Component.translatable("ingredient.aqua_vitae.roast.5");
+        MutableComponent component = getRoastName();
         switch (roast) {
             case 1 -> component = component.withColor(0xFFDCBB65);
             case 2 -> component = component.withColor(0xFFA57A09);
@@ -32,5 +33,11 @@ public record RoastCountComponent(int roast) implements TooltipProvider {
             default -> component = component.withColor(0xFF453200);
         }
         consumer.accept(component);
+    }
+
+    @NotNull
+    public MutableComponent getRoastName() {
+        MutableComponent component = roast < 5 ? Component.translatable("ingredient.aqua_vitae.roast." + roast) : Component.translatable("ingredient.aqua_vitae.roast.5");
+        return component;
     }
 }

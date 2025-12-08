@@ -56,7 +56,7 @@ public class LanguageGenerator extends LanguageProvider {
         addFlavor(BuiltInFlavors.SWEET, "Sweet");
 
         addGrammar("container_of", "%1$s of %2$s");
-        addGrammar("malt", "%1$s %2$s");
+        addGrammar("malt", "%1$s %2$s %3$s");
 
         add("ingredient.aqua_vitae.roast.1", "Pale");
         add("ingredient.aqua_vitae.roast.2", "Amber");

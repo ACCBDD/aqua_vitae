@@ -2,8 +2,7 @@ package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.recipe.WortInput;
-import com.accbdd.aqua_vitae.util.Codecs;
+import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -23,9 +22,9 @@ import java.util.Set;
  * @param inputs
  */
 public record AlcoholPropertiesComponent(int color, float abb, int age,
-                                         Set<ResourceKey<Flavor>> flavors, List<WortInput> inputs) {
+                                         Set<ResourceKey<Flavor>> flavors, IngredientMap inputs) {
 
-    public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), List.of());
+    public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(0, 0, 0, Set.of(), new IngredientMap());
 
     public static final Codec<AlcoholPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -33,7 +32,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
                     Codec.FLOAT.fieldOf("abb").forGetter(AlcoholPropertiesComponent::abb),
                     Codec.INT.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(AlcoholPropertiesComponent::flavors),
-                    Codecs.SORTED_WORT_INPUT_LIST.fieldOf("inputs").forGetter(AlcoholPropertiesComponent::inputs)
+                    IngredientMap.CODEC.fieldOf("inputs").forGetter(AlcoholPropertiesComponent::inputs)
             ).apply(instance, AlcoholPropertiesComponent::new)
     );
 
@@ -42,7 +41,7 @@ public record AlcoholPropertiesComponent(int color, float abb, int age,
             ByteBufCodecs.FLOAT, AlcoholPropertiesComponent::abb,
             ByteBufCodecs.INT, AlcoholPropertiesComponent::age,
             ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), AlcoholPropertiesComponent::flavors,
-            Codecs.SORTED_WORT_INPUT_LIST_STREAM, AlcoholPropertiesComponent::inputs,
+            IngredientMap.STREAM_CODEC, AlcoholPropertiesComponent::inputs,
             AlcoholPropertiesComponent::new
     );
 }

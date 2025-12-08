@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae.capability;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 public class AdaptedItemHandler implements IItemHandlerModifiable {

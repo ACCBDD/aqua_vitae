@@ -17,7 +17,7 @@
   "flavors.aqua_vitae.aqua_vitae:sweet": "Sweet",
   "flavors.aqua_vitae.aqua_vitae:toasty": "Toasty",
   "grammar.aqua_vitae.container_of": "%1$s of %2$s",
-  "grammar.aqua_vitae.malt": "%1$s %2$s",
+  "grammar.aqua_vitae.malt": "%1$s %2$s %3$s",
   "ingredient.aqua_vitae.aqua_vitae:wheat": "Wheat",
   "ingredient.aqua_vitae.roast.1": "Pale",
   "ingredient.aqua_vitae.roast.2": "Amber",

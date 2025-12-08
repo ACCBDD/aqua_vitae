@@ -1,19 +1,12 @@
 package com.accbdd.aqua_vitae.block.entity;
 
-import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.recipe.WortInput;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
-import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.registry.ModFluids;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,9 +17,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
     public static final int CAPACITY = 1000;
@@ -84,28 +75,16 @@ public class CrushingTubBlockEntity extends BaseSingleFluidTankEntity {
 
         if (crush++ > 5) {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS);
-            FluidStack fluid = new FluidStack(ModFluids.WORT, getFluid().getAmount());
-            List<WortInput> inputs = new ArrayList<>();
-            Set<ResourceKey<Flavor>> flavors = new HashSet<>();
-            BrewingIngredient.BrewingProperties properties = null;
+            List<ItemStack> inputs = new ArrayList<>();
             for (int i = 0; i < items.getSlots(); i++) {
                 ItemStack stack = items.extractItem(i, 1, false);
                 if (stack.isEmpty())
                     continue;
                 ((ServerLevel) getLevel()).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), (float) getBlockPos().getX() + 0.5F, (float) getBlockPos().getY() + 0.1F, (float) getBlockPos().getZ() + 0.5F, 20, 0.25, 0.25, 0.25, 0.0);
-
-                BrewingIngredient ing = BrewingUtils.getIngredient(stack);
-                if (ing == null)
-                    continue;
-                flavors.addAll(ing.flavors());
-                if (inputs.isEmpty())
-                    properties = ing.properties().copy();
-                else
-                    properties = properties.add(ing.properties(), inputs.size());
-                inputs.add(WortInput.of(stack));
+                inputs.add(stack);
             }
-            fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
-            setFluid(fluid);
+            FluidStack wort = BrewingUtils.createWort(getFluid().getAmount(), inputs.toArray(new ItemStack[0]));
+            setFluid(wort);
         } else {
             getLevel().playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS);
             for (int i = 0; i < getItemHandler().getSlots(); i++) {

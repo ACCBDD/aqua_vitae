@@ -85,7 +85,7 @@ public class KegBlock extends BaseEntityBlock {
             if (ingredient != null) {
                 FluidStack fluid = keg.getFluid();
                 if (!fluid.isEmpty()) {
-                    FluidUtils.modifyPrecursor(fluid, ingredient, stack);
+                    FluidUtils.modifyPrecursor(fluid, ingredient, stack.copyWithCount(1));
                     stack.shrink(1);
                     return ItemInteractionResult.SUCCESS;
                 }
