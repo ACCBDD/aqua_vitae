@@ -161,7 +161,7 @@ public class BrewingUtils {
         FluidStack fluid = new FluidStack(ModFluids.WORT, amount);
         IngredientMap inputs = new IngredientMap();
         Set<ResourceKey<Flavor>> flavors = new HashSet<>();
-        BrewingIngredient.BrewingProperties properties = null;
+        BrewingIngredient.BrewingProperties properties = BrewingIngredient.BrewingProperties.DEFAULT;
         for (ItemStack stack : ingredients) {
             if (stack.isEmpty())
                 continue;

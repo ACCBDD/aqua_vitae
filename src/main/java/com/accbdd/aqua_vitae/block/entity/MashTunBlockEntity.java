@@ -40,7 +40,13 @@ public class MashTunBlockEntity extends AbstractBEWithData {
         super(ModBlockEntities.MASH_TUN.get(), pos, blockState);
         this.inputFluid = new FluidTank(MAX_FLUID);
         this.outputFluid = new FluidTank(MAX_FLUID);
-        this.inputItems = new ItemStackHandler(9);
+        this.inputItems = new ItemStackHandler(9) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                MashTunBlockEntity.this.setChanged();
+            }
+        };
         this.outputItems = new ItemStackHandler(1);
         this.items = new CombinedInvWrapper(inputItems, outputItems);
 
@@ -106,8 +112,10 @@ public class MashTunBlockEntity extends AbstractBEWithData {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         CompoundTag input = this.inputItems.serializeNBT(registries);
         CompoundTag output = this.outputItems.serializeNBT(registries);
-        this.inputFluid.writeToNBT(registries, input);
-        this.outputFluid.writeToNBT(registries, output);
+        if (!this.inputFluid.isEmpty())
+            this.inputFluid.writeToNBT(registries, input);
+        if (!this.outputFluid.isEmpty())
+            this.outputFluid.writeToNBT(registries, output);
         tag.put(INPUT_TAG, input);
         tag.put(OUTPUT_TAG, output);
     }
@@ -131,14 +139,16 @@ public class MashTunBlockEntity extends AbstractBEWithData {
             if (inputFluid.getFluidAmount() > 0) {
                 List<ItemStack> inputs = new ArrayList<>();
                 for (int i = 0; i < inputItems.getSlots(); i++) {
-                    ItemStack stack = inputItems.getStackInSlot(i);
+                    ItemStack stack = inputItems.extractItem(i, 1, true);
                     BrewingIngredient ing = BrewingUtils.getIngredient(stack);
                     if (ing == null)
                         continue;
-                    stack.shrink(1);
+                    inputs.add(stack);
+                    inputItems.extractItem(i, 1, true);
                 }
                 int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
-                this.outputFluid.setFluid(BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0])));
+                FluidStack wort = BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0]));
+                this.outputFluid.setFluid(wort);
             }
         }
     }
