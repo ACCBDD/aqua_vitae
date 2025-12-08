@@ -4,6 +4,7 @@ import com.accbdd.aqua_vitae.capability.CupHandler;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
+import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.Flavor;
@@ -88,6 +89,12 @@ public class AquaVitae {
                 (entity, side) -> entity.getFluidHandler()
         );
 
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.MASH_TUN.get(),
+                (entity, side) -> entity.getFluidHandler()
+        );
+
         ModItems.ITEMS.getEntries().stream().filter(holder -> holder.get() instanceof CupItem)
                 .map(holder -> (CupItem) holder.get())
                 .forEach(cup -> event.registerItem(
@@ -101,6 +108,12 @@ public class AquaVitae {
                 Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.MALT_KILN.get(),
                 (entity, side) -> entity.getWrappedItemHandler()
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.MASH_TUN.get(),
+                (entity, side) -> entity.getItemHandler()
         );
     }
 
@@ -121,5 +134,6 @@ public class AquaVitae {
     public void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playToClient(AlcoholSyncPacket.TYPE, AlcoholSyncPacket.STREAM_CODEC, AlcoholSyncPacket::handle);
+        registrar.playToClient(FluidSyncPacket.TYPE, FluidSyncPacket.STREAM_CODEC, FluidSyncPacket::handle);
     }
 }

@@ -31,7 +31,7 @@ public class MashTunScreen extends AbstractContainerScreen<MashTunMenu> {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderProgress(guiGraphics, this.leftPos, this.topPos);
-        //renderFluid(guiGraphics, this.leftPos, this.topPos);
+        renderFluids(guiGraphics, this.leftPos, this.topPos);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
@@ -39,19 +39,19 @@ public class MashTunScreen extends AbstractContainerScreen<MashTunMenu> {
     protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.renderTooltip(guiGraphics, mouseX, mouseY);
         if (mouseX >= leftPos + 39 && mouseX <= leftPos + 47 && mouseY >= topPos + 17 && mouseY <= topPos + 69) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("block.minecraft.water").append(": ").append(Component.literal(menu.getFluidAmount() + " mB")), mouseX, mouseY);
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("block.minecraft.water").append(": ").append(Component.literal(menu.getInputFluid().getAmount() + " mB")), mouseX, mouseY);
         }
     }
 
     private void renderProgress(GuiGraphics graphics, int x, int y) {
-        graphics.blit(BACKGROUND, x + 83, y + 21, 176, 0, getScaled(menu.getProgress(), MashTunBlockEntity.MAX_PROGRESS, 25), 20);
+        graphics.blit(BACKGROUND, x + 83, y + 21, 176, 0, getScaled(menu.getProgress(), menu.getMaxProgress(), 25), 20);
     }
 
-    private void renderFluid(GuiGraphics graphics, int x, int y) {
-        int fluidHeight = getScaled(menu.getFluidAmount(), MashTunBlockEntity.MAX_FLUID, 52);
+    private void renderFluids(GuiGraphics graphics, int x, int y) {
+        FluidStack fluidStack = menu.getInputFluid();
+        int fluidHeight = getScaled(menu.getInputFluid().getAmount(), MashTunBlockEntity.MAX_FLUID, 52);
         if (fluidHeight == 0)
             return;
-        FluidStack fluidStack = new FluidStack(Fluids.WATER, menu.getFluidAmount());
         IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidStack.getFluidType());
         ResourceLocation fluidStill = handler.getStillTexture(fluidStack);
         TextureAtlasSprite fluidStillSprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);

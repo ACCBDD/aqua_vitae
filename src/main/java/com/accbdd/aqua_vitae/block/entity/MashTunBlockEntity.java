@@ -9,8 +9,10 @@ import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -18,12 +20,13 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MashTunBlockEntity extends AbstractBEWithData {
-    public static final int MAX_PROGRESS = 10;
+public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSyncable {
+    public static final int MAX_PROGRESS = 30;
     public static final int MAX_FLUID = 4000;
     public static final String INPUT_TAG = "input";
     public static final String OUTPUT_TAG = "output";
@@ -38,8 +41,22 @@ public class MashTunBlockEntity extends AbstractBEWithData {
 
     public MashTunBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MASH_TUN.get(), pos, blockState);
-        this.inputFluid = new FluidTank(MAX_FLUID);
-        this.outputFluid = new FluidTank(MAX_FLUID);
+        this.maxProgress = MAX_PROGRESS; //todo fix
+        this.inputFluid = new FluidTank(MAX_FLUID) {
+            @Override
+            protected void onContentsChanged() {
+                setChanged();
+                sendFluidUpdate(MashTunBlockEntity.this, this.getFluid(), 0);
+            }
+        };
+        this.outputFluid = new FluidTank(MAX_FLUID) {
+            @Override
+            protected void onContentsChanged() {
+                setChanged();
+                sendFluidUpdate(MashTunBlockEntity.this, this.getFluid(), 1);
+            }
+        };
+
         this.inputItems = new ItemStackHandler(9) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -137,18 +154,23 @@ public class MashTunBlockEntity extends AbstractBEWithData {
     public void tickServer() {
         if (isLit() && canOutput()) {
             if (inputFluid.getFluidAmount() > 0) {
-                List<ItemStack> inputs = new ArrayList<>();
-                for (int i = 0; i < inputItems.getSlots(); i++) {
-                    ItemStack stack = inputItems.extractItem(i, 1, true);
-                    BrewingIngredient ing = BrewingUtils.getIngredient(stack);
-                    if (ing == null)
-                        continue;
-                    inputs.add(stack);
-                    inputItems.extractItem(i, 1, true);
+                progress++;
+                if (progress >= maxProgress) {
+                    progress = 0;
+                    List<ItemStack> inputs = new ArrayList<>();
+                    for (int i = 0; i < inputItems.getSlots(); i++) {
+                        ItemStack stack = inputItems.extractItem(i, 1, true);
+                        BrewingIngredient ing = BrewingUtils.getIngredient(stack);
+                        if (ing == null)
+                            continue;
+                        inputs.add(stack);
+                        inputItems.extractItem(i, 1, false);
+                        outputItems.insertItem(0, Items.BONE_MEAL.getDefaultInstance(), false);
+                    }
+                    int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
+                    FluidStack wort = BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0]));
+                    this.outputFluid.setFluid(wort);
                 }
-                int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
-                FluidStack wort = BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0]));
-                this.outputFluid.setFluid(wort);
             }
         }
     }
@@ -175,5 +197,14 @@ public class MashTunBlockEntity extends AbstractBEWithData {
 
     public ContainerData getContainerData() {
         return this.data;
+    }
+
+    @Override
+    public void setFluid(FluidStack stack, int tankId) {
+        switch (tankId) {
+            case 0 -> inputFluid.setFluid(stack);
+            case 1 -> outputFluid.setFluid(stack);
+            default -> {}
+        }
     }
 }

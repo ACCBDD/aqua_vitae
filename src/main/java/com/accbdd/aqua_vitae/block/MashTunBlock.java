@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.MashTunBlockEntity;
+import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.screen.MashTunMenu;
 import com.accbdd.aqua_vitae.util.FluidUtils;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class MashTunBlock extends BaseEntityBlock {
@@ -81,6 +83,8 @@ public class MashTunBlock extends BaseEntityBlock {
                     (id, inv, plr) -> new MashTunMenu(id, inv, ContainerLevelAccess.create(level, pos), mash.getItems(), mash.getContainerData()),
                     Component.translatable("block.aqua_vitae.mash_tun")
             ));
+            PacketDistributor.sendToPlayer(serverPlayer, new FluidSyncPacket(pos, mash.getFluidHandler().getFluidInTank(0), 0));
+            PacketDistributor.sendToPlayer(serverPlayer, new FluidSyncPacket(pos, mash.getFluidHandler().getFluidInTank(1), 1));
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
