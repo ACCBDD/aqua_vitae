@@ -145,6 +145,15 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     (int) (this.diastaticPower * 0.75));
         }
 
+        public BrewingProperties mash() {
+            return new BrewingProperties(color,
+                    0,
+                    this.sugar + this.starch / 2,
+                    this.yeast,
+                    this.yeastTolerance,
+                    0);
+        }
+
         private int blendColor(BrewingProperties other) {
 
             int c1 = this.color();
