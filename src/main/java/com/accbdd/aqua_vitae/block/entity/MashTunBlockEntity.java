@@ -151,7 +151,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
     public void tickServer() {
         if (isLit() && canOutput()) {
-            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty()) {
+            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty() && outputFluid.isEmpty()) {
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;
@@ -167,7 +167,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
                     }
                     int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
                     FluidStack wort = BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0]));
-                    this.outputFluid.setFluid(wort);
+                    this.outputFluid.fill(wort, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
