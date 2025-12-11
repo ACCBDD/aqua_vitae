@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.MaltKilnBlockEntity;
+import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.screen.MaltKilnMenu;
 import com.accbdd.aqua_vitae.util.FluidUtils;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class MaltKilnBlock extends BaseEntityBlock {
@@ -95,6 +97,7 @@ public class MaltKilnBlock extends BaseEntityBlock {
                     (id, inv, plr) -> new MaltKilnMenu(id, inv, ContainerLevelAccess.create(level, pos), kiln.getItemHandler(), kiln.getContainerData()),
                     Component.translatable("block.aqua_vitae.malt_kiln")
             ));
+            PacketDistributor.sendToPlayer(serverPlayer, new FluidSyncPacket(pos, kiln.getFluidHandler().getFluidInTank(0), 0));
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

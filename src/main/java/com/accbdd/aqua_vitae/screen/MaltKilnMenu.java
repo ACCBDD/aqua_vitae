@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.screen;
 
+import com.accbdd.aqua_vitae.block.entity.IFluidSyncable;
 import com.accbdd.aqua_vitae.block.entity.MaltKilnBlockEntity;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModMenus;
@@ -10,12 +11,15 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class MaltKilnMenu extends AbstractBaseInventoryMenu {
+public class MaltKilnMenu extends AbstractBaseInventoryMenu implements IFluidSyncable {
     private final ContainerLevelAccess containerLevelAccess;
     private final ContainerData data;
+
+    private FluidStack inputFluid;
 
     public MaltKilnMenu(int windowId, Inventory inventory) {
         this(windowId, inventory, ContainerLevelAccess.NULL, MaltKilnBlockEntity.createClientItemHandler(), new SimpleContainerData(4));
@@ -25,6 +29,7 @@ public class MaltKilnMenu extends AbstractBaseInventoryMenu {
         super(ModMenus.MALT_KILN.get(), windowId, inventory, 3, 8, 84);
         this.containerLevelAccess = containerLevelAccess;
         this.data = data;
+        this.inputFluid = FluidStack.EMPTY;
         this.addSlot(new SlotItemHandler(items, 0, 56, 17));
         this.addSlot(new SlotItemHandler(items, 1, 56, 53));
         this.addSlot(new SlotItemHandler(items, 2, 116, 35) {
@@ -54,7 +59,12 @@ public class MaltKilnMenu extends AbstractBaseInventoryMenu {
         return data.get(2);
     }
 
-    public int getFluidAmount() {
-        return data.get(3);
+    @Override
+    public void setFluid(FluidStack stack, int tankId) {
+        this.inputFluid = stack;
+    }
+
+    public FluidStack getFluid() {
+        return this.inputFluid;
     }
 }

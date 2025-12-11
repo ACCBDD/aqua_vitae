@@ -9,7 +9,6 @@ import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -20,7 +19,6 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +151,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
     public void tickServer() {
         if (isLit() && canOutput()) {
-            if (inputFluid.getFluidAmount() > 0) {
+            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty()) {
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;

@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class MaltKilnBlockEntity extends AbstractBEWithData {
+public class MaltKilnBlockEntity extends AbstractBEWithData implements IFluidSyncable {
     public static final int MAX_PROGRESS = 10;
     public static final int MAX_FLUID = 4000;
     public static final int WATER_USAGE = 100;
@@ -51,6 +52,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
             @Override
             protected void onContentsChanged() {
                 MaltKilnBlockEntity.this.setChanged();
+                sendFluidUpdate(MaltKilnBlockEntity.this, this.getFluid(), 0);
             }
         };
 
@@ -77,7 +79,6 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                     case 0 -> MaltKilnBlockEntity.this.progress;
                     case 1 -> MaltKilnBlockEntity.this.burnTime;
                     case 2 -> MaltKilnBlockEntity.this.maxBurnTime;
-                    case 3 -> MaltKilnBlockEntity.this.fluidHandler.getFluidAmount();
                     default -> 0;
                 };
             }
@@ -89,7 +90,6 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                     case 0 -> MaltKilnBlockEntity.this.progress = val;
                     case 1 -> MaltKilnBlockEntity.this.burnTime = val;
                     case 2 -> MaltKilnBlockEntity.this.maxBurnTime = val;
-                    case 3 -> {}
                     default -> {}
                 }
                 MaltKilnBlockEntity.this.setChanged();
@@ -267,5 +267,10 @@ public class MaltKilnBlockEntity extends AbstractBEWithData {
                 this.getLevel().setBlock(this.getBlockPos(), this.getBlockState().setValue(BlockStateProperties.LIT, true), 3);
             }
         }
+    }
+
+    @Override
+    public void setFluid(FluidStack stack, int tankId) {
+        fluidHandler.setFluid(stack);
     }
 }
