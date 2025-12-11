@@ -12,6 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class IngredientMap {
     public static final Codec<IngredientMap> CODEC = Codec.unboundedMap(ComponentSerialization.FLAT_CODEC, Codec.INT).xmap(IngredientMap::new, IngredientMap::getMap);
@@ -80,5 +81,17 @@ public class IngredientMap {
         }
         
         return finalComponent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IngredientMap that)) return false;
+        return Objects.equals(getMap(), that.getMap());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMap());
     }
 }
