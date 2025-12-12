@@ -8,10 +8,14 @@ import com.accbdd.aqua_vitae.screen.MashTunMenu;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -52,7 +56,7 @@ public class MashTunBlock extends BaseEntityBlock {
     public MashTunBlock() {
         super(Properties.ofFullCopy(Blocks.CAULDRON)
                 .mapColor(MapColor.TERRACOTTA_PINK)
-                .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
+                .noOcclusion());
     }
 
     @Override
@@ -153,6 +157,19 @@ public class MashTunBlock extends BaseEntityBlock {
                 level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, true));
             } else {
                 level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, false));
+            }
+        }
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(BlockStateProperties.LIT)) {
+            if (random.nextFloat() < 0.25F) {
+                double x = (double)pos.getX() + 0.5 + (random.nextDouble() * 0.4 - 0.2);
+                double y = (double)pos.getY() + 1;
+                double z = (double)pos.getZ() + 0.5 + (random.nextDouble() * 0.4 - 0.2);
+                double motionY = random.nextBoolean() ? 0.015 : 0.005;
+                level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0.0, motionY, 0.0);
             }
         }
     }
