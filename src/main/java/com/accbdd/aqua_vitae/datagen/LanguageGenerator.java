@@ -69,6 +69,15 @@ public class LanguageGenerator extends LanguageProvider {
         add("properties.aqua_vitae.diastatic_power", "DP: %s");
         add("properties.aqua_vitae.yeast", "Yeast: %1$s, Tolerance: %2$s");
         add("properties.aqua_vitae.color", "#%s");
+        add("properties.aqua_vitae.abb", "%s ABV");
+        add("properties.aqua_vitae.age", "%s old");
+
+        add("properties.aqua_vitae.properties", "Hold %s for properties.");
+        add("properties.aqua_vitae.ingredients", "Hold %s for ingredients.");
+
+        add("key.categories.aqua_vitae", "Aqua Vitae");
+        add("key.aqua_vitae.properties", "Show Fluid Properties");
+        add("key.aqua_vitae.ingredients", "Show Ingredients");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {

@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.screen.widget;
 
+import com.accbdd.aqua_vitae.client.ClientUtils;
 import com.accbdd.aqua_vitae.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,6 +9,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 
@@ -41,10 +45,14 @@ public class FluidGaugeWidget extends AbstractDisplayWidget {
     @Override
     public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         FluidStack fluidStack = fluidSupplier.get();
-        Component tooltip = Component.literal("Empty");
-        if (!fluidStack.isEmpty())
-            tooltip = fluidStack.getHoverName().copy().append(": ").append(Component.literal(fluidSupplier.get().getAmount() + " mB"));
-        guiGraphics.renderTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        List<Component> tooltips = new ArrayList<>();
+        if (!fluidStack.isEmpty()) {
+            tooltips.add(fluidStack.getHoverName().copy().append(": ").append(Component.literal(fluidSupplier.get().getAmount() + " mB")));
+            tooltips.addAll(ClientUtils.getFluidTooltip(fluidStack));
+        } else {
+            tooltips.add(Component.literal("Empty"));
+        }
+        guiGraphics.renderTooltip(Minecraft.getInstance().font, tooltips, Optional.empty(), mouseX, mouseY);
     }
 
     @Override

@@ -27,9 +27,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -41,11 +39,24 @@ public class AquaVitaeClient {
     public AquaVitaeClient(IEventBus modEventBus, ModContainer container) {
         modEventBus.register(this);
         NeoForge.EVENT_BUS.addListener(SwayCamera::onComputeCameraAngles);
+        NeoForge.EVENT_BUS.addListener(this::onClientTick);
     }
 
     @SubscribeEvent
     public void onClientSetup(FMLClientSetupEvent event) {
         ModFluids.REGISTERED.forEach(fluid -> ItemBlockRenderTypes.setRenderLayer(fluid.get(), RenderType.translucent()));
+    }
+
+    public void onClientTick(ClientTickEvent.Post event) {
+        if (Minecraft.getInstance().player != null) {
+            if (ModKeyMappings.INGREDIENTS_MAPPING.get().consumeClick()) {
+                AquaVitae.LOGGER.info("INGREDIENTS key clicked! State: {}", ModKeyMappings.INGREDIENTS_MAPPING.get().isDown());
+            }
+
+            if (ModKeyMappings.PROPERTIES_MAPPING.get().isDown()) {
+                AquaVitae.LOGGER.debug("PROPERTIES key is down.");
+            }
+        }
     }
 
     @SubscribeEvent
@@ -131,5 +142,10 @@ public class AquaVitaeClient {
     public void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.MALT_KILN.get(), MaltKilnScreen::new);
         event.register(ModMenus.MASH_TUN.get(), MashTunScreen::new);
+    }
+
+    @SubscribeEvent
+    public void registerBindings(RegisterKeyMappingsEvent event) {
+        ModKeyMappings.register(event);
     }
 }

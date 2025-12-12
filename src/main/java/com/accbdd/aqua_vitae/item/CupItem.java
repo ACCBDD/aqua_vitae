@@ -1,11 +1,11 @@
 package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.client.ClientUtils;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -44,8 +44,7 @@ public class CupItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
         tooltipComponents.add(fluid.getHoverName().copy().append(": " + fluid.getAmount()));
-        tooltipComponents.addAll(FluidUtils.getPrecursorTooltip(fluid));
-        tooltipComponents.addAll(FluidUtils.getAlcoholTooltip(fluid));
+        tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
     }
 
     @Override

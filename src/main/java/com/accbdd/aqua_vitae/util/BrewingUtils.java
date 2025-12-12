@@ -119,8 +119,8 @@ public class BrewingUtils {
         return component;
     }
 
-    public static List<MutableComponent> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
-        List<MutableComponent> tooltips = new ArrayList<>();
+    public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
+        List<Component> tooltips = new ArrayList<>();
         if (properties.sugar() > 0) {
             tooltips.add(Component.translatable("properties.aqua_vitae.sugar", properties.sugar()));
         }

@@ -9,7 +9,6 @@ import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
 import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -20,12 +19,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class FluidUtils {
     public static final Predicate<FluidStack> HAS_ALCOHOL = stack -> stack.has(ModComponents.ALCOHOL_PROPERTIES);
@@ -109,21 +105,6 @@ public class FluidUtils {
         BrewingProperties initial = component.properties();
         BrewingProperties toAdd = ingredient.properties();
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().getIngredientCount())));
-    }
-
-    public static List<Component> getPrecursorTooltip(FluidStack fluid) {
-        PrecursorPropertiesComponent component = fluid.get(ModComponents.PRECURSOR_PROPERTIES);
-        if (component == null)
-            return List.of();
-
-        BrewingProperties props = component.properties();
-
-        List<Component> tooltip = new ArrayList<>();
-        tooltip.add(Component.literal(String.format("color: %s, starch: %s, sugar: %s", Integer.toHexString(props.color()), props.starch(), props.sugar())));
-        tooltip.add(Component.literal(String.format("yeast: %s, yeast_tol: %s, dp: %s", props.yeast(), props.yeastTolerance(), props.diastaticPower())));
-        tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
-        tooltip.add(component.ingredients().getTooltipComponent());
-        return tooltip;
     }
 
     /**
@@ -236,17 +217,5 @@ public class FluidUtils {
         if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
             return stack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
         return 0x00000000;
-    }
-
-    public static List<Component> getAlcoholTooltip(FluidStack fluid) {
-        AlcoholPropertiesComponent component = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-        if (component == null)
-            return List.of();
-
-        List<Component> tooltip = new ArrayList<>();
-        tooltip.add(Component.literal(String.format("color: %s, abb: %s, age: %s", Integer.toHexString(component.color()), component.abb(), component.age())));
-        tooltip.add(Component.literal(String.format("flavors: %s", component.flavors().stream().map(ResourceKey::location).collect(Collectors.toList()))));
-        tooltip.add(Component.literal(String.format("ingredients: %s", component.inputs())));
-        return tooltip;
     }
 }
