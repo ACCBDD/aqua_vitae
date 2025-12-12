@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.recipe;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -59,28 +61,28 @@ public class IngredientMap {
     public Component getTooltipComponent() {
         final int totalCount = getIngredientCount();
         if (totalCount == 0)
-            return Component.translatable("tooltip.aqua_vitae.no_ingredients");
+            return Component.translatable("ingredient.aqua_vitae.no_ingredients");
 
-        MutableComponent finalComponent = Component.literal("");
+        MutableComponent finalComponent = Component.empty();
         boolean isFirst = true;
 
-        for (Map.Entry<Component, Integer> entry : this.map.entrySet()) {
+        for (Iterator<Map.Entry<Component, Integer>> iterator = this.map.entrySet().iterator(); iterator.hasNext(); ) {
+            Map.Entry<Component, Integer> entry = iterator.next();
             Component nameComponent = entry.getKey();
             int count = entry.getValue();
-            float percentage = ((float)count / totalCount) * 100.0f;
-            String percentageString = String.format("%.1f%%", percentage);
+            float percentage = ((float) count / totalCount) * 100.0f;
+            String percentageString = String.format("%.0f%%", percentage);
             MutableComponent ingredientSegment = nameComponent.copy()
                     .append(Component.literal(" (" + percentageString + ")")
                             .withStyle(style -> style.withColor(0xAAAAAA)));
 
-            if (!isFirst)
-                finalComponent.append(Component.literal(", ").withStyle(style -> style.withColor(0xFFFFFF)));
-
-            finalComponent.append(ingredientSegment);
-            isFirst = false;
+            if (iterator.hasNext())
+                finalComponent.append(Component.translatable("grammar.aqua_vitae.list_combine", ingredientSegment).withStyle(style -> style.withColor(0xFFFFFF)));
+            else
+                finalComponent.append(ingredientSegment);
         }
         
-        return finalComponent;
+        return Component.translatable("grammar.aqua_vitae.label", Component.translatable("ingredient.aqua_vitae.label").withStyle(ChatFormatting.AQUA), finalComponent);
     }
 
     @Override

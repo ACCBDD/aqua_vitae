@@ -57,13 +57,19 @@ public class LanguageGenerator extends LanguageProvider {
 
         addGrammar("container_of", "%1$s of %2$s");
         addGrammar("malt", "%1$s %2$s %3$s");
+        addGrammar("fluid_amount", "%s mB");
+        addGrammar("list_combine", "%s, ");
+        addGrammar("label", "%1$s %2$s");
 
+        add("flavor.aqua_vitae.none", "None");
+        add("flavor.aqua_vitae.label", "Flavors:");
         add("ingredient.aqua_vitae.roast.1", "Pale");
         add("ingredient.aqua_vitae.roast.2", "Amber");
         add("ingredient.aqua_vitae.roast.3", "Brown");
         add("ingredient.aqua_vitae.roast.4", "Chocolate");
         add("ingredient.aqua_vitae.roast.5", "Black");
-
+        add("ingredient.aqua_vitae.no_ingredients", "The ingredient list has been lost...");
+        add("ingredient.aqua_vitae.label", "Contains:");
         add("properties.aqua_vitae.sugar", "Sugar: %s");
         add("properties.aqua_vitae.starch", "Starch: %s");
         add("properties.aqua_vitae.diastatic_power", "DP: %s");
@@ -71,13 +77,12 @@ public class LanguageGenerator extends LanguageProvider {
         add("properties.aqua_vitae.color", "#%s");
         add("properties.aqua_vitae.abb", "%s ABV");
         add("properties.aqua_vitae.age", "%s old");
-
         add("properties.aqua_vitae.properties", "Hold %s for properties.");
         add("properties.aqua_vitae.ingredients", "Hold %s for ingredients.");
-
         add("key.categories.aqua_vitae", "Aqua Vitae");
         add("key.aqua_vitae.properties", "Show Fluid Properties");
         add("key.aqua_vitae.ingredients", "Show Ingredients");
+
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {
@@ -94,7 +99,7 @@ public class LanguageGenerator extends LanguageProvider {
     }
 
     private void addFlavor(Map.Entry<ResourceKey<Flavor>, Flavor> flavor, String name) {
-        add("flavors.aqua_vitae." + flavor.getKey().location(), name);
+        add("flavor.aqua_vitae." + flavor.getKey().location(), name);
     }
 
     private void addGrammar(String name, String text) {

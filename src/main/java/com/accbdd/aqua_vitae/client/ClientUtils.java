@@ -39,20 +39,23 @@ public class ClientUtils {
             AlcoholPropertiesComponent alcoholComponent = fluidStack.get(ModComponents.ALCOHOL_PROPERTIES);
             ingredientsTooltip.add(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
-            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abb", alcoholComponent.abb()));
+            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abb", String.format("%.2f%%", alcoholComponent.abb() / 10)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", alcoholComponent.age()));
-            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color())).withColor(alcoholComponent.color() | 0xFF000000));
+            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color()).toUpperCase()).withColor(alcoholComponent.color() | 0xFF000000));
         }
+
+        if (ingredientsTooltip.isEmpty() && propertiesTooltip.isEmpty())
+            return List.of();
 
         if (!ingredientsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()))
             tooltips.addAll(ingredientsTooltip);
         else
-            tooltips.add(Constants.COMPONENT_INGREDIENTS.withStyle(ChatFormatting.GRAY));
+            tooltips.add(Constants.COMPONENT_INGREDIENTS.withStyle(ChatFormatting.DARK_GRAY));
 
         if (!propertiesTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()))
             tooltips.addAll(propertiesTooltip);
         else
-            tooltips.add(Constants.COMPONENT_PROPERTIES.withStyle(ChatFormatting.GRAY));
+            tooltips.add(Constants.COMPONENT_PROPERTIES.withStyle(ChatFormatting.DARK_GRAY));
 
         return tooltips;
     }

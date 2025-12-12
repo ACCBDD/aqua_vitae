@@ -8,6 +8,7 @@ import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluids;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -106,17 +107,21 @@ public class BrewingUtils {
     }
 
     public static Component flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
+        if (flavors.isEmpty())
+            return Component.translatable("flavor.aqua_vitae.none");
         MutableComponent component = Component.empty();
         Iterator<ResourceKey<Flavor>> iterator = flavors.iterator();
         while (iterator.hasNext()) {
             ResourceKey<Flavor> key = iterator.next();
-            component.append(Component.translatable("flavors.aqua_vitae." + key.location()));
+            MutableComponent flavorName = Component.translatable("flavor.aqua_vitae." + key.location());
             if (iterator.hasNext()) {
-                component.append(Component.literal(", "));
+                component.append(Component.translatable("grammar.aqua_vitae.list_combine", flavorName));
+            } else {
+                component.append(flavorName);
             }
         }
 
-        return component;
+        return Component.translatable("grammar.aqua_vitae.label", Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.AQUA), component);
     }
 
     public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
@@ -131,9 +136,9 @@ public class BrewingUtils {
             tooltips.add(Component.translatable("properties.aqua_vitae.diastatic_power", properties.diastaticPower()));
         }
         if (properties.yeast() > 0 && properties.yeastTolerance() > 0) {
-            tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), properties.yeastTolerance()));
+            tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), String.format("%.2f%%", (float)properties.yeastTolerance() / 10)));
         }
-        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color())).withColor(properties.color() | 0xFF000000));
+        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color()).toUpperCase()).withColor(properties.color() | 0xFF000000));
         return tooltips;
     }
 
@@ -175,7 +180,7 @@ public class BrewingUtils {
                 properties = properties.add(ing.properties(), inputs.getIngredientCount());
             inputs.add(stack);
         }
-        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
+        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties.mash()));
         return fluid;
     }
 }
