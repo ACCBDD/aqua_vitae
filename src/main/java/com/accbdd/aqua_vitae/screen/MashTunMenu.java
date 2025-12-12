@@ -27,15 +27,15 @@ public class MashTunMenu extends AbstractBaseInventoryMenu implements IFluidSync
     }
 
     public MashTunMenu(int windowId, Inventory inventory, ContainerLevelAccess containerLevelAccess, IItemHandler items, ContainerData data) {
-        super(ModMenus.MASH_TUN.get(), windowId, inventory, 10, 8, 84);
+        super(ModMenus.MASH_TUN.get(), windowId, inventory, 10, 8, 92);
         this.inputFluid = FluidStack.EMPTY;
         this.outputFluid = FluidStack.EMPTY;
         this.containerLevelAccess = containerLevelAccess;
         this.data = data;
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new SlotItemHandler(items, i, 24 + (i % 3) * 18, 17 + (i / 3) * 18));
+            this.addSlot(new SlotItemHandler(items, i, 24 + (i % 3) * 18, 18 + (i / 3) * 18));
         }
-        this.addSlot(new SlotItemHandler(items, 9, 87, 47) {
+        this.addSlot(new SlotItemHandler(items, 9, 87, 46) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;

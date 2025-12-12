@@ -54,6 +54,6 @@ public class MaltKilnScreen extends AbstractContainerScreen<MaltKilnMenu> {
     }
 
     private void renderProgress(GuiGraphics graphics, int x, int y) {
-        graphics.blit(BACKGROUND, x + 79, y + 35, 190, 0, getScaled(menu.getProgress(), MaltKilnBlockEntity.MAX_PROGRESS, 24), 16);
+        graphics.blit(BACKGROUND, x + 87, y + 68, 190, 0, getScaled(menu.getProgress(), MaltKilnBlockEntity.MAX_PROGRESS, 24), 16);
     }
 }

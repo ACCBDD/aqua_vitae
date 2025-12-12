@@ -82,6 +82,8 @@ public class LanguageGenerator extends LanguageProvider {
         add("key.categories.aqua_vitae", "Aqua Vitae");
         add("key.aqua_vitae.properties", "Show Fluid Properties");
         add("key.aqua_vitae.ingredients", "Show Ingredients");
+        add("tooltip.aqua_vitae.heated", "Heated");
+        add("tooltip.aqua_vitae.needs_heat", "Needs heat from below");
 
     }
 

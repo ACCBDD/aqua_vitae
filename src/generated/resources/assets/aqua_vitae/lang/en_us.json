@@ -50,5 +50,7 @@
   "properties.aqua_vitae.properties": "Hold %s for properties.",
   "properties.aqua_vitae.starch": "Starch: %s",
   "properties.aqua_vitae.sugar": "Sugar: %s",
-  "properties.aqua_vitae.yeast": "Yeast: %1$s, Tolerance: %2$s"
+  "properties.aqua_vitae.yeast": "Yeast: %1$s, Tolerance: %2$s",
+  "tooltip.aqua_vitae.heated": "Heated",
+  "tooltip.aqua_vitae.needs_heat": "Needs heat from below"
 }
