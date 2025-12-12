@@ -62,6 +62,11 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
                 super.onContentsChanged(slot);
                 MashTunBlockEntity.this.setChanged();
             }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return 1;
+            }
         };
         this.outputItems = new ItemStackHandler(1);
         this.items = new CombinedInvWrapper(inputItems, outputItems);
