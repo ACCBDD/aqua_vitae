@@ -26,7 +26,7 @@ public class MashTunScreen extends AbstractContainerScreen<MashTunMenu> {
         super.init();
         addRenderableWidget(new FluidGaugeWidget(this.leftPos + 11, this.topPos + 18, 7, 52, menu::getInputFluid, MashTunBlockEntity.MAX_FLUID));
         addRenderableWidget(new FluidGaugeWidget(this.leftPos + 114, this.topPos + 18, 51, 52, menu::getOutputFluid, MashTunBlockEntity.MAX_FLUID));
-        addRenderableWidget(new HeatWidget(this.leftPos + 85, this.topPos + 70, () -> menu.getProgress() != 0));
+        addRenderableWidget(new HeatWidget(this.leftPos + 86, this.topPos + 65, () -> menu.getProgress() != 0));
     }
 
     @Override
@@ -47,10 +47,6 @@ public class MashTunScreen extends AbstractContainerScreen<MashTunMenu> {
     }
 
     private void renderProgress(GuiGraphics graphics, int x, int y) {
-        graphics.blit(BACKGROUND, x + 83, y + 13, 176, 0, getScaled(menu.getProgress(), menu.getMaxProgress(), 25), 20);
-    }
-
-    private void renderHeatBar(GuiGraphics graphics, int x, int y) {
-        graphics.blit(BACKGROUND, x + 83, y + 13, 176, 0, getScaled(menu.getProgress(), menu.getMaxProgress(), 25), 20);
+        graphics.blit(BACKGROUND, x + 83, y + 17, 176, 0, getScaled(menu.getProgress(), menu.getMaxProgress(), 25), 20);
     }
 }

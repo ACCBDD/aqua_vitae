@@ -35,7 +35,7 @@ public class MashTunMenu extends AbstractBaseInventoryMenu implements IFluidSync
         for (int i = 0; i < 9; i++) {
             this.addSlot(new SlotItemHandler(items, i, 24 + (i % 3) * 18, 18 + (i / 3) * 18));
         }
-        this.addSlot(new SlotItemHandler(items, 9, 87, 46) {
+        this.addSlot(new SlotItemHandler(items, 9, 87, 43) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
