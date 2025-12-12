@@ -26,7 +26,7 @@ public class MashTunScreen extends AbstractContainerScreen<MashTunMenu> {
         super.init();
         addRenderableWidget(new FluidGaugeWidget(this.leftPos + 11, this.topPos + 18, 7, 52, menu::getInputFluid, MashTunBlockEntity.MAX_FLUID));
         addRenderableWidget(new FluidGaugeWidget(this.leftPos + 114, this.topPos + 18, 51, 52, menu::getOutputFluid, MashTunBlockEntity.MAX_FLUID));
-        addRenderableWidget(new HeatWidget(this.leftPos + 86, this.topPos + 65, () -> menu.getProgress() != 0));
+        addRenderableWidget(new HeatWidget(this.leftPos + 86, this.topPos + 65, () -> menu.getProgress() != 0)); //todo actually implement
     }
 
     @Override
