@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.MashTunBlockEntity;
+import com.accbdd.aqua_vitae.datagen.BlockTagGenerator;
 import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.screen.MashTunMenu;
@@ -139,5 +140,20 @@ public class MashTunBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new MashTunBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        if (level.isClientSide)
+            return;
+
+        if (neighborPos.equals(pos.below())) {
+            BlockState below = level.getBlockState(neighborPos);
+            if (below.is(BlockTagGenerator.HEAT_SOURCES)) {
+                level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, true));
+            } else {
+                level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, false));
+            }
+        }
     }
 }

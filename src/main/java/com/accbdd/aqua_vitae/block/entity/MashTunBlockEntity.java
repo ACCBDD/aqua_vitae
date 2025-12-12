@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -30,9 +31,9 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
     public static final String OUTPUT_TAG = "output";
 
     private final FluidTank inputFluid, outputFluid;
-    private final IFluidHandler inputFluidHandler, outputFluidHandler, fluidHandler;
+    private final IFluidHandler fluidHandler;
     private final ItemStackHandler inputItems, outputItems;
-    private final IItemHandlerModifiable items, inputItemHandler, outputItemHandler, itemHandler;
+    private final IItemHandlerModifiable items, itemHandler;
     private final ContainerData data;
 
     private int progress, maxProgress;
@@ -65,30 +66,30 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
         this.outputItems = new ItemStackHandler(1);
         this.items = new CombinedInvWrapper(inputItems, outputItems);
 
-        this.inputFluidHandler = new AdaptedFluidHandler(inputFluid) {
+        IFluidHandler inputFluidHandler = new AdaptedFluidHandler(inputFluid) {
             @Override
             public FluidStack drain(int i, FluidAction fluidAction) {
                 return FluidStack.EMPTY;
             }
         };
 
-        this.outputFluidHandler = new AdaptedFluidHandler(outputFluid) {
+        IFluidHandler outputFluidHandler = new AdaptedFluidHandler(outputFluid) {
             @Override
             public int fill(FluidStack fluidStack, FluidAction fluidAction) {
                 return 0;
             }
         };
 
-        this.fluidHandler = new CombinedFluidHandler(this.inputFluidHandler, this.outputFluidHandler);
+        this.fluidHandler = new CombinedFluidHandler(inputFluidHandler, outputFluidHandler);
 
-        this.inputItemHandler = new AdaptedItemHandler(inputItems) {
+        IItemHandlerModifiable inputItemHandler = new AdaptedItemHandler(inputItems) {
             @Override
             public ItemStack extractItem(int index, int count, boolean simulate) {
                 return ItemStack.EMPTY;
             }
         };
 
-        this.outputItemHandler = new AdaptedItemHandler(outputItems) {
+        IItemHandlerModifiable outputItemHandler = new AdaptedItemHandler(outputItems) {
             @Override
             public ItemStack insertItem(int i, ItemStack itemStack, boolean simulate) {
                 return itemStack;
@@ -103,6 +104,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
                 return switch (i) {
                     case 0 -> progress;
                     case 1 -> maxProgress;
+                    case 2 -> getBlockState().getValue(BlockStateProperties.LIT) ? 1 : 0;
                     default -> 0;
                 };
             }
@@ -118,7 +120,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -151,7 +153,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
     public void tickServer() {
         if (isLit() && canOutput()) {
-            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty() && outputFluid.isEmpty()) {
+            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty()) {
                 progress++;
                 if (progress >= maxProgress) {
                     progress = 0;
@@ -174,11 +176,11 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
     }
 
     public boolean isLit() {
-        return true; //todo implement
+        return getBlockState().getValue(BlockStateProperties.LIT);
     }
 
     public boolean canOutput() {
-        return true; //todo implement
+        return outputFluid.isEmpty();
     }
 
     public IFluidHandler getFluidHandler() {

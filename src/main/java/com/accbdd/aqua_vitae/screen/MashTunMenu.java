@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -23,7 +24,7 @@ public class MashTunMenu extends AbstractBaseInventoryMenu implements IFluidSync
     private FluidStack outputFluid;
 
     public MashTunMenu(int windowId, Inventory inventory) {
-        this(windowId, inventory, ContainerLevelAccess.NULL, new ItemStackHandler(10), new SimpleContainerData(4));
+        this(windowId, inventory, ContainerLevelAccess.NULL, new ItemStackHandler(10), new SimpleContainerData(3));
     }
 
     public MashTunMenu(int windowId, Inventory inventory, ContainerLevelAccess containerLevelAccess, IItemHandler items, ContainerData data) {
@@ -64,6 +65,10 @@ public class MashTunMenu extends AbstractBaseInventoryMenu implements IFluidSync
 
     public FluidStack getOutputFluid() {
         return outputFluid;
+    }
+
+    public boolean isLit() {
+        return data.get(2) > 0;
     }
 
     @Override
