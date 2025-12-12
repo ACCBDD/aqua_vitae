@@ -35,6 +35,14 @@ import java.util.stream.Stream;
 
 public class CrushingTubBlock extends BaseEntityBlock {
     public static final MapCodec<CrushingTubBlock> CODEC = simpleCodec((prop) -> new CrushingTubBlock());
+    public static final VoxelShape SHAPE = Stream.of(
+            Block.box(2, 0, 2, 14, 1, 14),
+            Block.box(1, 1, 2, 2, 9, 14),
+            Block.box(14, 1, 2, 15, 9, 14),
+            Block.box(2, 1, 1, 14, 9, 2),
+            Block.box(2, 1, 14, 14, 9, 15),
+            Block.box(2, 1, 14, 14, 9, 15)
+    ).reduce(Shapes::or).get();
 
     public CrushingTubBlock() {
         super(Properties.of()
@@ -47,14 +55,7 @@ public class CrushingTubBlock extends BaseEntityBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return Stream.of(
-                Block.box(2, 0, 2, 14, 1, 14),
-                Block.box(1, 1, 2, 2, 9, 14),
-                Block.box(14, 1, 2, 15, 9, 14),
-                Block.box(2, 1, 1, 14, 9, 2),
-                Block.box(2, 1, 14, 14, 9, 15),
-                Block.box(2, 1, 14, 14, 9, 15)
-        ).reduce(Shapes::or).get();
+        return SHAPE;
     }
 
     @Override

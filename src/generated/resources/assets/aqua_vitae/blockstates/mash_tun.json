@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "facing=down,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=down,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=east,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=east,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=north,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 270
+    },
+    "facing=north,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 270
+    },
+    "facing=south,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 90
+    },
+    "facing=south,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 90
+    },
+    "facing=up,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=up,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 360
+    },
+    "facing=west,lit=false": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 180
+    },
+    "facing=west,lit=true": {
+      "model": "aqua_vitae:block/mash_tun",
+      "y": 180
+    }
+  }
+}

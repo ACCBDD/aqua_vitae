@@ -25,7 +25,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
                 ModBlocks.FERMENTER.get(),
                 ModBlocks.POT_STILL.get(),
-                ModBlocks.MALT_KILN.get()
+                ModBlocks.MALT_KILN.get(),
+                ModBlocks.MASH_TUN.get()
         );
     }
 }

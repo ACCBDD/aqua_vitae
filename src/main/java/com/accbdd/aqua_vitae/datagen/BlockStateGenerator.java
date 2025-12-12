@@ -28,5 +28,11 @@ public class BlockStateGenerator extends BlockStateProvider {
                         .modelFile(state.getValue(BlockStateProperties.LIT) ? models().getExistingFile(modLoc("malt_kiln_on")) : models().getExistingFile(modLoc("malt_kiln")))
                         .rotationY((int) state.getValue(BlockStateProperties.FACING).toYRot())
                         .build());
+
+        getVariantBuilder(ModBlocks.MASH_TUN.get()).forAllStates(state ->
+                ConfiguredModel.builder()
+                        .modelFile(models().getExistingFile(modLoc("mash_tun")))
+                        .rotationY((int) state.getValue(BlockStateProperties.FACING).toYRot() + 90)
+                        .build());
     }
 }

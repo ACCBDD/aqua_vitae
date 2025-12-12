@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,16 +30,33 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class MashTunBlock extends BaseEntityBlock {
     public static MapCodec<MashTunBlock> CODEC = simpleCodec((prop) -> new MashTunBlock());
+    private static VoxelShape SHAPE = Stream.of(
+            Block.box(0, 3, 0, 16, 14, 16),
+            Block.box(0, 0, 12, 4, 3, 16),
+            Block.box(12, 0, 12, 16, 3, 16),
+            Block.box(0, 0, 0, 4, 3, 4),
+            Block.box(12, 0, 0, 16, 3, 4)
+    ).reduce(Shapes::or).get();
 
     public MashTunBlock() {
         super(Properties.ofFullCopy(Blocks.CAULDRON)
                 .mapColor(MapColor.TERRACOTTA_PINK)
                 .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0));
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override

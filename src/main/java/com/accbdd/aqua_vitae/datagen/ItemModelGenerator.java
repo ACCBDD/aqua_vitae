@@ -26,6 +26,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         simpleBlockItem(ModBlocks.CRUSHING_TUB.get());
         simpleBlockItem(ModBlocks.POT_STILL.get());
         simpleBlockItem(ModBlocks.MALT_KILN.get());
+        simpleBlockItem(ModBlocks.MASH_TUN.get());
         basicItem(ModItems.CUP.get());
         basicItem(ModItems.SHOOTER.get());
         basicItem(ModItems.METER.get());
