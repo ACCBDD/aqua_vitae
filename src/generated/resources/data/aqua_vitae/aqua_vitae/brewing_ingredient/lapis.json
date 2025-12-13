@@ -4,7 +4,10 @@
     "item": "minecraft:lapis_lazuli"
   },
   "properties": {
-    "color": "FF0000FF",
+    "color": {
+      "color": "FF0000FF",
+      "influence": 10
+    },
     "diastatic_power": 0,
     "starch": 0,
     "sugar": 0,

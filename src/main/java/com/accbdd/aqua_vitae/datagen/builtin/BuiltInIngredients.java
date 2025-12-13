@@ -15,7 +15,7 @@ public class BuiltInIngredients {
             new BrewingIngredient(
                     Ingredient.of(Items.APPLE),
                     new BrewingIngredient.BrewingProperties.Builder()
-                            .color(0xCCFF3300)
+                            .color(0xCCFF3300, 10)
                             .starch(2)
                             .sugar(60)
                             .yeast(5)
@@ -27,7 +27,7 @@ public class BuiltInIngredients {
             new BrewingIngredient(
                     Ingredient.of(Items.LAPIS_LAZULI),
                     new BrewingIngredient.BrewingProperties.Builder()
-                            .color(0xFF0000FF)
+                            .color(0xFF0000FF, 10)
                             .build(),
                     Set.of()));
 

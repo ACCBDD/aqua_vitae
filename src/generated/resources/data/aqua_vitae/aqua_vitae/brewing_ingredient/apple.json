@@ -1,13 +1,16 @@
 {
   "flavors": [
-    "aqua_vitae:sweet",
-    "aqua_vitae:fruity"
+    "aqua_vitae:fruity",
+    "aqua_vitae:sweet"
   ],
   "input": {
     "item": "minecraft:apple"
   },
   "properties": {
-    "color": "CCFF3300",
+    "color": {
+      "color": "CCFF3300",
+      "influence": 10
+    },
     "diastatic_power": 0,
     "starch": 2,
     "sugar": 60,

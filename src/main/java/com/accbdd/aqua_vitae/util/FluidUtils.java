@@ -17,7 +17,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -93,7 +92,7 @@ public class FluidUtils {
      * @param fluid      the FluidStack to modify
      * @param ingredient the ingredient to modify by
      * @param itemStack  the itemStack to modify by
-     * @see com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent
+     * @see PrecursorPropertiesComponent
      */
     public static void modifyPrecursor(FluidStack fluid, BrewingIngredient ingredient, ItemStack itemStack) {
         PrecursorPropertiesComponent component = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
@@ -208,14 +207,13 @@ public class FluidUtils {
         return newFluid;
     }
 
-    @Nullable
     public static int getColorOrInvisible(FluidStack stack) {
         if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
-            return stack.get(ModComponents.ALCOHOL_PROPERTIES).color();
+            return stack.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY).color();
         if (stack.has(ModComponents.FERMENTING_PROPERTIES))
-            return stack.get(ModComponents.FERMENTING_PROPERTIES).properties().color();
+            return stack.getOrDefault(ModComponents.FERMENTING_PROPERTIES, FermentingPropertiesComponent.EMPTY).properties().color().color();
         if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
-            return stack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
+            return stack.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY).properties().color().color();
         return 0x00000000;
     }
 }

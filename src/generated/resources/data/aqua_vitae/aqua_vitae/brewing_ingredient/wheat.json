@@ -6,7 +6,10 @@
     "item": "minecraft:wheat"
   },
   "malt_properties": {
-    "color": "CCDCBB65",
+    "color": {
+      "color": "CCDCBB65",
+      "influence": 1
+    },
     "diastatic_power": 50,
     "starch": 100,
     "sugar": 10,
@@ -14,7 +17,10 @@
     "yeast_tolerance": 80
   },
   "properties": {
-    "color": "00FFFFFF",
+    "color": {
+      "color": "00FFFFFF",
+      "influence": 1
+    },
     "diastatic_power": 0,
     "starch": 0,
     "sugar": 0,

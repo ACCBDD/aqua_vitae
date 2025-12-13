@@ -8,11 +8,9 @@ import com.accbdd.aqua_vitae.screen.MashTunMenu;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -45,7 +43,7 @@ import java.util.stream.Stream;
 
 public class MashTunBlock extends BaseEntityBlock {
     public static MapCodec<MashTunBlock> CODEC = simpleCodec((prop) -> new MashTunBlock());
-    private static VoxelShape SHAPE = Stream.of(
+    private final static VoxelShape SHAPE = Stream.of(
             Block.box(0, 3, 0, 16, 14, 16),
             Block.box(0, 0, 12, 4, 3, 16),
             Block.box(12, 0, 12, 16, 3, 16),

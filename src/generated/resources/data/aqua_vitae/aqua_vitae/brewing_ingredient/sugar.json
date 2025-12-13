@@ -4,7 +4,10 @@
     "item": "minecraft:sugar"
   },
   "properties": {
-    "color": "00FFFFFF",
+    "color": {
+      "color": "00FFFFFF",
+      "influence": 1
+    },
     "diastatic_power": 0,
     "starch": 0,
     "sugar": 200,

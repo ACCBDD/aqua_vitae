@@ -57,6 +57,7 @@ public class FermenterBlock extends BaseEntityBlock {
             boolean flag = state.getValue(BlockStateProperties.CRAFTING);
             if (flag != level.hasNeighborSignal(pos)) {
                 level.setBlock(pos, state.cycle(BlockStateProperties.CRAFTING), 2);
+                level.invalidateCapabilities(pos);
             }
         }
     }

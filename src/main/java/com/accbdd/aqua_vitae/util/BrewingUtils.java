@@ -46,16 +46,18 @@ public class BrewingUtils {
 
     @Nullable
     public static Registry<Flavor> flavorRegistry() {
-        if (registryAccess() != null) {
-            return registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get();
+        RegistryAccess registryAccess = registryAccess();
+        if (registryAccess != null) {
+            return registryAccess.registry(AquaVitae.FLAVOR_REGISTRY).orElseThrow();
         }
         return null;
     }
 
     @Nullable
     public static Registry<BrewingIngredient> ingredientRegistry() {
-        if (registryAccess() != null)
-            return registryAccess().registry(AquaVitae.INGREDIENT_REGISTRY).get();
+        RegistryAccess registryAccess = registryAccess();
+        if (registryAccess != null)
+            return registryAccess.registry(AquaVitae.INGREDIENT_REGISTRY).orElseThrow();
         return null;
     }
 
@@ -83,7 +85,7 @@ public class BrewingUtils {
     @Nullable
     public static BrewingIngredient getIngredient(FluidStack stack) {
         if (stack.has(ModComponents.BREWING_INGREDIENT)) {
-            BrewingIngredientComponent comp = stack.get(ModComponents.BREWING_INGREDIENT);
+            BrewingIngredientComponent comp = stack.getOrDefault(ModComponents.BREWING_INGREDIENT, BrewingIngredientComponent.DEFAULT);
             return new BrewingIngredient(FluidIngredient.of(stack), comp.properties(), comp.maltProperties(), comp.flavors());
         }
         Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
@@ -138,7 +140,7 @@ public class BrewingUtils {
         if (properties.yeast() > 0 && properties.yeastTolerance() > 0) {
             tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), String.format("%.2f%%", (float)properties.yeastTolerance() / 10)));
         }
-        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color()).toUpperCase()).withColor(properties.color() | 0xFF000000));
+        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color().color()).toUpperCase()).withColor(properties.color().color() | 0xFF000000));
         return tooltips;
     }
 

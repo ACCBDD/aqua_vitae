@@ -6,12 +6,11 @@ import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
-import com.accbdd.aqua_vitae.util.Codecs;
 import com.accbdd.aqua_vitae.util.NumUtils;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
@@ -86,12 +85,12 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
      * @param yeastTolerance in terms of alcohol per bucket
      * @param diastaticPower
      */
-    public record BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
-        public static BrewingProperties DEFAULT = new BrewingProperties(0x00000000, 0, 0, 0, 0, 0);
+    public record BrewingProperties(IngredientColor color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
+        public static BrewingProperties DEFAULT = new BrewingProperties(new IngredientColor(0x00000000), 0, 0, 0, 0, 0);
 
         public static Codec<BrewingProperties> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        Codecs.HEX_STRING.fieldOf("color").forGetter(BrewingProperties::color),
+                        IngredientColor.CODEC.fieldOf("color").forGetter(BrewingProperties::color),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("starch").forGetter(BrewingProperties::starch),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("sugar").forGetter(BrewingProperties::sugar),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("yeast").forGetter(BrewingProperties::yeast),
@@ -100,8 +99,8 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 ).apply(instance, BrewingProperties::new)
         );
 
-        public static StreamCodec<FriendlyByteBuf, BrewingProperties> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.INT, BrewingProperties::color,
+        public static StreamCodec<ByteBuf, BrewingProperties> STREAM_CODEC = StreamCodec.composite(
+                IngredientColor.STREAM_CODEC, BrewingProperties::color,
                 ByteBufCodecs.INT, BrewingProperties::starch,
                 ByteBufCodecs.INT, BrewingProperties::sugar,
                 ByteBufCodecs.INT, BrewingProperties::yeast,
@@ -109,6 +108,10 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                 ByteBufCodecs.INT, BrewingProperties::diastaticPower,
                 BrewingProperties::new
         );
+
+        public BrewingProperties(int color, int starch, int sugar, int yeast, int yeastTolerance, int diastaticPower) {
+            this(new IngredientColor(color), starch, sugar, yeast, yeastTolerance, diastaticPower);
+        }
 
         public BrewingProperties copy() {
             return new BrewingProperties(color, starch, sugar, yeast, yeastTolerance, diastaticPower);
@@ -122,7 +125,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * @return a new combined BrewingProperties object
          */
         public BrewingProperties add(BrewingProperties other, int weight) {
-            int newColor = blendColor(other);
+            IngredientColor newColor = blendColor(other);
 
             return new BrewingProperties(newColor,
                     this.starch + other.starch,
@@ -136,7 +139,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          * @return a kilned version of the property - darker colors, lower diastatic power, etc.
          */
         public BrewingProperties kiln() {
-            int kilnColor = NumUtils.saturateColor(this.color, 0.4f);
+            int kilnColor = NumUtils.saturateColor(this.color.color(), 0.4f);
             return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.25f),
                     (int) (this.starch * 0.95),
                     (int) (this.sugar * 0.95),
@@ -154,22 +157,22 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     0);
         }
 
-        private int blendColor(BrewingProperties other) {
+        private IngredientColor blendColor(BrewingProperties other) {
             //todo figure out how to blend dyes in (very large effect on color)
-            int c1 = this.color();
+            int c1 = this.color().color();
             int a1 = (c1 >>> 24) & 0xFF;
             int r1 = (c1 >>> 16) & 0xFF;
             int g1 = (c1 >>> 8) & 0xFF;
             int b1 = (c1 & 0xFF);
 
-            int c2 = other.color();
+            int c2 = other.color().color();
             int a2 = (c2 >>> 24) & 0xFF;
             int r2 = (c2 >>> 16) & 0xFF;
             int g2 = (c2 >>> 8) & 0xFF;
             int b2 = (c2 & 0xFF);
 
-            float otherWeight = a2 / 255.0f;
-            float thisWeight = a1 / 255.0f;
+            float otherWeight = a2 / 255.0f * other.color.influence();
+            float thisWeight = a1 / 255.0f * this.color.influence();
             float totalWeight = otherWeight + thisWeight;
             float weightCurrentRGB = thisWeight / totalWeight;
             float weightAddedRGB = otherWeight / totalWeight;
@@ -179,11 +182,11 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
             int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);
 
-            return (Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b;
+            return new IngredientColor((Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b, other.color.influence() + this.color.influence());
         }
 
         public static class Builder {
-            int color;
+            IngredientColor color;
             int starch;
             int sugar;
             int yeast;
@@ -191,7 +194,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             int diastaticPower;
 
             public Builder() {
-                this.color = 0xDDFFFFFF;
+                this.color = new IngredientColor(0xDDFFFFFF);
                 this.starch = 0;
                 this.sugar = 0;
                 this.yeast = 0;
@@ -215,7 +218,12 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             }
 
             public Builder color(int color) {
-                this.color = color;
+                this.color = new IngredientColor(color);
+                return this;
+            }
+
+            public Builder color(int color, int influence) {
+                this.color = new IngredientColor(color, influence);
                 return this;
             }
 

@@ -32,7 +32,7 @@ public class MaltItem extends Item {
 
     public static int getColor(ItemStack stack, int index) {
         if (index == 0 && stack.has(ModComponents.BREWING_INGREDIENT)) {
-            return stack.get(ModComponents.BREWING_INGREDIENT).properties().color() | 0xFF000000;
+            return stack.get(ModComponents.BREWING_INGREDIENT).properties().color().color() | 0xFF000000;
         }
         return -1;
     }

@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
     public static final int CAPACITY = 8000;
@@ -32,10 +33,10 @@ public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
                 if (fluid.has(ModComponents.FERMENTING_PROPERTIES)) {
                     setFluid(FluidUtils.ferment(fluid));
                 } else if (fluid.has(ModComponents.PRECURSOR_PROPERTIES)) {
-                    PrecursorPropertiesComponent precursor = fluid.get(ModComponents.PRECURSOR_PROPERTIES);
+                    PrecursorPropertiesComponent precursor = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
                     FluidStack alcohol = new FluidStack(ModFluids.ALCOHOL, fluid.getAmount(), fluid.getComponentsPatch());
                     alcohol.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(0, precursor.flavors(), precursor.properties()));
-                    alcohol.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(precursor.properties().color(), 0, 0, precursor.flavors(), precursor.ingredients()));
+                    alcohol.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(precursor.properties().color().color(), 0, 0, precursor.flavors(), precursor.ingredients()));
                     alcohol.remove(ModComponents.PRECURSOR_PROPERTIES);
                     setFluid(alcohol);
                 }
@@ -43,5 +44,10 @@ public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
                 setFluid(FluidUtils.stress(fluid));
             }
         }
+    }
+
+    @Override
+    public IFluidHandler getFluidHandler() {
+        return getBlockState().getValue(BlockStateProperties.CRAFTING) ? null : super.getFluidHandler();
     }
 }

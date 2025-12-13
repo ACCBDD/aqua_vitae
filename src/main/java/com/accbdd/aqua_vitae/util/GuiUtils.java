@@ -1,5 +1,7 @@
 package com.accbdd.aqua_vitae.util;
 
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
+import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -96,9 +98,9 @@ public class GuiUtils {
 
     public static int getFluidColor(FluidStack fluidStack) {
         if (fluidStack.has(ModComponents.ALCOHOL_PROPERTIES))
-            return fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).color();
+            return fluidStack.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY).color();
         if (fluidStack.has(ModComponents.PRECURSOR_PROPERTIES))
-            return fluidStack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
+            return fluidStack.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY).properties().color().color();
         return IClientFluidTypeExtensions.of(fluidStack.getFluidType()).getTintColor();
     }
 }
