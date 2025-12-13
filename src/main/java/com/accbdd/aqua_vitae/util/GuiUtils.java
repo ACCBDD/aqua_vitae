@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.util;
 
+import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -95,6 +96,10 @@ public class GuiUtils {
     }
 
     public static int getFluidColor(FluidStack fluidStack) {
+        if (fluidStack.has(ModComponents.ALCOHOL_PROPERTIES))
+            return fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).color();
+        if (fluidStack.has(ModComponents.PRECURSOR_PROPERTIES))
+            return fluidStack.get(ModComponents.PRECURSOR_PROPERTIES).properties().color();
         return IClientFluidTypeExtensions.of(fluidStack.getFluidType()).getTintColor();
     }
 }
