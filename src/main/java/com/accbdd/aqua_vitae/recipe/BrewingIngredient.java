@@ -155,7 +155,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
 
         private int blendColor(BrewingProperties other) {
-
+            //todo figure out how to blend dyes in (very large effect on color)
             int c1 = this.color();
             int a1 = (c1 >>> 24) & 0xFF;
             int r1 = (c1 >>> 16) & 0xFF;
