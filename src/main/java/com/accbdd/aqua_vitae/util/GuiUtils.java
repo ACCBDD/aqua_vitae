@@ -91,8 +91,7 @@ public class GuiUtils {
     public static TextureAtlasSprite getFluidSprite(FluidStack fluidStack) {
         IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidStack.getFluidType());
         ResourceLocation fluidStill = handler.getStillTexture(fluidStack);
-        TextureAtlasSprite fluidSprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
-        return fluidSprite;
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
     }
 
     public static int getFluidColor(FluidStack fluidStack) {
