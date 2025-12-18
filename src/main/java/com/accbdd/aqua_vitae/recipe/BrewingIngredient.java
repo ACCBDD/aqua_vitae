@@ -132,7 +132,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     this.sugar + other.sugar,
                     this.yeast + other.yeast,
                     Math.max(this.yeastTolerance, other.yeastTolerance), //max for yeast
-                    (this.diastaticPower * weight + other.diastaticPower) / (weight + 1)); //average DP
+                    this.diastaticPower + other.diastaticPower);
         }
 
         /**
