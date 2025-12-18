@@ -80,6 +80,14 @@ public class MashTunBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        BlockState below = level.getBlockState(pos.below());
+        if (below.is(BlockTagGenerator.HEAT_SOURCES)) {
+            level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, true));
+        }
+    }
+
+    @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide)
             return ItemInteractionResult.SUCCESS;
