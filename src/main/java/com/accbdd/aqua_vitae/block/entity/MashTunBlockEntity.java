@@ -59,7 +59,8 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
         this.inputItems = new ItemStackHandler(9) {
             @Override
             protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
+                MashTunBlockEntity.this.progress = 0;
+                MashTunBlockEntity.this.calculateMaxProgress();
                 MashTunBlockEntity.this.setChanged();
             }
 
@@ -158,8 +159,9 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
     public void tickServer() {
         if (isLit() && canOutput()) {
-            if (inputFluid.getFluidAmount() > 0 && !inputItems.getStackInSlot(0).isEmpty()) {
+            if (inputFluid.getFluidAmount() > 0 && !inputEmpty()) {
                 progress++;
+                calculateMaxProgress();
                 if (progress >= maxProgress) {
                     progress = 0;
                     List<ItemStack> inputs = new ArrayList<>();
@@ -186,6 +188,43 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
 
     public boolean canOutput() {
         return outputFluid.isEmpty();
+    }
+
+    public boolean inputEmpty() {
+        for (int i = 0; i < this.inputItems.getSlots(); i++) {
+            if (!inputItems.getStackInSlot(i).isEmpty())
+                return false;
+        }
+        return true;
+    }
+
+    public void calculateMaxProgress() {
+        BrewingIngredient.BrewingProperties properties = null;
+        int count = 0;
+        for (int i = 0; i < this.inputItems.getSlots(); i++) {
+            ItemStack stack = inputItems.extractItem(i, 1, true);
+            BrewingIngredient ing = BrewingUtils.getIngredient(stack);
+            if (ing == null)
+                continue;
+            if (properties == null) {
+                properties = ing.properties();
+                count = 1;
+            } else {
+                properties = properties.add(ing.properties(), count);
+                count++;
+            }
+        }
+
+        int newProgress;
+        if (properties == null) {
+            newProgress = 200;
+        } else {
+            newProgress = Math.max(properties.starch() / properties.diastaticPower() * 200, 200);
+        }
+        if (this.maxProgress != newProgress) {
+            this.maxProgress = newProgress;
+            this.progress = 0;
+        }
     }
 
     public IFluidHandler getFluidHandler() {
