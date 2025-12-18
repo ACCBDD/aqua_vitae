@@ -182,6 +182,28 @@ public class BrewingUtils {
                 properties = properties.add(ing.properties(), inputs.getIngredientCount());
             inputs.add(stack);
         }
+        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
+        return fluid;
+    }
+
+    public static FluidStack mashToWort(int amount, ItemStack... ingredients) {
+        FluidStack fluid = new FluidStack(ModFluids.WORT, amount);
+        IngredientMap inputs = new IngredientMap();
+        Set<ResourceKey<Flavor>> flavors = new HashSet<>();
+        BrewingIngredient.BrewingProperties properties = BrewingIngredient.BrewingProperties.DEFAULT;
+        for (ItemStack stack : ingredients) {
+            if (stack.isEmpty())
+                continue;
+            BrewingIngredient ing = BrewingUtils.getIngredient(stack);
+            if (ing == null)
+                continue;
+            flavors.addAll(ing.flavors());
+            if (inputs.isEmpty())
+                properties = ing.properties().copy();
+            else
+                properties = properties.add(ing.properties(), inputs.getIngredientCount());
+            inputs.add(stack);
+        }
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties.mash()));
         return fluid;
     }

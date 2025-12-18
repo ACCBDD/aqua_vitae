@@ -173,7 +173,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
                         outputItems.insertItem(0, Items.BONE_MEAL.getDefaultInstance(), false);
                     }
                     int drained = this.inputFluid.drain(MAX_FLUID, IFluidHandler.FluidAction.EXECUTE).getAmount();
-                    FluidStack wort = BrewingUtils.createWort(drained, inputs.toArray(new ItemStack[0]));
+                    FluidStack wort = BrewingUtils.mashToWort(drained, inputs.toArray(new ItemStack[0]));
                     this.outputFluid.fill(wort, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
