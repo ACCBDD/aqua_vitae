@@ -16,6 +16,6 @@ public class KegBlockEntity extends AbstractAgingBlockEntity {
                 blockState,
                 4000,
                 List.of(new Flavor.Transition(List.of(BuiltInFlavors.SOUR.getKey()), 1000)),
-                new IngredientColor(0xFFCC00));
+                new IngredientColor(0x00FFCC00));
     }
 }
