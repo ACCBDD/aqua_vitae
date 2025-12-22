@@ -118,14 +118,13 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
         }
 
         /**
-         * Adds two BrewingProperties together with a weight
+         * Adds two BrewingProperties together
          *
-         * @param other  to add
-         * @param weight the weight this object should have in comparison to the other
+         * @param other to add
          * @return a new combined BrewingProperties object
          */
-        public BrewingProperties add(BrewingProperties other, int weight) {
-            IngredientColor newColor = blendColor(other);
+        public BrewingProperties add(BrewingProperties other) {
+            IngredientColor newColor = IngredientColor.blendColor(this.color, other.color);
 
             return new BrewingProperties(newColor,
                     this.starch + other.starch,
@@ -155,34 +154,6 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
                     this.yeast,
                     this.yeastTolerance,
                     0);
-        }
-
-        private IngredientColor blendColor(BrewingProperties other) {
-            //todo figure out how to blend dyes in (very large effect on color)
-            int c1 = this.color().color();
-            int a1 = (c1 >>> 24) & 0xFF;
-            int r1 = (c1 >>> 16) & 0xFF;
-            int g1 = (c1 >>> 8) & 0xFF;
-            int b1 = (c1 & 0xFF);
-
-            int c2 = other.color().color();
-            int a2 = (c2 >>> 24) & 0xFF;
-            int r2 = (c2 >>> 16) & 0xFF;
-            int g2 = (c2 >>> 8) & 0xFF;
-            int b2 = (c2 & 0xFF);
-
-            float otherWeight = a2 / 255.0f * other.color.influence();
-            float thisWeight = a1 / 255.0f * this.color.influence();
-            float totalWeight = otherWeight + thisWeight;
-            float weightCurrentRGB = thisWeight / totalWeight;
-            float weightAddedRGB = otherWeight / totalWeight;
-
-            int a = (int) (a1 * weightCurrentRGB + a2 * weightAddedRGB);
-            int r = (int) (r1 * weightCurrentRGB + r2 * weightAddedRGB);
-            int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
-            int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);
-
-            return new IngredientColor((Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b, other.color.influence() + this.color.influence());
         }
 
         public static class Builder {

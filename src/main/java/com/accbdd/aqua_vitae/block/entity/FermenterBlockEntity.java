@@ -36,7 +36,7 @@ public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
                     PrecursorPropertiesComponent precursor = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
                     FluidStack alcohol = new FluidStack(ModFluids.ALCOHOL, fluid.getAmount(), fluid.getComponentsPatch());
                     alcohol.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(0, precursor.flavors(), precursor.properties()));
-                    alcohol.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(precursor.properties().color().color(), 0, 0, precursor.flavors(), precursor.ingredients()));
+                    alcohol.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(precursor.properties().color(), 0, 0, precursor.flavors(), precursor.ingredients()));
                     alcohol.remove(ModComponents.PRECURSOR_PROPERTIES);
                     setFluid(alcohol);
                 }

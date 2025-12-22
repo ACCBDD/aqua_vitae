@@ -229,7 +229,7 @@ public class MaltKilnBlockEntity extends AbstractBEWithData implements IFluidSyn
             if (output.has(ModComponents.BREWING_INGREDIENT)) {
                 BrewingIngredientComponent old = output.get(ModComponents.BREWING_INGREDIENT);
                 BrewingIngredient.BrewingProperties oldProps = old.properties();
-                Set<ResourceKey<Flavor>> newFlavors = BrewingUtils.kilnFlavors(old.flavors(), roastCount);
+                Set<ResourceKey<Flavor>> newFlavors = BrewingUtils.transitionFlavors(old.flavors(), Flavor::kiln, roastCount);
                 output.set(ModComponents.BREWING_INGREDIENT, new BrewingIngredientComponent(oldProps.kiln(), null, newFlavors, old.origin()));
             }
             output.set(ModComponents.ROAST_COUNTER, new RoastCountComponent(roastCount));

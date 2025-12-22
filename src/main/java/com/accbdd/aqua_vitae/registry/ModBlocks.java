@@ -1,6 +1,9 @@
 package com.accbdd.aqua_vitae.registry;
 
 import com.accbdd.aqua_vitae.block.*;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
+import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -13,6 +16,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;

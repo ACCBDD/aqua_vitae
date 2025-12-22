@@ -26,6 +26,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class BrewingUtils {
 
@@ -144,18 +145,27 @@ public class BrewingUtils {
         return tooltips;
     }
 
-    public static Set<ResourceKey<Flavor>> kilnFlavors(Set<ResourceKey<Flavor>> flavors, int kilnCount) {
+    /**
+     * transitions flavors according to a flavor transition
+     * @param flavors
+     * @param transitionFunction
+     * @param transitionPoint
+     * @return
+     */
+    public static Set<ResourceKey<Flavor>> transitionFlavors(Set<ResourceKey<Flavor>> flavors, Function<Flavor, Flavor.Transition> transitionFunction, int transitionPoint) {
         Set<ResourceKey<Flavor>> newFlavors = new HashSet<>();
         for (ResourceKey<Flavor> flavorKey : flavors) {
             Flavor flavor = getFlavor(flavorKey);
             if (flavor != null) {
-                if (flavor.kiln() == null) {
+                if (transitionFunction.apply(flavor) == null) {
                     newFlavors.add(flavorKey);
                 } else {
-                    Flavor.Transition transition = flavor.kiln();
+                    Flavor.Transition transition = transitionFunction.apply(flavor);
                     transition.flavors().forEach(flavorEntry -> {
-                        if (kilnCount >= transition.transitionPoint()) {
+                        if (transitionPoint >= transition.transitionPoint()) {
                             newFlavors.add(flavorEntry);
+                        } else {
+                            newFlavors.add(flavorKey);
                         }
                     });
                 }
@@ -179,7 +189,7 @@ public class BrewingUtils {
             if (inputs.isEmpty())
                 properties = ing.properties().copy();
             else
-                properties = properties.add(ing.properties(), inputs.getIngredientCount());
+                properties = properties.add(ing.properties());
             inputs.add(stack);
         }
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties));
@@ -201,7 +211,7 @@ public class BrewingUtils {
             if (inputs.isEmpty())
                 properties = ing.properties().copy();
             else
-                properties = properties.add(ing.properties(), inputs.getIngredientCount());
+                properties = properties.add(ing.properties());
             inputs.add(stack);
         }
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties.mash()));

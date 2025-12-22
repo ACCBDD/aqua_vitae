@@ -26,4 +26,31 @@ public record IngredientColor(int color, int influence) {
     public IngredientColor(int color) {
         this(color, 1);
     }
+
+    public static IngredientColor blendColor(IngredientColor first, IngredientColor second) {
+        int c1 = first.color();
+        int a1 = (c1 >>> 24) & 0xFF;
+        int r1 = (c1 >>> 16) & 0xFF;
+        int g1 = (c1 >>> 8) & 0xFF;
+        int b1 = (c1 & 0xFF);
+
+        int c2 = second.color();
+        int a2 = (c2 >>> 24) & 0xFF;
+        int r2 = (c2 >>> 16) & 0xFF;
+        int g2 = (c2 >>> 8) & 0xFF;
+        int b2 = (c2 & 0xFF);
+
+        float otherWeight = a2 / 255.0f * second.influence();
+        float thisWeight = a1 / 255.0f * first.influence();
+        float totalWeight = otherWeight + thisWeight;
+        float weightCurrentRGB = thisWeight / totalWeight;
+        float weightAddedRGB = otherWeight / totalWeight;
+
+        int a = (int) (a1 * weightCurrentRGB + a2 * weightAddedRGB);
+        int r = (int) (r1 * weightCurrentRGB + r2 * weightAddedRGB);
+        int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
+        int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);
+
+        return new IngredientColor((Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b, second.influence() + first.influence());
+    }
 }

@@ -1,12 +1,13 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
-import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,17 +21,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
+
 public class KegBlock extends BaseEntityBlock {
-    public static final MapCodec<KegBlock> CODEC = simpleCodec((prop) -> new KegBlock());
+    public static final MapCodec<KegBlock> CODEC = simpleCodec((prop) -> new KegBlock()); // nyi
 
     public KegBlock() {
         super(Properties.of()
@@ -80,23 +85,21 @@ public class KegBlock extends BaseEntityBlock {
             level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;
-        } else {
-            BrewingIngredient ingredient = BrewingUtils.getIngredient(stack);
-            if (ingredient != null) {
-                FluidStack fluid = keg.getFluid();
-                if (!fluid.isEmpty()) {
-                    FluidUtils.modifyPrecursor(fluid, ingredient, stack.copyWithCount(1));
-                    stack.shrink(1);
-                    return ItemInteractionResult.SUCCESS;
-                }
-            }
-        }
-
-        if (player.isShiftKeyDown()) {
-            player.displayClientMessage(keg.getFluid().getHoverName().copy().append(": " + keg.getFluid().getAmount()), true);
-            return ItemInteractionResult.CONSUME;
         }
 
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (!level.isClientSide) {
+            return (lvl, pos, st, blockEntity) -> {
+                if (blockEntity instanceof KegBlockEntity be) {
+                    be.tickServer();
+                }
+            };
+        }
+        return null;
     }
 }

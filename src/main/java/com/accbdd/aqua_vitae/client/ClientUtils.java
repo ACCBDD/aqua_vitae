@@ -41,7 +41,7 @@ public class ClientUtils {
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abb", String.format("%.2f%%", alcoholComponent.abb() / 10)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", alcoholComponent.age()));
-            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color()).toUpperCase()).withColor(alcoholComponent.color() | 0xFF000000));
+            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color().color()).toUpperCase()).withColor(alcoholComponent.color().color() | 0xFF000000));
         }
 
         if (ingredientsTooltip.isEmpty() && propertiesTooltip.isEmpty())

@@ -210,7 +210,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
                 properties = ing.properties();
                 count = 1;
             } else {
-                properties = properties.add(ing.properties(), count);
+                properties = properties.add(ing.properties());
                 count++;
             }
         }

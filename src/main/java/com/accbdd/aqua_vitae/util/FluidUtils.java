@@ -7,6 +7,7 @@ import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient.BrewingProperties;
 import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import com.accbdd.aqua_vitae.recipe.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.resources.ResourceKey;
@@ -17,8 +18,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -103,7 +106,7 @@ public class FluidUtils {
         items.add(itemStack);
         BrewingProperties initial = component.properties();
         BrewingProperties toAdd = ingredient.properties();
-        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd, component.ingredients().getIngredientCount())));
+        fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(items, flavors, initial.add(toAdd)));
     }
 
     /**
@@ -169,7 +172,7 @@ public class FluidUtils {
      * @param lossFactor the amount of alcohol kept in distilling (complement of angel's share)
      * @param distillFactor the factor to distill by - higher values mean less passes needed to hit max
      * @param maxAbb the maximum abb this distillation can hit
-     * @return a new representing the distilled fluid, with color and properties changed
+     * @return a new FluidStack representing the distilled fluid, with color and properties changed
      */
     public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbb) {
         AlcoholPropertiesComponent alcohol = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
@@ -194,22 +197,49 @@ public class FluidUtils {
         newVolume = Math.clamp(newVolume, 1, fluid.getAmount());
 
         float improvementRatio = (newAbb - currentAbb) / (maxAbb - currentAbb + 1e-6f);
-        int newColor = NumUtils.lightenColor(alcohol.color(), improvementRatio);
+        int newColor = NumUtils.lightenColor(alcohol.color().color(), improvementRatio);
 
         FluidStack newFluid = fluid.copyWithAmount(newVolume);
         newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(
-                newColor,
+                new IngredientColor(newColor, (int) (alcohol.color().influence() * improvementRatio)),
                 Math.round(newAbb),
                 alcohol.age(),
-                alcohol.flavors(),
+                BrewingUtils.transitionFlavors(alcohol.flavors(), Flavor::distill, Math.round(newAbb)),
                 alcohol.inputs()));
 
         return newFluid;
     }
 
+    /**
+     * ages a fluid with an {@link AlcoholPropertiesComponent}
+     * @param fluid the fluid to distill
+     * @param ageBy the amount of ticks to age the alcohol by
+     * @param colorToAdd the color to add (from the aging vessel)
+     * @return a new FluidStack representing the aged fluid
+     */
+    public static FluidStack age(FluidStack fluid, int ageBy, IngredientColor colorToAdd, List<Flavor.Transition> flavorsToAdd) {
+        if (!fluid.has(ModComponents.ALCOHOL_PROPERTIES))
+            return fluid;
+
+        AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
+        long newAge = props.age() + ageBy;
+        IngredientColor newColor = IngredientColor.blendColor(props.color(), colorToAdd);
+        Set<ResourceKey<Flavor>> newFlavors = BrewingUtils.transitionFlavors(props.flavors(), Flavor::age, (int) newAge);
+        if (!flavorsToAdd.isEmpty()) {
+            for (Flavor.Transition transition : flavorsToAdd) {
+                if (newAge > transition.transitionPoint()) {
+                    newFlavors.addAll(transition.flavors());
+                }
+            }
+        }
+        FluidStack newFluid = fluid.copy();
+        newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(newColor, props.abb(), newAge, newFlavors, props.inputs()));
+        return newFluid;
+    }
+
     public static int getColorOrInvisible(FluidStack stack) {
         if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
-            return stack.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY).color();
+            return stack.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY).color().color();
         if (stack.has(ModComponents.FERMENTING_PROPERTIES))
             return stack.getOrDefault(ModComponents.FERMENTING_PROPERTIES, FermentingPropertiesComponent.EMPTY).properties().color().color();
         if (stack.has(ModComponents.PRECURSOR_PROPERTIES))
