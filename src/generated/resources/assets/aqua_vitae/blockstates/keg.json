@@ -1,30 +1,56 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 180
+    },
+    "facing=down,open=true": {
       "model": "aqua_vitae:block/keg",
       "x": 180
     },
-    "facing=east": {
+    "facing=east,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=true": {
       "model": "aqua_vitae:block/keg",
       "x": 90,
-      "y": 90
+      "y": 270
     },
-    "facing=north": {
-      "model": "aqua_vitae:block/keg",
-      "x": 90
+    "facing=north,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 180
     },
-    "facing=south": {
+    "facing=north,open=true": {
       "model": "aqua_vitae:block/keg",
       "x": 90,
       "y": 180
     },
-    "facing=up": {
+    "facing=south,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90
+    },
+    "facing=south,open=true": {
+      "model": "aqua_vitae:block/keg",
+      "x": 90
+    },
+    "facing=up,open=false": {
+      "model": "minecraft:block/stone"
+    },
+    "facing=up,open=true": {
       "model": "aqua_vitae:block/keg"
     },
-    "facing=west": {
+    "facing=west,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west,open=true": {
       "model": "aqua_vitae:block/keg",
       "x": 90,
-      "y": 270
+      "y": 90
     }
   }
 }

@@ -4,12 +4,16 @@ import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.util.Constants;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.List;
 
@@ -28,13 +32,30 @@ public abstract class AbstractAgingBlockEntity extends BaseSingleFluidTankEntity
         this.tick = 0;
     }
 
+    @Override
+    protected IFluidHandler createFluidHandler(int capacity) {
+        return new FluidTank(capacity) {
+            @Override
+            protected void onContentsChanged() {
+                setChanged();
+                tick = 0;
+            }
+        };
+    }
+
     public void tickServer() {
-        if (getLevel() == null)
+        if (getLevel() == null || getBlockState().getValue(BlockStateProperties.OPEN))
             return;
 
-        if (tick++ >= 200) {
+        long currentTime = getLevel().getGameTime();
+        if (lastTicked == 0) {
+            lastTicked = currentTime;
+            return;
+        }
+
+        if (tick++ >= Constants.AGING_STEP) {
             this.tick = 0;
-            int ageBy = (int) (Math.max(getLevel().getGameTime() - this.lastTicked, 200));
+            int ageBy = (int) (getLevel().getGameTime() - this.lastTicked);
             this.lastTicked = getLevel().getGameTime();
             if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
                 setFluid(FluidUtils.age(getFluid(), ageBy, color, flavors));

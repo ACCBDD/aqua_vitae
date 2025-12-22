@@ -219,7 +219,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
         if (properties == null) {
             newProgress = 200;
         } else {
-            newProgress = Math.max(properties.starch() / properties.diastaticPower() * 200, 200);
+            newProgress = Math.max(properties.starch() / Math.max(properties.diastaticPower(), 1) * 200, 200);
         }
         if (this.maxProgress != newProgress) {
             this.maxProgress = newProgress;

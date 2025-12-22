@@ -223,6 +223,7 @@ public class FluidUtils {
 
         AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
         long newAge = props.age() + ageBy;
+        IngredientColor ageIntensifiedColor = new IngredientColor(colorToAdd.color(), Math.max(colorToAdd.influence() * (ageBy / Constants.AGING_STEP), 1));
         IngredientColor newColor = IngredientColor.blendColor(props.color(), colorToAdd);
         Set<ResourceKey<Flavor>> newFlavors = BrewingUtils.transitionFlavors(props.flavors(), Flavor::age, (int) newAge);
         if (!flavorsToAdd.isEmpty()) {
