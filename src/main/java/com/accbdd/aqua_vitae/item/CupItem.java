@@ -46,9 +46,10 @@ public class CupItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
-        if (!fluid.isEmpty())
+        if (!fluid.isEmpty()) {
             tooltipComponents.add(Component.translatable("grammar.aqua_vitae.fluid_amount", fluid.getAmount()).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+            tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+        }
     }
 
     @Override

@@ -1,10 +1,9 @@
 package com.accbdd.aqua_vitae.block;
 
-import com.accbdd.aqua_vitae.block.entity.AbstractAgingBlockEntity;
+import com.accbdd.aqua_vitae.block.entity.BaseAgingBlockEntity;
 import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.util.FluidUtils;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -30,9 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseAgingBlock extends BaseEntityBlock {
-    public static final MapCodec<BaseAgingBlock> CODEC = simpleCodec((prop) -> new BaseAgingBlock()); // nyi
-
+public abstract class BaseAgingBlock extends BaseEntityBlock {
     public BaseAgingBlock() {
         super(Properties.of()
                 .sound(SoundType.WOOD)
@@ -58,17 +54,6 @@ public class BaseAgingBlock extends BaseEntityBlock {
         return this.defaultBlockState()
                 .setValue(BlockStateProperties.FACING, context.getNearestLookingDirection().getOpposite())
                 .setValue(BlockStateProperties.OPEN, true);
-    }
-
-    @Override
-    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return new KegBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -105,7 +90,7 @@ public class BaseAgingBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (!level.isClientSide) {
             return (lvl, pos, st, blockEntity) -> {
-                if (blockEntity instanceof AbstractAgingBlockEntity be) {
+                if (blockEntity instanceof BaseAgingBlockEntity be) {
                     be.tickServer();
                 }
             };

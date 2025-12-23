@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.registry;
 
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.item.KegBlockItem;
 import com.accbdd.aqua_vitae.item.MaltItem;
 import com.accbdd.aqua_vitae.item.MeterItem;
 import net.minecraft.world.item.BlockItem;
@@ -24,7 +25,7 @@ public class ModItems {
 
     public static final DeferredItem<BucketItem> AQUA_VITAE_BUCKET = registerBucket("aqua_vitae_bucket", ModFluids.AQUA_VITAE);
 
-    public static final DeferredItem<BlockItem> KEG = registerSimpleBlockItem("keg", ModBlocks.KEG);
+    public static final DeferredItem<KegBlockItem> KEG = register("keg", () -> new KegBlockItem(ModBlocks.KEG.get()));
     public static final DeferredItem<BlockItem> FERMENTER = registerSimpleBlockItem("fermenter", ModBlocks.FERMENTER);
     public static final DeferredItem<BlockItem> CRUSHING_TUB = registerSimpleBlockItem("crushing_tub", ModBlocks.CRUSHING_TUB);
     public static final DeferredItem<BlockItem> POT_STILL = registerSimpleBlockItem("pot_still", ModBlocks.POT_STILL);

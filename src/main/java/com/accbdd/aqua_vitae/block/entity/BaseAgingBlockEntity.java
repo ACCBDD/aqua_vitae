@@ -2,7 +2,6 @@ package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.recipe.Flavor;
 import com.accbdd.aqua_vitae.recipe.IngredientColor;
-import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.Constants;
 import com.accbdd.aqua_vitae.util.FluidUtils;
@@ -17,15 +16,15 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.List;
 
-public abstract class AbstractAgingBlockEntity extends BaseSingleFluidTankEntity {
-    private final List<Flavor.Transition> flavors;
-    private final IngredientColor color;
+public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
     private final String LAST_TICKED_TAG = "last_tick";
 
+    private List<Flavor.Transition> flavors;
+    private IngredientColor color;
     private int tick;
     private long lastTicked;
 
-    public AbstractAgingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, int capacity, List<Flavor.Transition> flavors, IngredientColor color) {
+    public BaseAgingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, int capacity, List<Flavor.Transition> flavors, IngredientColor color) {
         super(type, pos, blockState, capacity);
         this.flavors = flavors;
         this.color = color;
@@ -74,5 +73,21 @@ public abstract class AbstractAgingBlockEntity extends BaseSingleFluidTankEntity
         super.loadAdditional(tag, registries);
         if (tag.contains(LAST_TICKED_TAG))
             this.lastTicked = tag.getLong(LAST_TICKED_TAG);
+    }
+
+    public void setFlavors(List<Flavor.Transition> flavors) {
+        this.flavors = flavors;
+    }
+
+    public void setColor(IngredientColor color) {
+        this.color = color;
+    }
+
+    public List<Flavor.Transition> getFlavors() {
+        return flavors;
+    }
+
+    public IngredientColor getColor() {
+        return color;
     }
 }

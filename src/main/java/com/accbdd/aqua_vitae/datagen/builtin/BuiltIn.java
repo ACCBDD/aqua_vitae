@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.datagen.builtin;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.registry.Keg;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -15,6 +16,7 @@ import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 public class BuiltIn {
     public static final Map<ResourceKey<Flavor>, Flavor> FLAVORS = new HashMap<>();
     public static final Map<ResourceKey<BrewingIngredient>, BrewingIngredient> BREWING_INGREDIENTS = new HashMap<>();
+    public static final Map<ResourceKey<Keg>, Keg> KEGS = new HashMap<>();
 
     static Map.Entry<ResourceKey<Flavor>, Flavor> flavor(String path, Flavor flavor) {
         ResourceKey<Flavor> key = ResourceKey.create(AquaVitae.FLAVOR_REGISTRY, loc(path));
@@ -26,6 +28,12 @@ public class BuiltIn {
         ResourceKey<BrewingIngredient> key = ResourceKey.create(AquaVitae.INGREDIENT_REGISTRY, loc(path));
         BREWING_INGREDIENTS.put(key, ingredient);
         return new AbstractMap.SimpleEntry<>(key, ingredient);
+    }
+
+    static Map.Entry<ResourceKey<Keg>, Keg> keg(String path, Keg keg) {
+        ResourceKey<Keg> key = ResourceKey.create(AquaVitae.KEG_REGISTRY, loc(path));
+        KEGS.put(key, keg);
+        return new AbstractMap.SimpleEntry<>(key, keg);
     }
 
     public static ResourceLocation loc(String path) {

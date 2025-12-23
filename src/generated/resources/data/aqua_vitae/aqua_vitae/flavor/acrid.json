@@ -1,4 +1,8 @@
 {
+  "age": {
+    "flavors": [],
+    "transition_point": 20000
+  },
   "effects": [
     {
       "amplifier": 0,
