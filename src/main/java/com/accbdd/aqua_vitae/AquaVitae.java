@@ -35,7 +35,6 @@ public class AquaVitae {
 
     public static ResourceKey<Registry<Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
     public static ResourceKey<Registry<BrewingIngredient>> INGREDIENT_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "brewing_ingredient"));
-    public static ResourceKey<Registry<Keg>> KEG_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "keg"));
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
@@ -129,12 +128,6 @@ public class AquaVitae {
                 INGREDIENT_REGISTRY,
                 BrewingIngredient.CODEC,
                 BrewingIngredient.CODEC
-        );
-
-        event.dataPackRegistry(
-                KEG_REGISTRY,
-                Keg.CODEC,
-                Keg.CODEC
         );
     }
 

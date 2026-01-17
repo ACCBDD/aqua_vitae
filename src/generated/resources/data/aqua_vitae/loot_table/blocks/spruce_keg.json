@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "aqua_vitae:keg"
+          "name": "aqua_vitae:spruce_keg"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "aqua_vitae:blocks/keg"
+  "random_sequence": "aqua_vitae:blocks/spruce_keg"
 }

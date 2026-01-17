@@ -27,7 +27,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_AXE).add(
-                ModBlocks.KEG.get(),
+                ModBlocks.OAK_KEG.get(),
+                ModBlocks.SPRUCE_KEG.get(),
+                ModBlocks.JUNGLE_KEG.get(),
                 ModBlocks.CRUSHING_TUB.get()
         );
 

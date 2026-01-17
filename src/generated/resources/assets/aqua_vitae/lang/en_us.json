@@ -1,10 +1,12 @@
 {
   "block.aqua_vitae.aqua_vitae": "Aqua Vitae",
   "block.aqua_vitae.crushing_tub": "Crushing Tub",
-  "block.aqua_vitae.keg": "Keg",
+  "block.aqua_vitae.jungle_keg": "Jungle Keg",
   "block.aqua_vitae.malt_kiln": "Malt Kiln",
   "block.aqua_vitae.mash_tun": "Mash Tun",
+  "block.aqua_vitae.oak_keg": "Oak Keg",
   "block.aqua_vitae.pot_still": "Pot Still",
+  "block.aqua_vitae.spruce_keg": "Spruce Keg",
   "block.aqua_vitae.wort": "Wort",
   "config.jade.plugin_aqua_vitae.pot_still": "Pot Still",
   "flavor.aqua_vitae.aqua_vitae:acrid": "Acrid",

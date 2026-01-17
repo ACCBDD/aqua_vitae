@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.datagen;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -18,14 +19,9 @@ public class BlockStateGenerator extends BlockStateProvider {
         simpleBlock(ModBlocks.AQUA_VITAE.get(), models().getExistingFile(mcLoc("water")));
         simpleBlock(ModBlocks.CRUSHING_TUB.get(), models().getExistingFile(modLoc("crushing_tub")));
         horizontalBlock(ModBlocks.POT_STILL.get(), models().getExistingFile(modLoc("pot_still")), -90);
-        getVariantBuilder(ModBlocks.KEG.get()).forAllStates(state -> {
-            Direction dir = state.getValue(BlockStateProperties.FACING);
-            return ConfiguredModel.builder()
-                    .modelFile(state.getValue(BlockStateProperties.OPEN) ? models().getExistingFile(modLoc("keg")) : models().getExistingFile(mcLoc("stone")))
-                    .rotationX(dir == Direction.DOWN ? 180 : (dir.getAxis().isHorizontal() ? 90 : 0))
-                    .rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot()) % 360)
-                    .build();
-        });
+        kegState(ModBlocks.OAK_KEG.get(), "oak_keg");
+        kegState(ModBlocks.SPRUCE_KEG.get(), "spruce_keg");
+        kegState(ModBlocks.JUNGLE_KEG.get(), "jungle_keg");
         getVariantBuilder(ModBlocks.FERMENTER.get()).forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(state.getValue(BlockStateProperties.CRAFTING) ? models().getExistingFile(modLoc("fermenter_closed")) : models().getExistingFile(modLoc("fermenter")))
                 .build());
@@ -39,5 +35,16 @@ public class BlockStateGenerator extends BlockStateProvider {
                         .modelFile(models().getExistingFile(modLoc("mash_tun")))
                         .rotationY((int) state.getValue(BlockStateProperties.FACING).toYRot() + 90)
                         .build());
+    }
+
+    private void kegState(Block block, String path) {
+        getVariantBuilder(block).forAllStates(state -> {
+            Direction dir = state.getValue(BlockStateProperties.FACING);
+            return ConfiguredModel.builder()
+                    .modelFile(state.getValue(BlockStateProperties.OPEN) ? models().getExistingFile(modLoc(path)) : models().getExistingFile(mcLoc("stone")))
+                    .rotationX(dir == Direction.DOWN ? 180 : (dir.getAxis().isHorizontal() ? 90 : 0))
+                    .rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot()) % 360)
+                    .build();
+        });
     }
 }

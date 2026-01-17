@@ -5,7 +5,7 @@
       "x": 180
     },
     "facing=down,open=true": {
-      "model": "aqua_vitae:block/keg",
+      "model": "aqua_vitae:block/spruce_keg",
       "x": 180
     },
     "facing=east,open=false": {
@@ -14,7 +14,7 @@
       "y": 270
     },
     "facing=east,open=true": {
-      "model": "aqua_vitae:block/keg",
+      "model": "aqua_vitae:block/spruce_keg",
       "x": 90,
       "y": 270
     },
@@ -24,7 +24,7 @@
       "y": 180
     },
     "facing=north,open=true": {
-      "model": "aqua_vitae:block/keg",
+      "model": "aqua_vitae:block/spruce_keg",
       "x": 90,
       "y": 180
     },
@@ -33,14 +33,14 @@
       "x": 90
     },
     "facing=south,open=true": {
-      "model": "aqua_vitae:block/keg",
+      "model": "aqua_vitae:block/spruce_keg",
       "x": 90
     },
     "facing=up,open=false": {
       "model": "minecraft:block/stone"
     },
     "facing=up,open=true": {
-      "model": "aqua_vitae:block/keg"
+      "model": "aqua_vitae:block/spruce_keg"
     },
     "facing=west,open=false": {
       "model": "minecraft:block/stone",
@@ -48,7 +48,7 @@
       "y": 90
     },
     "facing=west,open=true": {
-      "model": "aqua_vitae:block/keg",
+      "model": "aqua_vitae:block/spruce_keg",
       "x": 90,
       "y": 90
     }

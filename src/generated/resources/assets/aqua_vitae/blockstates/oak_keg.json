@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 180
+    },
+    "facing=down,open=true": {
+      "model": "aqua_vitae:block/oak_keg",
+      "x": 180
+    },
+    "facing=east,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=true": {
+      "model": "aqua_vitae:block/oak_keg",
+      "x": 90,
+      "y": 270
+    },
+    "facing=north,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 180
+    },
+    "facing=north,open=true": {
+      "model": "aqua_vitae:block/oak_keg",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90
+    },
+    "facing=south,open=true": {
+      "model": "aqua_vitae:block/oak_keg",
+      "x": 90
+    },
+    "facing=up,open=false": {
+      "model": "minecraft:block/stone"
+    },
+    "facing=up,open=true": {
+      "model": "aqua_vitae:block/oak_keg"
+    },
+    "facing=west,open=false": {
+      "model": "minecraft:block/stone",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west,open=true": {
+      "model": "aqua_vitae:block/oak_keg",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

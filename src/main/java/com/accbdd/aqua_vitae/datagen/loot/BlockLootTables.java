@@ -20,7 +20,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.KEG.get());
+        dropSelf(ModBlocks.OAK_KEG.get());
+        dropSelf(ModBlocks.SPRUCE_KEG.get());
+        dropSelf(ModBlocks.JUNGLE_KEG.get());
         dropSelf(ModBlocks.FERMENTER.get());
         dropSelf(ModBlocks.CRUSHING_TUB.get());
         dropSelf(ModBlocks.POT_STILL.get());

@@ -5,10 +5,8 @@ import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
-import com.accbdd.aqua_vitae.datagen.builtin.BuiltInKegs;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.registry.Keg;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
@@ -47,7 +45,7 @@ public class Generators {
         generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
 
         //utility classes for datagen
-        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}, kegs: {}", new BuiltInFlavors(), new BuiltInIngredients(), new BuiltInKegs());
+        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}, kegs: {}", new BuiltInFlavors(), new BuiltInIngredients());
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
                 AquaVitae.FLAVOR_REGISTRY,
                 bootstrap -> {
@@ -61,15 +59,6 @@ public class Generators {
                 AquaVitae.INGREDIENT_REGISTRY,
                 bootstrap -> {
                     for (Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> entry : BuiltIn.BREWING_INGREDIENTS.entrySet())
-                        bootstrap.register(
-                                entry.getKey(),
-                                entry.getValue()
-                        );
-                }
-        ).add(
-                AquaVitae.KEG_REGISTRY,
-                bootstrap -> {
-                    for (Map.Entry<ResourceKey<Keg>, Keg> entry : BuiltIn.KEGS.entrySet())
                         bootstrap.register(
                                 entry.getKey(),
                                 entry.getValue()

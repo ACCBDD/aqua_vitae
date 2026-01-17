@@ -1,6 +1,8 @@
 {
   "values": [
-    "aqua_vitae:keg",
+    "aqua_vitae:oak_keg",
+    "aqua_vitae:spruce_keg",
+    "aqua_vitae:jungle_keg",
     "aqua_vitae:crushing_tub"
   ]
 }
