@@ -32,7 +32,12 @@ public class LanguageGenerator extends LanguageProvider {
 
         addBlock(ModBlocks.OAK_KEG, "Oak Keg");
         addBlock(ModBlocks.SPRUCE_KEG, "Spruce Keg");
+        addBlock(ModBlocks.BIRCH_KEG, "Birch Keg");
         addBlock(ModBlocks.JUNGLE_KEG, "Jungle Keg");
+        addBlock(ModBlocks.ACACIA_KEG, "Acacia Keg");
+        addBlock(ModBlocks.DARK_OAK_KEG, "Dark Oak Keg");
+        addBlock(ModBlocks.CRIMSON_KEG, "Crimson Keg");
+        addBlock(ModBlocks.WARPED_KEG, "Warped Keg");
         addBlock(ModBlocks.CRUSHING_TUB, "Crushing Tub");
         addBlock(ModBlocks.POT_STILL, "Pot Still");
         addBlock(ModBlocks.MALT_KILN, "Malt Kiln");

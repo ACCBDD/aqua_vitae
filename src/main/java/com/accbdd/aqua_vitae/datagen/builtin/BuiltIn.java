@@ -3,7 +3,7 @@ package com.accbdd.aqua_vitae.datagen.builtin;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
 import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.registry.KegType;
+import com.accbdd.aqua_vitae.api.KegType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 

@@ -65,7 +65,7 @@ public abstract class BaseAgingBlock extends BaseEntityBlock {
         if (keg == null)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        if (FluidUtils.handleInteraction(player, hand, stack, keg.getFluidHandler())) {
+        if (state.getValue(BlockStateProperties.OPEN) && FluidUtils.handleInteraction(player, hand, stack, keg.getFluidHandler())) {
             level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;

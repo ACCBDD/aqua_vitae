@@ -51,6 +51,6 @@ public record IngredientColor(int color, int influence) {
         int g = (int) (g1 * weightCurrentRGB + g2 * weightAddedRGB);
         int b = (int) (b1 * weightCurrentRGB + b2 * weightAddedRGB);
 
-        return new IngredientColor((Math.max(a, 80) << 24) | (r << 16) | (g << 8) | b, second.influence() + first.influence());
+        return new IngredientColor((Math.clamp(a, 80, 240) << 24) | (r << 16) | (g << 8) | b, second.influence() + first.influence());
     }
 }

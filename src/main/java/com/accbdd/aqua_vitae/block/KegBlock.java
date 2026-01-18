@@ -1,7 +1,7 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
-import com.accbdd.aqua_vitae.registry.KegType;
+import com.accbdd.aqua_vitae.api.KegType;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;

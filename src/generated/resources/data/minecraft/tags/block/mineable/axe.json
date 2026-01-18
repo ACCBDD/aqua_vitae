@@ -2,7 +2,12 @@
   "values": [
     "aqua_vitae:oak_keg",
     "aqua_vitae:spruce_keg",
+    "aqua_vitae:birch_keg",
     "aqua_vitae:jungle_keg",
+    "aqua_vitae:acacia_keg",
+    "aqua_vitae:dark_oak_keg",
+    "aqua_vitae:crimson_keg",
+    "aqua_vitae:warped_keg",
     "aqua_vitae:crushing_tub"
   ]
 }

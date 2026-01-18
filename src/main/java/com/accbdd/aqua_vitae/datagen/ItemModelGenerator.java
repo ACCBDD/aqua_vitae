@@ -23,7 +23,12 @@ public class ItemModelGenerator extends ItemModelProvider {
         ModFluids.REGISTERED.forEach(this::bucketModel);
         simpleBlockItem(ModBlocks.OAK_KEG.get());
         simpleBlockItem(ModBlocks.SPRUCE_KEG.get());
+        simpleBlockItem(ModBlocks.BIRCH_KEG.get());
         simpleBlockItem(ModBlocks.JUNGLE_KEG.get());
+        simpleBlockItem(ModBlocks.ACACIA_KEG.get());
+        simpleBlockItem(ModBlocks.DARK_OAK_KEG.get());
+        simpleBlockItem(ModBlocks.CRIMSON_KEG.get());
+        simpleBlockItem(ModBlocks.WARPED_KEG.get());
         simpleBlockItem(ModBlocks.FERMENTER.get());
         simpleBlockItem(ModBlocks.CRUSHING_TUB.get());
         simpleBlockItem(ModBlocks.POT_STILL.get());

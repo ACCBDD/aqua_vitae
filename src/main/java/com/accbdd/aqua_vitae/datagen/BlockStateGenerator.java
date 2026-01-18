@@ -21,7 +21,12 @@ public class BlockStateGenerator extends BlockStateProvider {
         horizontalBlock(ModBlocks.POT_STILL.get(), models().getExistingFile(modLoc("pot_still")), -90);
         kegState(ModBlocks.OAK_KEG.get(), "oak_keg");
         kegState(ModBlocks.SPRUCE_KEG.get(), "spruce_keg");
+        kegState(ModBlocks.BIRCH_KEG.get(), "birch_keg");
         kegState(ModBlocks.JUNGLE_KEG.get(), "jungle_keg");
+        kegState(ModBlocks.ACACIA_KEG.get(), "acacia_keg");
+        kegState(ModBlocks.DARK_OAK_KEG.get(), "dark_oak_keg");
+        kegState(ModBlocks.CRIMSON_KEG.get(), "crimson_keg");
+        kegState(ModBlocks.WARPED_KEG.get(), "warped_keg");
         getVariantBuilder(ModBlocks.FERMENTER.get()).forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(state.getValue(BlockStateProperties.CRAFTING) ? models().getExistingFile(modLoc("fermenter_closed")) : models().getExistingFile(modLoc("fermenter")))
                 .build());
@@ -41,9 +46,9 @@ public class BlockStateGenerator extends BlockStateProvider {
         getVariantBuilder(block).forAllStates(state -> {
             Direction dir = state.getValue(BlockStateProperties.FACING);
             return ConfiguredModel.builder()
-                    .modelFile(state.getValue(BlockStateProperties.OPEN) ? models().getExistingFile(modLoc(path)) : models().getExistingFile(mcLoc("stone")))
+                    .modelFile(state.getValue(BlockStateProperties.OPEN) ? models().getExistingFile(modLoc(path + "_open")) : models().getExistingFile(modLoc(path)))
                     .rotationX(dir == Direction.DOWN ? 180 : (dir.getAxis().isHorizontal() ? 90 : 0))
-                    .rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot()) % 360)
+                    .rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot()) % 360 + 180)
                     .build();
         });
     }

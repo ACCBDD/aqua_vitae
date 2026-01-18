@@ -29,7 +29,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE).add(
                 ModBlocks.OAK_KEG.get(),
                 ModBlocks.SPRUCE_KEG.get(),
+                ModBlocks.BIRCH_KEG.get(),
                 ModBlocks.JUNGLE_KEG.get(),
+                ModBlocks.ACACIA_KEG.get(),
+                ModBlocks.DARK_OAK_KEG.get(),
+                ModBlocks.CRIMSON_KEG.get(),
+                ModBlocks.WARPED_KEG.get(),
                 ModBlocks.CRUSHING_TUB.get()
         );
 

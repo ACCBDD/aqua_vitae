@@ -15,7 +15,12 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(KegBlockEntity::new,
                     ModBlocks.OAK_KEG.get(),
                     ModBlocks.SPRUCE_KEG.get(),
-                    ModBlocks.JUNGLE_KEG.get()).build(null));
+                    ModBlocks.BIRCH_KEG.get(),
+                    ModBlocks.JUNGLE_KEG.get(),
+                    ModBlocks.ACACIA_KEG.get(),
+                    ModBlocks.DARK_OAK_KEG.get(),
+                    ModBlocks.CRIMSON_KEG.get(),
+                    ModBlocks.WARPED_KEG.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FermenterBlockEntity>> FERMENTER = BLOCK_ENTITY_TYPES.register("fermenter",
             () -> BlockEntityType.Builder.of(FermenterBlockEntity::new, ModBlocks.FERMENTER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrushingTubBlockEntity>> CRUSHING_TUB = BLOCK_ENTITY_TYPES.register("crushing_tub",

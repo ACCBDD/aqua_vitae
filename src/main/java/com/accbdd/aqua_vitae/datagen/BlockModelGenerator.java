@@ -11,9 +11,14 @@ public class BlockModelGenerator extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
-        cubeBottomTop("oak_keg", modLoc("block/keg/oak_keg_side"), modLoc("block/keg/oak_keg_bottom"), modLoc("block/keg/oak_keg_top"));
-        cubeBottomTop("spruce_keg", modLoc("block/keg/spruce_keg_side"), modLoc("block/keg/spruce_keg_bottom"), modLoc("block/keg/spruce_keg_top"));
-        cubeBottomTop("jungle_keg", modLoc("block/keg/jungle_keg_side"), modLoc("block/keg/jungle_keg_bottom"), modLoc("block/keg/jungle_keg_top"));
+        kegModel("oak");
+        kegModel("spruce");
+        kegModel("birch");
+        kegModel("jungle");
+        kegModel("acacia");
+        kegModel("dark_oak");
+        kegModel("crimson");
+        kegModel("warped");
         cubeAll("fermenter_closed", modLoc("block/fermenter_closed"));
         cubeAll("fermenter", modLoc("block/fermenter_open"));
         cube("malt_kiln",
@@ -30,5 +35,10 @@ public class BlockModelGenerator extends BlockModelProvider {
                 modLoc("block/malt_kiln_side"),
                 modLoc("block/malt_kiln_side"),
                 modLoc("block/malt_kiln_side")).texture("particle", modLoc("block/malt_kiln_side"));
+    }
+
+    private void kegModel(String name) {
+        cubeBottomTop(name + "_keg", modLoc("block/keg/"+name+"_keg_side"), modLoc("block/keg/"+name+"_keg_bottom"), modLoc("block/keg/"+name+"_keg_top"));
+        cubeBottomTop(name + "_keg_open", modLoc("block/keg/"+name+"_keg_side"), modLoc("block/keg/"+name+"_keg_bottom"), modLoc("block/keg/"+name+"_keg_top_open"));
     }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aqua_vitae:dark_oak_keg"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "aqua_vitae:blocks/dark_oak_keg"
+}

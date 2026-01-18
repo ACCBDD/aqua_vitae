@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "aqua_vitae:block/keg/dark_oak_keg_bottom",
+    "side": "aqua_vitae:block/keg/dark_oak_keg_side",
+    "top": "aqua_vitae:block/keg/dark_oak_keg_top_open"
+  }
+}

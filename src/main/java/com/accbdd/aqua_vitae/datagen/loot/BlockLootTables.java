@@ -22,7 +22,12 @@ public class BlockLootTables extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.OAK_KEG.get());
         dropSelf(ModBlocks.SPRUCE_KEG.get());
+        dropSelf(ModBlocks.BIRCH_KEG.get());
         dropSelf(ModBlocks.JUNGLE_KEG.get());
+        dropSelf(ModBlocks.ACACIA_KEG.get());
+        dropSelf(ModBlocks.DARK_OAK_KEG.get());
+        dropSelf(ModBlocks.CRIMSON_KEG.get());
+        dropSelf(ModBlocks.WARPED_KEG.get());
         dropSelf(ModBlocks.FERMENTER.get());
         dropSelf(ModBlocks.CRUSHING_TUB.get());
         dropSelf(ModBlocks.POT_STILL.get());

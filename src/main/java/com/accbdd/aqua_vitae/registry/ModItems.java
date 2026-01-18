@@ -26,7 +26,12 @@ public class ModItems {
 
     public static final DeferredItem<BlockItem> OAK_KEG = registerSimpleBlockItem("oak_keg", ModBlocks.OAK_KEG);
     public static final DeferredItem<BlockItem> SPRUCE_KEG = registerSimpleBlockItem("spruce_keg", ModBlocks.SPRUCE_KEG);
+    public static final DeferredItem<BlockItem> BIRCH_KEG = registerSimpleBlockItem("birch_keg", ModBlocks.BIRCH_KEG);
     public static final DeferredItem<BlockItem> JUNGLE_KEG = registerSimpleBlockItem("jungle_keg", ModBlocks.JUNGLE_KEG);
+    public static final DeferredItem<BlockItem> ACACIA_KEG = registerSimpleBlockItem("acacia_keg", ModBlocks.ACACIA_KEG);
+    public static final DeferredItem<BlockItem> DARK_OAK_KEG = registerSimpleBlockItem("dark_oak_keg", ModBlocks.DARK_OAK_KEG);
+    public static final DeferredItem<BlockItem> CRIMSON_KEG = registerSimpleBlockItem("crimson_keg", ModBlocks.CRIMSON_KEG);
+    public static final DeferredItem<BlockItem> WARPED_KEG = registerSimpleBlockItem("warped_keg", ModBlocks.WARPED_KEG);
     public static final DeferredItem<BlockItem> FERMENTER = registerSimpleBlockItem("fermenter", ModBlocks.FERMENTER);
     public static final DeferredItem<BlockItem> CRUSHING_TUB = registerSimpleBlockItem("crushing_tub", ModBlocks.CRUSHING_TUB);
     public static final DeferredItem<BlockItem> POT_STILL = registerSimpleBlockItem("pot_still", ModBlocks.POT_STILL);
