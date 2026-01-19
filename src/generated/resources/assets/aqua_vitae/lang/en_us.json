@@ -50,7 +50,7 @@
   "key.aqua_vitae.properties": "Show Fluid Properties",
   "key.categories.aqua_vitae": "Aqua Vitae",
   "properties.aqua_vitae.abb": "%s ABV",
-  "properties.aqua_vitae.age": "%s old",
+  "properties.aqua_vitae.age": "aged for %s days",
   "properties.aqua_vitae.color": "#%s",
   "properties.aqua_vitae.diastatic_power": "DP: %s",
   "properties.aqua_vitae.ingredients": "Hold %s for ingredients.",

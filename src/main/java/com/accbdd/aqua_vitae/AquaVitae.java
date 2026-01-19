@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae;
 
 import com.accbdd.aqua_vitae.capability.CupHandler;
+import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;

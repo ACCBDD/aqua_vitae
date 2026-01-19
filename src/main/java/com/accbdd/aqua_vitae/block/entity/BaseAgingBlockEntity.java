@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.block.entity;
 
+import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.Constants;
@@ -49,9 +50,9 @@ public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
             return;
         }
 
-        if (tick++ >= Constants.AGING_STEP) {
+        if (tick++ >= Config.ageTicks) {
             this.tick = 0;
-            int ageBy = (int) (getLevel().getGameTime() - this.lastTicked);
+            int ageBy = (int) (getLevel().getGameTime() - this.lastTicked) / Config.ageTicks;
             this.lastTicked = getLevel().getGameTime();
             if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
                 setFluid(FluidUtils.age(getFluid(), ageBy, color, List.of()));

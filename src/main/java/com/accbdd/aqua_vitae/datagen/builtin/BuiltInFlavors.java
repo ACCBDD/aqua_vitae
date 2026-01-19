@@ -32,7 +32,7 @@ public class BuiltInFlavors {
                 .build());
         ACRID = flavor("acrid", new Flavor.Builder()
                 .effect(new MobEffectInstance(MobEffects.HARM, 1, 0))
-                .age(List.of(), 20000)
+                .age(List.of(), 2)
                 .build());
         LICORICE = flavor("licorice", new Flavor.Builder()
                 .build());

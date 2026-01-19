@@ -3,6 +3,7 @@ package com.accbdd.aqua_vitae.client;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
+import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.Constants;
@@ -40,7 +41,7 @@ public class ClientUtils {
             ingredientsTooltip.add(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abb", String.format("%.2f%%", alcoholComponent.abb() / 10)));
-            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", alcoholComponent.age()));
+            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", String.format("%.2f", (alcoholComponent.age() * Config.ageTicks) / 24000f)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color().color()).toUpperCase()).withColor(alcoholComponent.color().color() | 0xFF000000));
         }
 

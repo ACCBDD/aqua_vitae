@@ -83,7 +83,7 @@ public class LanguageGenerator extends LanguageProvider {
         add("properties.aqua_vitae.yeast", "Yeast: %1$s, Tolerance: %2$s");
         add("properties.aqua_vitae.color", "#%s");
         add("properties.aqua_vitae.abb", "%s ABV");
-        add("properties.aqua_vitae.age", "%s old");
+        add("properties.aqua_vitae.age", "Aged for %s days");
         add("properties.aqua_vitae.properties", "Hold %s for properties.");
         add("properties.aqua_vitae.ingredients", "Hold %s for ingredients.");
         add("key.categories.aqua_vitae", "Aqua Vitae");

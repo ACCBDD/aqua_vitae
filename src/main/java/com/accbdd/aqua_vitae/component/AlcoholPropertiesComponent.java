@@ -18,11 +18,11 @@ import java.util.Set;
 /**
  * @param color
  * @param abb     alcohol per bucket - 1000 should be granular enough?
- * @param age     age in ticks //todo - config option for display
+ * @param age     age in age cycles
  * @param flavors
  * @param inputs
  */
-public record AlcoholPropertiesComponent(IngredientColor color, float abb, long age,
+public record AlcoholPropertiesComponent(IngredientColor color, float abb, int age,
                                          Set<ResourceKey<Flavor>> flavors, IngredientMap inputs) {
 
     public static final AlcoholPropertiesComponent EMPTY = new AlcoholPropertiesComponent(new IngredientColor(0), 0, 0, Set.of(), new IngredientMap());
@@ -31,7 +31,7 @@ public record AlcoholPropertiesComponent(IngredientColor color, float abb, long 
             instance.group(
                     IngredientColor.CODEC.fieldOf("color").forGetter(AlcoholPropertiesComponent::color),
                     Codec.FLOAT.fieldOf("abb").forGetter(AlcoholPropertiesComponent::abb),
-                    Codec.LONG.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
+                    Codec.INT.fieldOf("age").forGetter(AlcoholPropertiesComponent::age),
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(AlcoholPropertiesComponent::flavors),
                     IngredientMap.CODEC.fieldOf("inputs").forGetter(AlcoholPropertiesComponent::inputs)
             ).apply(instance, AlcoholPropertiesComponent::new)
@@ -40,7 +40,7 @@ public record AlcoholPropertiesComponent(IngredientColor color, float abb, long 
     public static final StreamCodec<RegistryFriendlyByteBuf, AlcoholPropertiesComponent> STREAM_CODEC = StreamCodec.composite(
             IngredientColor.STREAM_CODEC, AlcoholPropertiesComponent::color,
             ByteBufCodecs.FLOAT, AlcoholPropertiesComponent::abb,
-            ByteBufCodecs.VAR_LONG, AlcoholPropertiesComponent::age,
+            ByteBufCodecs.INT, AlcoholPropertiesComponent::age,
             ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), AlcoholPropertiesComponent::flavors,
             IngredientMap.STREAM_CODEC, AlcoholPropertiesComponent::inputs,
             AlcoholPropertiesComponent::new
