@@ -3,7 +3,7 @@ package com.accbdd.aqua_vitae.block.entity;
 import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.recipe.IngredientColor;
 import com.accbdd.aqua_vitae.registry.ModComponents;
-import com.accbdd.aqua_vitae.util.Constants;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -57,6 +57,7 @@ public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
             if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
                 setFluid(FluidUtils.age(getFluid(), ageBy, color, List.of()));
             }
+            BrewingUtils.determineAlcoholName(getFluid());
         }
     }
 

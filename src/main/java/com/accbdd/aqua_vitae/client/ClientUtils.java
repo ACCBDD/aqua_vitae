@@ -40,7 +40,7 @@ public class ClientUtils {
             AlcoholPropertiesComponent alcoholComponent = fluidStack.get(ModComponents.ALCOHOL_PROPERTIES);
             ingredientsTooltip.add(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
-            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abb", String.format("%.2f%%", alcoholComponent.abb() / 10)));
+            propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abv", String.format("%.2f%%", alcoholComponent.abv() / 10)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", String.format("%.2f", (alcoholComponent.age() * Config.ageTicks) / 24000f)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(alcoholComponent.color().color()).toUpperCase()).withColor(alcoholComponent.color().color() | 0xFF000000));
         }

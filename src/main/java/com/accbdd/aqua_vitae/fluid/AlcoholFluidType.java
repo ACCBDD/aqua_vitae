@@ -1,6 +1,5 @@
 package com.accbdd.aqua_vitae.fluid;
 
-import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -25,18 +24,8 @@ public class AlcoholFluidType extends FluidType {
     @Override
     public Component getDescription(FluidStack stack) {
         //todo: actual data-driven naming, custom name component
-        if (stack.has(ModComponents.ALCOHOL_PROPERTIES)) {
-            AlcoholPropertiesComponent props = stack.get(ModComponents.ALCOHOL_PROPERTIES);
-            if (props.abb() > 200)
-                return Component.literal("Liquor");
-            else if (props.abb() > 100)
-                return Component.literal("Wine");
-            else if (props.abb() > 50)
-                return Component.literal("Beer");
-            else
-                return Component.literal("Small Beer");
-
-        }
-        return super.getDescription(stack);
+        if (stack.has(ModComponents.ALCOHOL_NAME))
+            return stack.get(ModComponents.ALCOHOL_NAME).component();
+        return Component.translatable("alcohol.aqua_vitae.generic");
     }
 }

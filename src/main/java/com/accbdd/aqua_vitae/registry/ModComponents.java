@@ -3,7 +3,6 @@ package com.accbdd.aqua_vitae.registry;
 import com.accbdd.aqua_vitae.component.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -30,6 +29,6 @@ public class ModComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<RoastCountComponent>> ROAST_COUNTER = COMPONENTS.registerComponentType("roast_counter",
             builder -> builder.persistent(RoastCountComponent.CODEC).networkSynchronized(RoastCountComponent.STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> KEG = COMPONENTS.registerComponentType("keg",
-            builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AlcoholNameComponent>> ALCOHOL_NAME = COMPONENTS.registerComponentType("alcohol_name",
+            builder -> builder.persistent(AlcoholNameComponent.CODEC).networkSynchronized(AlcoholNameComponent.STREAM_CODEC));
 }

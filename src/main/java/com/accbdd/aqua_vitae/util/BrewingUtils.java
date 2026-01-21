@@ -1,6 +1,8 @@
 package com.accbdd.aqua_vitae.util;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
@@ -215,6 +217,22 @@ public class BrewingUtils {
             inputs.add(stack);
         }
         fluid.set(ModComponents.PRECURSOR_PROPERTIES, new PrecursorPropertiesComponent(inputs, flavors, properties.mash()));
+        fluid.set(ModComponents.ALCOHOL_NAME, new AlcoholNameComponent(Component.translatable("alcohol.aqua_vitae.wort")));
         return fluid;
+    }
+
+    public static void determineAlcoholName(FluidStack alcohol) {
+        if (alcohol.has(ModComponents.ALCOHOL_PROPERTIES)) {
+            AlcoholPropertiesComponent props = alcohol.get(ModComponents.ALCOHOL_PROPERTIES);
+            Component name = Component.translatable("alcohol.aqua_vitae.generic");
+            if (props.abv() > 100) {
+                name = Component.translatable("alcohol.aqua_vitae.liquor");
+            } else if (props.abv() > 30) {
+                name = Component.translatable("alcohol.aqua_vitae.beer");
+            } else if (props.abv() > 1) {
+                name = Component.translatable("alcohol.aqua_vitae.small_beer");
+            }
+            alcohol.set(ModComponents.ALCOHOL_NAME, new AlcoholNameComponent(name));
+        }
     }
 }

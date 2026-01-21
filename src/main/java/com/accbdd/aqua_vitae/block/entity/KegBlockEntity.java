@@ -1,8 +1,8 @@
 package com.accbdd.aqua_vitae.block.entity;
 
 import com.accbdd.aqua_vitae.api.IKegEffect;
-import com.accbdd.aqua_vitae.block.KegBlock;
 import com.accbdd.aqua_vitae.api.KegType;
+import com.accbdd.aqua_vitae.block.KegBlock;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

@@ -17,8 +17,8 @@ import java.util.Optional;
  * <p>When a transition list is null, the flavors is unchanged; when a transition list is empty, the flavors is removed.</p>
  * <p>See also: {@link Transition}</p>
  * @param effects the effects applied when drank
- * @param ferment transition point is ABB content
- * @param distill transition point is ABB content
+ * @param ferment transition point is ABV content
+ * @param distill transition point is ABV content
  * @param age transition point is days
  * @param kiln transition point is kiln count
  * @param malt transition point is ignored

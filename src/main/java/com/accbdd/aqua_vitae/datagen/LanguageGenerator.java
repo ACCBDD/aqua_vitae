@@ -68,6 +68,12 @@ public class LanguageGenerator extends LanguageProvider {
         addGrammar("list_combine", "%s, ");
         addGrammar("label", "%1$s %2$s");
 
+        addAlcohol("generic", "Ferment");
+        addAlcohol("liquor", "Liquor");
+        addAlcohol("beer", "Beer");
+        addAlcohol("small_beer", "Small Beer");
+        addAlcohol("wort", "Wort");
+
         add("flavor.aqua_vitae.none", "None");
         add("flavor.aqua_vitae.label", "Flavors:");
         add("ingredient.aqua_vitae.roast.1", "Pale");
@@ -82,7 +88,7 @@ public class LanguageGenerator extends LanguageProvider {
         add("properties.aqua_vitae.diastatic_power", "DP: %s");
         add("properties.aqua_vitae.yeast", "Yeast: %1$s, Tolerance: %2$s");
         add("properties.aqua_vitae.color", "#%s");
-        add("properties.aqua_vitae.abb", "%s ABV");
+        add("properties.aqua_vitae.abv", "%s ABV");
         add("properties.aqua_vitae.age", "Aged for %s days");
         add("properties.aqua_vitae.properties", "Hold %s for properties.");
         add("properties.aqua_vitae.ingredients", "Hold %s for ingredients.");
@@ -113,5 +119,9 @@ public class LanguageGenerator extends LanguageProvider {
 
     private void addGrammar(String name, String text) {
         add("grammar.aqua_vitae." + name, text);
+    }
+
+    private void addAlcohol(String name, String text) {
+        add("alcohol.aqua_vitae." + name, text);
     }
 }

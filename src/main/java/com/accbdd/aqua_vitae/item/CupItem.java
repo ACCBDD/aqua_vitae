@@ -38,7 +38,7 @@ public class CupItem extends Item {
     @Override
     public Component getName(ItemStack stack) {
         if (stack.has(ModComponents.FLUIDSTACK) && !stack.get(ModComponents.FLUIDSTACK).stack().isEmpty())
-            return Component.translatable("grammar.aqua_vitae.container_of", super.getName(stack), stack.get(ModComponents.FLUIDSTACK.get()).stack().getHoverName());
+            return Component.translatable("grammar.aqua_vitae.container_of", super.getName(stack), stack.get(ModComponents.FLUIDSTACK.get()).getHoverName());
         return super.getName(stack);
     }
 
@@ -81,7 +81,7 @@ public class CupItem extends Item {
         var fluid = stack.remove(ModComponents.FLUIDSTACK).stack();
         if (fluid.has(ModComponents.ALCOHOL_PROPERTIES) && livingEntity instanceof Player player) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-            PlayerAlcoholManager.addBloodAlcohol(player, (int) (props.abb() * fluid.getAmount() / 10));
+            PlayerAlcoholManager.addBloodAlcohol(player, (int) (props.abv() * fluid.getAmount() / 10));
             props.flavors().stream().map(key ->
                             level.registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get().get(key)).filter(Objects::nonNull).forEach(flavor ->
                     flavor.effects().forEach(effectInstance -> livingEntity.addEffect(new MobEffectInstance(effectInstance))));

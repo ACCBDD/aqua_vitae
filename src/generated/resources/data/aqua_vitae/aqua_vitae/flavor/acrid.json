@@ -1,7 +1,7 @@
 {
   "age": {
     "flavors": [],
-    "transition_point": 20000
+    "transition_point": 2
   },
   "effects": [
     {

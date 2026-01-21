@@ -123,11 +123,11 @@ public class FluidUtils {
         BrewingProperties brewing = ferment.properties();
 
         double batchPenalty = Math.min(Math.max(1.0 / Math.pow(fluid.getAmount() / 1000d, 0.1), 0.25), 1); //bigger batches ferment slower, to a point
-        double abbFactor = Math.max(1.0 - (double) alcohol.abb() / Math.max(brewing.yeastTolerance(), 1), 0.01); // closer to abb tolerance means slower ferment
+        double abvFactor = Math.max(1.0 - (double) alcohol.abv() / Math.max(brewing.yeastTolerance(), 1), 0.01); // closer to abv tolerance means slower ferment
         double yeastFactor = (double) brewing.yeast() / Math.max(brewing.sugar(), 1); // more yeast per sugar means faster ferment
-        double conversionRate = 5 * yeastFactor * abbFactor * batchPenalty;
+        double conversionRate = 5 * yeastFactor * abvFactor * batchPenalty;
         double converted = conversionRate - Math.max(conversionRate - brewing.sugar(), 0);
-        double abbDelta = converted / 2; //sugar is converted to alcohol at 2:1
+        double abvDelta = converted / 2; //sugar is converted to alcohol at 2:1
 
         FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
                 ferment.flavors(),
@@ -139,15 +139,15 @@ public class FluidUtils {
                         brewing.diastaticPower()));
 
         AlcoholPropertiesComponent newAlcohol = new AlcoholPropertiesComponent(alcohol.color(),
-                Math.min((float) (alcohol.abb() + abbDelta), brewing.yeastTolerance()),
+                Math.min((float) (alcohol.abv() + abvDelta), brewing.yeastTolerance()),
                 alcohol.age(),
                 alcohol.flavors(),
                 alcohol.inputs());
 
-        AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abb: {}, yeast: {}), abb delta: {}", conversionRate, batchPenalty, abbFactor, yeastFactor, abbDelta);
-        AquaVitae.LOGGER.debug("sugar {} -> {}; abb {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abb(), newAlcohol.abb());
+        AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abv: {}, yeast: {}), abv delta: {}", conversionRate, batchPenalty, abvFactor, yeastFactor, abvDelta);
+        AquaVitae.LOGGER.debug("sugar {} -> {}; abv {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abv(), newAlcohol.abv());
 
-        if (newFerment.properties().sugar() == 0 || abbDelta == 0 || alcohol.abb() >= brewing.yeastTolerance())
+        if (newFerment.properties().sugar() == 0 || abvDelta == 0 || alcohol.abv() >= brewing.yeastTolerance())
             newFluid.remove(ModComponents.FERMENTING_PROPERTIES);
         else
             newFluid.set(ModComponents.FERMENTING_PROPERTIES, newFerment);
@@ -170,40 +170,40 @@ public class FluidUtils {
      * @param fluid the fluid to distill
      * @param lossFactor the amount of alcohol kept in distilling (complement of angel's share)
      * @param distillFactor the factor to distill by - higher values mean less passes needed to hit max
-     * @param maxAbb the maximum abb this distillation can hit
+     * @param maxAbv the maximum abv this distillation can hit
      * @return a new FluidStack representing the distilled fluid, with color and properties changed
      */
-    public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbb) {
+    public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbv) {
         AlcoholPropertiesComponent alcohol = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
         if (alcohol == null )
             return fluid;
 
-        float currentAbb = alcohol.abb();
-        if (currentAbb <= 0 || currentAbb >= maxAbb)
+        float currentAbv = alcohol.abv();
+        if (currentAbv <= 0 || currentAbv >= maxAbv)
             return fluid;
 
-        float x = currentAbb / 1000f;
+        float x = currentAbv / 1000f;
         float numerator = distillFactor * x;
         float denominator = 1.0f + (distillFactor - 1.0f) * x;
         float y = numerator / denominator;
-        float potentialAbb = y * 1000f;
-        float newAbb = Math.min(potentialAbb, maxAbb);
+        float potentialAbv = y * 1000f;
+        float newAbv = Math.min(potentialAbv, maxAbv);
 
         int newVolume;
-        float totalAlcoholUnits = fluid.getAmount() * currentAbb;
+        float totalAlcoholUnits = fluid.getAmount() * currentAbv;
         float retainedAlcoholUnits = totalAlcoholUnits * lossFactor;
-        newVolume = (int) (retainedAlcoholUnits / newAbb);
+        newVolume = (int) (retainedAlcoholUnits / newAbv);
         newVolume = Math.clamp(newVolume, 1, fluid.getAmount());
 
-        float improvementRatio = (newAbb - currentAbb) / (maxAbb - currentAbb + 1e-6f);
+        float improvementRatio = (newAbv - currentAbv) / (maxAbv - currentAbv + 1e-6f);
         int newColor = NumUtils.lightenColor(alcohol.color().color(), improvementRatio);
 
         FluidStack newFluid = fluid.copyWithAmount(newVolume);
         newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(
                 new IngredientColor(newColor, (int) (alcohol.color().influence() * improvementRatio)),
-                Math.round(newAbb),
+                Math.round(newAbv),
                 alcohol.age(),
-                BrewingUtils.transitionFlavors(alcohol.flavors(), Flavor::distill, Math.round(newAbb)),
+                BrewingUtils.transitionFlavors(alcohol.flavors(), Flavor::distill, Math.round(newAbv)),
                 alcohol.inputs()));
 
         return newFluid;
@@ -233,7 +233,7 @@ public class FluidUtils {
             }
         }
         FluidStack newFluid = fluid.copy();
-        newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(newColor, props.abb(), newAge, newFlavors, props.inputs()));
+        newFluid.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(newColor, props.abv(), newAge, newFlavors, props.inputs()));
         return newFluid;
     }
 
