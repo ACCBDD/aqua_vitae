@@ -1,13 +1,13 @@
 {
-  "key": "alcohol.aqua_vitae.beer",
+  "key": "alcohol.aqua_vitae.small_beer",
   "predicates": [
     {
       "type": "aqua_vitae:minimum_abv",
-      "min": 30
+      "min": 60
     },
     {
       "type": "aqua_vitae:maximum_abv",
-      "max": 60
+      "max": 100
     }
   ]
 }

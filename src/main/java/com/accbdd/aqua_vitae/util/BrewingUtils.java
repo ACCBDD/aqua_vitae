@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.util;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
@@ -20,6 +21,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -221,17 +223,19 @@ public class BrewingUtils {
         return fluid;
     }
 
-    public static void determineAlcoholName(FluidStack alcohol) {
-        if (alcohol.has(ModComponents.ALCOHOL_PROPERTIES)) {
+    public static void determineAlcoholName(FluidStack alcohol, Level level) {
+        if (level != null && alcohol.has(ModComponents.ALCOHOL_PROPERTIES)) {
             AlcoholPropertiesComponent props = alcohol.get(ModComponents.ALCOHOL_PROPERTIES);
-            Component name = Component.translatable("alcohol.aqua_vitae.generic");
-            if (props.abv() > 100) {
-                name = Component.translatable("alcohol.aqua_vitae.liquor");
-            } else if (props.abv() > 30) {
-                name = Component.translatable("alcohol.aqua_vitae.beer");
-            } else if (props.abv() > 1) {
-                name = Component.translatable("alcohol.aqua_vitae.small_beer");
+            Component name = null;
+            for (Map.Entry<ResourceKey<NameEntry>, NameEntry> entry : level.registryAccess().registry(AquaVitae.NAME_REGISTRY).orElseThrow().entrySet()) {
+                if (entry.getValue().test(alcohol)) {
+                    name = entry.getValue().getComponent();
+                    break;
+                }
             }
+
+            if (name == null)
+                name = Component.translatable("alcohol.aqua_vitae.generic");
             alcohol.set(ModComponents.ALCOHOL_NAME, new AlcoholNameComponent(name));
         }
     }

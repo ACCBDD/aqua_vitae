@@ -33,18 +33,18 @@ public class FermenterBlockEntity extends BaseSingleFluidTankEntity {
             if (getBlockState().getValue(BlockStateProperties.CRAFTING)) {
                 if (fluid.has(ModComponents.FERMENTING_PROPERTIES)) {
                     setFluid(FluidUtils.ferment(fluid));
-                    BrewingUtils.determineAlcoholName(getFluid());
+                    BrewingUtils.determineAlcoholName(getFluid(), getLevel());
                 } else if (fluid.has(ModComponents.PRECURSOR_PROPERTIES)) {
                     PrecursorPropertiesComponent precursor = fluid.getOrDefault(ModComponents.PRECURSOR_PROPERTIES, PrecursorPropertiesComponent.EMPTY);
                     FluidStack alcohol = new FluidStack(ModFluids.ALCOHOL, fluid.getAmount(), fluid.getComponentsPatch());
                     alcohol.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(0, precursor.flavors(), precursor.properties()));
                     alcohol.set(ModComponents.ALCOHOL_PROPERTIES, new AlcoholPropertiesComponent(precursor.properties().color(), 0, 0, precursor.flavors(), precursor.ingredients()));
                     alcohol.remove(ModComponents.PRECURSOR_PROPERTIES);
-                    BrewingUtils.determineAlcoholName(alcohol);
+                    BrewingUtils.determineAlcoholName(alcohol, getLevel());
                     setFluid(alcohol);
                 }
             } else if (fluid.has(ModComponents.FERMENTING_PROPERTIES)) {
-                setFluid(FluidUtils.stress(fluid));
+                //setFluid(FluidUtils.stress(fluid)); //todo implement stress
             }
         }
     }

@@ -57,7 +57,7 @@ public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
             if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
                 setFluid(FluidUtils.age(getFluid(), ageBy, color, List.of()));
             }
-            BrewingUtils.determineAlcoholName(getFluid());
+            BrewingUtils.determineAlcoholName(getFluid(), getLevel());
         }
     }
 
