@@ -1,8 +1,8 @@
 package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;

@@ -2,7 +2,7 @@ package com.accbdd.aqua_vitae.registry;
 
 import com.accbdd.aqua_vitae.api.KegType;
 import com.accbdd.aqua_vitae.block.*;
-import com.accbdd.aqua_vitae.recipe.IngredientColor;
+import com.accbdd.aqua_vitae.api.IngredientColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;

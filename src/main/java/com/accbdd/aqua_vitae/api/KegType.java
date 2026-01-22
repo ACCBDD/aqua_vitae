@@ -1,7 +1,5 @@
 package com.accbdd.aqua_vitae.api;
 
-import com.accbdd.aqua_vitae.recipe.IngredientColor;
-
 import java.util.List;
 
 public record KegType(int capacity, List<IKegEffect> kegEffects, IngredientColor color) {

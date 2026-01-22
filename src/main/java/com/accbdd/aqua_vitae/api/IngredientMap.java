@@ -1,4 +1,4 @@
-package com.accbdd.aqua_vitae.recipe;
+package com.accbdd.aqua_vitae.api;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;

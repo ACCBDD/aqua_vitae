@@ -1,4 +1,4 @@
-package com.accbdd.aqua_vitae.recipe;
+package com.accbdd.aqua_vitae.api;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;

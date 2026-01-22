@@ -1,6 +1,6 @@
 package com.accbdd.aqua_vitae.datagen.builtin;
 
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;

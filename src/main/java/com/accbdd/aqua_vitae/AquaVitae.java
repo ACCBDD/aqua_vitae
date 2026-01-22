@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae;
 
+import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.capability.CupHandler;
 import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.datagen.Generators;
@@ -7,8 +8,8 @@ import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
 import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.Registry;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
 @Mod(AquaVitae.MODID)
@@ -36,6 +38,7 @@ public class AquaVitae {
 
     public static ResourceKey<Registry<Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
     public static ResourceKey<Registry<BrewingIngredient>> INGREDIENT_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "brewing_ingredient"));
+    public static ResourceKey<Registry<NameEntry>> NAME_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "alcohol_names"));
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
@@ -48,9 +51,11 @@ public class AquaVitae {
         ModComponents.COMPONENTS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModMenus.MENU_TYPES.register(modEventBus);
+        ModDrinkPredicateType.DRINK_PREDICATE_TYPE.register(modEventBus);
 
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);
+        modEventBus.addListener(this::registerRegistries);
         modEventBus.addListener(this::registerDatapackRegistries);
         modEventBus.addListener(this::registerPayloadHandlers);
 
@@ -118,6 +123,10 @@ public class AquaVitae {
         );
     }
 
+    public void registerRegistries(NewRegistryEvent event) {
+        event.register(ModDrinkPredicateType.DRINK_PREDICATE_TYPES);
+    }
+
     public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(
                 FLAVOR_REGISTRY,
@@ -129,6 +138,12 @@ public class AquaVitae {
                 INGREDIENT_REGISTRY,
                 BrewingIngredient.CODEC,
                 BrewingIngredient.CODEC
+        );
+
+        event.dataPackRegistry(
+                NAME_REGISTRY,
+                NameEntry.CODEC,
+                NameEntry.CODEC
         );
     }
 

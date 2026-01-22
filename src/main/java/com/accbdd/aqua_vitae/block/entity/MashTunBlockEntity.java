@@ -3,7 +3,7 @@ package com.accbdd.aqua_vitae.block.entity;
 import com.accbdd.aqua_vitae.capability.AdaptedFluidHandler;
 import com.accbdd.aqua_vitae.capability.AdaptedItemHandler;
 import com.accbdd.aqua_vitae.fluid.CombinedFluidHandler;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;

@@ -1,9 +1,9 @@
 package com.accbdd.aqua_vitae.component;
 
 import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.recipe.Flavor;
-import com.accbdd.aqua_vitae.recipe.IngredientColor;
-import com.accbdd.aqua_vitae.recipe.IngredientMap;
+import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.api.IngredientColor;
+import com.accbdd.aqua_vitae.api.IngredientMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;

@@ -1,0 +1,9 @@
+{
+  "key": "alcohol.aqua_vitae.beer",
+  "predicates": [
+    {
+      "type": "aqua_vitae:minimum_abv",
+      "min": 30
+    }
+  ]
+}

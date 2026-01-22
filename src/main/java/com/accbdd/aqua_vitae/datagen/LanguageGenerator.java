@@ -2,8 +2,8 @@ package com.accbdd.aqua_vitae.datagen;
 
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
-import com.accbdd.aqua_vitae.recipe.BrewingIngredient;
-import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import net.minecraft.data.PackOutput;

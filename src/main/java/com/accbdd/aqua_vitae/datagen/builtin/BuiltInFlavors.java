@@ -1,6 +1,6 @@
 package com.accbdd.aqua_vitae.datagen.builtin;
 
-import com.accbdd.aqua_vitae.recipe.Flavor;
+import com.accbdd.aqua_vitae.api.Flavor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
