@@ -105,11 +105,13 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
+            sourceSet(sourceSets.test)
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.test.resources { srcDir 'test_resources' }
 
 dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"

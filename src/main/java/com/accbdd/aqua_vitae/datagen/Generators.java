@@ -45,7 +45,7 @@ public class Generators {
         generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
 
         //utility classes for datagen
-        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}, kegs: {}", new BuiltInFlavors(), new BuiltInIngredients());
+        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}", new BuiltInFlavors(), new BuiltInIngredients());
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
                 AquaVitae.FLAVOR_REGISTRY,
                 bootstrap -> {
