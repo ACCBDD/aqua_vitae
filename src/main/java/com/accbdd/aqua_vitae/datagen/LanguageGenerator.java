@@ -71,11 +71,11 @@ public class LanguageGenerator extends LanguageProvider {
         addGrammar("list_combine", "%s, ");
         addGrammar("label", "%1$s %2$s");
 
-        addAlcohol("generic", "Ferment");
-        addAlcohol("liquor", "Liquor");
-        addAlcohol("beer", "Beer");
-        addAlcohol("small_beer", "Small Beer");
-        addAlcohol("wort", "Wort");
+        addAlcoholName("generic", "Ferment");
+        addAlcoholName("liquor", "Liquor");
+        addAlcoholName("beer", "Beer");
+        addAlcoholName("small_beer", "Small Beer");
+        addAlcoholName("wort", "Wort");
 
         add("flavor.aqua_vitae.none", "None");
         add("flavor.aqua_vitae.label", "Flavors:");
@@ -124,7 +124,7 @@ public class LanguageGenerator extends LanguageProvider {
         add("grammar.aqua_vitae." + name, text);
     }
 
-    private void addAlcohol(String name, String text) {
-        add("alcohol.aqua_vitae." + name, text);
+    private void addAlcoholName(String name, String text) {
+        add("name.aqua_vitae." + name, text);
     }
 }

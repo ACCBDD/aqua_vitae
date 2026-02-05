@@ -26,6 +26,6 @@ public class AlcoholFluidType extends FluidType {
         //todo: actual data-driven naming, custom name component
         if (stack.has(ModComponents.ALCOHOL_NAME))
             return stack.get(ModComponents.ALCOHOL_NAME).component();
-        return Component.translatable("alcohol.aqua_vitae.generic");
+        return Component.translatable("name.aqua_vitae.generic");
     }
 }

@@ -7,6 +7,7 @@ import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInNames;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
@@ -37,6 +38,7 @@ public class Generators {
         generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new BlockTagGenerator(packOutput, lookupProvider, MODID, existingFileHelper));
+        generator.addProvider(event.includeServer(), new BuiltInNames(packOutput, lookupProvider));
 
         // If it's a client resource (goes in the assets folder) include the client.
         generator.addProvider(event.includeClient(), new BlockModelGenerator(packOutput, MODID, existingFileHelper));
