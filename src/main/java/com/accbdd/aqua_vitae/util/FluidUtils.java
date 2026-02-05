@@ -1,14 +1,14 @@
 package com.accbdd.aqua_vitae.util;
 
 import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
-import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
-import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.BrewingIngredient.BrewingProperties;
 import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.IngredientColor;
 import com.accbdd.aqua_vitae.api.IngredientMap;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
+import com.accbdd.aqua_vitae.component.FermentingPropertiesComponent;
+import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;

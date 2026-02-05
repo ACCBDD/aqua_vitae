@@ -59,7 +59,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
             return ItemStack.EMPTY;
 
         ItemStack stack = new ItemStack(ModItems.MALT.get(), 1);
-        stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, BrewingUtils.getIngredientKey(this)));
+        stack.set(ModComponents.BREWING_INGREDIENT.get(), new BrewingIngredientComponent(maltProperties(), null, this.flavors, BrewingUtils.getIngredientLoc(this)));
         stack.set(ModComponents.ROAST_COUNTER.get(), new RoastCountComponent(1));
         return stack;
     }

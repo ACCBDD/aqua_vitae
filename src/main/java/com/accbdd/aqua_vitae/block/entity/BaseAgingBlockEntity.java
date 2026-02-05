@@ -1,7 +1,7 @@
 package com.accbdd.aqua_vitae.block.entity;
 
-import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.api.IngredientColor;
+import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.FluidUtils;

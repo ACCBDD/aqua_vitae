@@ -1,10 +1,10 @@
 package com.accbdd.aqua_vitae.block.entity;
 
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.capability.AdaptedItemHandler;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.RoastCountComponent;
-import com.accbdd.aqua_vitae.api.BrewingIngredient;
-import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
@@ -225,7 +225,8 @@ public class MaltKilnBlockEntity extends AbstractBEWithData implements IFluidSyn
 
         if (input.has(ModComponents.ROAST_COUNTER) && input.get(ModComponents.ROAST_COUNTER).roast() < 5) {
             output = input.copyWithCount(1);
-            int roastCount = output.get(ModComponents.ROAST_COUNTER).roast() + 1;
+            RoastCountComponent roastInfo = output.get(ModComponents.ROAST_COUNTER);
+            int roastCount = roastInfo.roast() + 1;
             if (output.has(ModComponents.BREWING_INGREDIENT)) {
                 BrewingIngredientComponent old = output.get(ModComponents.BREWING_INGREDIENT);
                 BrewingIngredient.BrewingProperties oldProps = old.properties();

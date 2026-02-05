@@ -1,13 +1,16 @@
 package com.accbdd.aqua_vitae.api;
 
+import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -17,16 +20,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class IngredientMap {
-    public static final Codec<IngredientMap> CODEC = Codec.unboundedMap(ComponentSerialization.FLAT_CODEC, Codec.INT).xmap(IngredientMap::new, IngredientMap::getMap);
-    public static final StreamCodec<RegistryFriendlyByteBuf, IngredientMap> STREAM_CODEC = ByteBufCodecs.map(HashMap::new, ComponentSerialization.STREAM_CODEC, ByteBufCodecs.INT).map(IngredientMap::new, IngredientMap::getMap);
+    public static final Codec<IngredientMap> CODEC = Codec.unboundedMap(Codec.STRING, Codec.INT).xmap(IngredientMap::new, IngredientMap::getMap);
+    public static final StreamCodec<ByteBuf, IngredientMap> STREAM_CODEC = ByteBufCodecs.map(HashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.INT).map(IngredientMap::new, IngredientMap::getMap);
 
-    private HashMap<Component, Integer> map;
+    private HashMap<String, Integer> map;
 
-    public IngredientMap(HashMap<Component, Integer> map) {
+    public IngredientMap(HashMap<String, Integer> map) {
         this.map = map;
     }
 
-    public IngredientMap(Map<Component, Integer> map) {
+    public IngredientMap(Map<String, Integer> map) {
         this.map = new HashMap<>(map);
     }
 
@@ -34,20 +37,30 @@ public class IngredientMap {
         this(new HashMap<>());
     }
 
-    public HashMap<Component, Integer> getMap() {
+    public HashMap<String, Integer> getMap() {
         return map;
     }
 
-    public void add(Component name) {
-        map.put(name, map.getOrDefault(name, 0) + 1);
+    public void add(String key) {
+        map.put(key, map.getOrDefault(key, 0) + 1);
     }
 
     public void add(ItemStack stack) {
-        this.add(stack.getHoverName());
+        ResourceLocation ingredientLoc = BrewingUtils.getIngredientLoc(stack);
+        if (ingredientLoc != null) {
+            this.add(ingredientLoc.toString());
+        } else if (stack.has(ModComponents.BREWING_INGREDIENT)) {
+            BrewingIngredientComponent brewingIngredient = stack.get(ModComponents.BREWING_INGREDIENT);
+            if (brewingIngredient.origin() != null) {
+                this.add(brewingIngredient.origin().toString());
+            }
+        }
     }
 
     public void add(FluidStack stack) {
-        this.add(stack.getHoverName());
+        ResourceLocation ingredientLoc = BrewingUtils.getIngredientLoc(stack);
+        if (ingredientLoc != null)
+            this.add(ingredientLoc.toString());
     }
 
     public boolean isEmpty() {
@@ -55,7 +68,7 @@ public class IngredientMap {
     }
 
     public int getIngredientCount() {
-        return map.keySet().stream().reduce(0, (i, component) -> i + map.get(component), Integer::sum);
+        return map.keySet().stream().reduce(0, (i, location) -> i + map.get(location), Integer::sum);
     }
 
     public Component getTooltipComponent() {
@@ -64,11 +77,10 @@ public class IngredientMap {
             return Component.translatable("ingredient.aqua_vitae.no_ingredients");
 
         MutableComponent finalComponent = Component.empty();
-        boolean isFirst = true;
 
-        for (Iterator<Map.Entry<Component, Integer>> iterator = this.map.entrySet().iterator(); iterator.hasNext(); ) {
-            Map.Entry<Component, Integer> entry = iterator.next();
-            Component nameComponent = entry.getKey();
+        for (Iterator<Map.Entry<String, Integer>> iterator = this.map.entrySet().iterator(); iterator.hasNext(); ) {
+            Map.Entry<String, Integer> entry = iterator.next();
+            Component nameComponent = Component.translatable("ingredient.aqua_vitae." + entry.getKey());
             int count = entry.getValue();
             float percentage = ((float) count / totalCount) * 100.0f;
             String percentageString = String.format("%.0f%%", percentage);

@@ -2,11 +2,11 @@ package com.accbdd.aqua_vitae.datagen;
 
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
-import com.accbdd.aqua_vitae.api.BrewingIngredient;
-import com.accbdd.aqua_vitae.api.Flavor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;

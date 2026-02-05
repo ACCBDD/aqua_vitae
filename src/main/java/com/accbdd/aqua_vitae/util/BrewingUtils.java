@@ -1,14 +1,14 @@
 package com.accbdd.aqua_vitae.util;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.api.IngredientMap;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
-import com.accbdd.aqua_vitae.api.BrewingIngredient;
-import com.accbdd.aqua_vitae.api.Flavor;
-import com.accbdd.aqua_vitae.api.IngredientMap;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluids;
 import net.minecraft.ChatFormatting;
@@ -76,7 +76,7 @@ public class BrewingUtils {
 
     @Nullable
     public static BrewingIngredient getIngredient(ItemStack stack) {
-        if (stack.isEmpty())
+        if (stack == null || stack.isEmpty())
             return null;
 
         if (stack.has(ModComponents.BREWING_INGREDIENT)) {
@@ -98,11 +98,21 @@ public class BrewingUtils {
     }
 
     @Nullable
-    public static ResourceLocation getIngredientKey(BrewingIngredient ingredient) {
+    public static ResourceLocation getIngredientLoc(BrewingIngredient ingredient) {
         Registry<BrewingIngredient> brewingIngredients = ingredientRegistry();
         if (brewingIngredients != null)
             return brewingIngredients.getKey(ingredient);
         return null;
+    }
+
+    @Nullable
+    public static ResourceLocation getIngredientLoc(ItemStack stack) {
+        return getIngredientLoc(getIngredient(stack));
+    }
+
+    @Nullable
+    public static ResourceLocation getIngredientLoc(FluidStack stack) {
+        return getIngredientLoc(getIngredient(stack));
     }
 
     @Nullable

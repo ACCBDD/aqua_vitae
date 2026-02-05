@@ -1,9 +1,9 @@
 package com.accbdd.aqua_vitae.datagen;
 
-import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
-import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
+import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModItems;
 import net.minecraft.data.PackOutput;
@@ -51,6 +51,9 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.MALT, "Malt");
 
         addIngredient(BuiltInIngredients.WHEAT, "Wheat");
+        addIngredient(BuiltInIngredients.APPLE, "Apple");
+        addIngredient(BuiltInIngredients.SUGAR, "Sugar");
+        addIngredient(BuiltInIngredients.LAPIS, "Lapis");
 
         addFlavor(BuiltInFlavors.BREADY, "Bready");
         addFlavor(BuiltInFlavors.NUTTY, "Nutty");

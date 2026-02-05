@@ -1,5 +1,7 @@
 package com.accbdd.aqua_vitae;
 
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.capability.CupHandler;
 import com.accbdd.aqua_vitae.config.Config;
@@ -8,8 +10,6 @@ import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
 import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
-import com.accbdd.aqua_vitae.api.BrewingIngredient;
-import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.Registry;
