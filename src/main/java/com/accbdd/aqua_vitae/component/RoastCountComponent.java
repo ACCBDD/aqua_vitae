@@ -37,6 +37,10 @@ public record RoastCountComponent(int roast) implements TooltipProvider {
 
     @NotNull
     public MutableComponent getRoastName() {
+        return getRoastName(this.roast);
+    }
+
+    public static MutableComponent getRoastName(int roast) {
         MutableComponent component = roast < 5 ? Component.translatable("ingredient.aqua_vitae.roast." + roast) : Component.translatable("ingredient.aqua_vitae.roast.5");
         return component;
     }

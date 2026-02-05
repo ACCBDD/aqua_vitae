@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.api;
 
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
+import com.accbdd.aqua_vitae.component.RoastCountComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.mojang.serialization.Codec;
@@ -52,7 +53,11 @@ public class IngredientMap {
         } else if (stack.has(ModComponents.BREWING_INGREDIENT)) {
             BrewingIngredientComponent brewingIngredient = stack.get(ModComponents.BREWING_INGREDIENT);
             if (brewingIngredient.origin() != null) {
-                this.add(brewingIngredient.origin().toString());
+                String key = brewingIngredient.origin().toString();
+                if (stack.has(ModComponents.ROAST_COUNTER)) { //store as malt for name decoding
+                    key += "." + stack.get(ModComponents.ROAST_COUNTER).roast() + ".malt";
+                }
+                this.add(key);
             }
         }
     }
@@ -80,7 +85,16 @@ public class IngredientMap {
 
         for (Iterator<Map.Entry<String, Integer>> iterator = this.map.entrySet().iterator(); iterator.hasNext(); ) {
             Map.Entry<String, Integer> entry = iterator.next();
+            String key = entry.getKey();
             Component nameComponent = Component.translatable("ingredient.aqua_vitae." + entry.getKey());
+            if (key.endsWith(".malt")) { //handle malt naming
+                int numberIndex = key.length() - 6;
+                nameComponent = Component.translatable("grammar.aqua_vitae.malt",
+                        RoastCountComponent.getRoastName(Integer.parseInt(key.substring(numberIndex, numberIndex+1))),
+                        Component.translatable("ingredient.aqua_vitae." + key.substring(0, numberIndex - 1)),
+                        Component.translatable("item.aqua_vitae.malt"));
+            }
+
             int count = entry.getValue();
             float percentage = ((float) count / totalCount) * 100.0f;
             String percentageString = String.format("%.0f%%", percentage);
@@ -89,12 +103,16 @@ public class IngredientMap {
                             .withStyle(style -> style.withColor(0xAAAAAA)));
 
             if (iterator.hasNext())
-                finalComponent.append(Component.translatable("grammar.aqua_vitae.list_combine", ingredientSegment).withStyle(style -> style.withColor(0xFFFFFF)));
+                finalComponent.append(Component.translatable("grammar.aqua_vitae.list_combine", ingredientSegment)
+                        .withStyle(style -> style.withColor(0xFFFFFF)));
             else
                 finalComponent.append(ingredientSegment);
         }
         
-        return Component.translatable("grammar.aqua_vitae.label", Component.translatable("ingredient.aqua_vitae.label").withStyle(ChatFormatting.AQUA), finalComponent);
+        return Component.translatable("grammar.aqua_vitae.label",
+                Component.translatable("ingredient.aqua_vitae.label")
+                        .withStyle(ChatFormatting.AQUA),
+                finalComponent);
     }
 
     @Override
