@@ -6,6 +6,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+/**
+ * minimum abv, exclusive
+ */
 public class MinimumABVPredicate implements DrinkPredicate {
     public static final MapCodec<MinimumABVPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -26,6 +29,6 @@ public class MinimumABVPredicate implements DrinkPredicate {
 
     @Override
     public boolean test(FluidStack fluidStack) {
-        return fluidStack.has(ModComponents.ALCOHOL_PROPERTIES) && fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).abv() >= minABV;
+        return fluidStack.has(ModComponents.ALCOHOL_PROPERTIES) && fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).abv() > minABV;
     }
 }

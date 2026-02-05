@@ -6,6 +6,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+/**
+ * maximum abv, inclusive
+ */
 public class MaximumABVPredicate implements DrinkPredicate {
     public static final MapCodec<MaximumABVPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -26,6 +29,6 @@ public class MaximumABVPredicate implements DrinkPredicate {
 
     @Override
     public boolean test(FluidStack fluidStack) {
-        return fluidStack.has(ModComponents.ALCOHOL_PROPERTIES) && fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).abv() < maxABV;
+        return fluidStack.has(ModComponents.ALCOHOL_PROPERTIES) && fluidStack.get(ModComponents.ALCOHOL_PROPERTIES).abv() <= maxABV;
     }
 }

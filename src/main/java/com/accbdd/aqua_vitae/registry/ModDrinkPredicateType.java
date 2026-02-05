@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.registry;
 
 import com.accbdd.aqua_vitae.api.naming.DrinkPredicateType;
+import com.accbdd.aqua_vitae.api.naming.IngredientPredicate;
 import com.accbdd.aqua_vitae.api.naming.MaximumABVPredicate;
 import com.accbdd.aqua_vitae.api.naming.MinimumABVPredicate;
 import net.minecraft.core.Registry;
@@ -22,4 +23,5 @@ public class ModDrinkPredicateType {
 
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MINIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("minimum_abv", () -> MinimumABVPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("maximum_abv", () -> MaximumABVPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> INGREDIENT_TYPE = DRINK_PREDICATE_TYPE.register("ingredient", () -> IngredientPredicate.DRINK_PREDICATE_TYPE);
 }

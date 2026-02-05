@@ -3,11 +3,11 @@
   "predicates": [
     {
       "type": "aqua_vitae:minimum_abv",
-      "min": 60
+      "min": 5
     },
     {
       "type": "aqua_vitae:maximum_abv",
-      "max": 100
+      "max": 30
     }
   ]
 }
