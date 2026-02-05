@@ -18,9 +18,13 @@ public class ModDrinkPredicateType {
 
     public static final DeferredRegister<DrinkPredicateType> DRINK_PREDICATE_TYPE = DeferredRegister.create(DRINK_PREDICATE_TYPES, MODID);
 
-    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MINIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("minimum_abv", () -> MinimumABVPredicate.DRINK_PREDICATE_TYPE);
-    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("maximum_abv", () -> MaximumABVPredicate.DRINK_PREDICATE_TYPE);
-    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> INGREDIENT_TYPE = DRINK_PREDICATE_TYPE.register("ingredient", () -> IngredientPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MINIMUM_ABV = DRINK_PREDICATE_TYPE.register("minimum_abv", () -> MinimumABVPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_ABV = DRINK_PREDICATE_TYPE.register("maximum_abv", () -> MaximumABVPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ABV_RANGE = DRINK_PREDICATE_TYPE.register("abv_range", () -> RangeABVPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MINIMUM_AGE = DRINK_PREDICATE_TYPE.register("minimum_age", () -> MinimumAgePredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_AGE = DRINK_PREDICATE_TYPE.register("maximum_age", () -> MaximumAgePredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> AGE_RANGE = DRINK_PREDICATE_TYPE.register("age_range", () -> RangeAgePredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> INGREDIENT = DRINK_PREDICATE_TYPE.register("ingredient", () -> IngredientPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> NOT = DRINK_PREDICATE_TYPE.register("not", () -> NotPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ANY_OF = DRINK_PREDICATE_TYPE.register("any_of", () -> AnyOfPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ALL_OF = DRINK_PREDICATE_TYPE.register("all_of", () -> AllOfPredicate.DRINK_PREDICATE_TYPE);

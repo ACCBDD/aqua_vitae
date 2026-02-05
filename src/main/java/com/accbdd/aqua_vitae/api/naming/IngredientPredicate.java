@@ -7,6 +7,10 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+
+/**
+ * checks if ingredient is present in IngredientMap
+ */
 public class IngredientPredicate implements DrinkPredicate {
     public static final MapCodec<IngredientPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

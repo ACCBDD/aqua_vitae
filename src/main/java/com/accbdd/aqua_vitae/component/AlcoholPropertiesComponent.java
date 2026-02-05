@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * @param color
  * @param abv     alcohol per bucket - 1000 should be granular enough?
- * @param age     age in age cycles
+ * @param age     age in ticks
  * @param flavors
  * @param inputs
  */
