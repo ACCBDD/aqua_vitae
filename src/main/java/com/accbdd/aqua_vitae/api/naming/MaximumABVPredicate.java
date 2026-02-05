@@ -12,7 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 public class MaximumABVPredicate implements DrinkPredicate {
     public static final MapCodec<MaximumABVPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    Codec.INT.fieldOf("max").forGetter(pred -> pred.maxABV)
+                    Codec.INT.fieldOf("value").forGetter(pred -> pred.maxABV)
             ).apply(instance, MaximumABVPredicate::new));
     public static final DrinkPredicateType DRINK_PREDICATE_TYPE = new DrinkPredicateType(CODEC);
 

@@ -1,9 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
-import com.accbdd.aqua_vitae.api.naming.DrinkPredicateType;
-import com.accbdd.aqua_vitae.api.naming.IngredientPredicate;
-import com.accbdd.aqua_vitae.api.naming.MaximumABVPredicate;
-import com.accbdd.aqua_vitae.api.naming.MinimumABVPredicate;
+import com.accbdd.aqua_vitae.api.naming.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -24,4 +21,8 @@ public class ModDrinkPredicateType {
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MINIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("minimum_abv", () -> MinimumABVPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_ABV_TYPE = DRINK_PREDICATE_TYPE.register("maximum_abv", () -> MaximumABVPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> INGREDIENT_TYPE = DRINK_PREDICATE_TYPE.register("ingredient", () -> IngredientPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> NOT = DRINK_PREDICATE_TYPE.register("not", () -> NotPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ANY_OF = DRINK_PREDICATE_TYPE.register("any_of", () -> AnyOfPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ALL_OF = DRINK_PREDICATE_TYPE.register("all_of", () -> AllOfPredicate.DRINK_PREDICATE_TYPE);
+
 }

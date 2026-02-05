@@ -12,7 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 public class MinimumABVPredicate implements DrinkPredicate {
     public static final MapCodec<MinimumABVPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    Codec.INT.fieldOf("min").forGetter(pred -> pred.minABV)
+                    Codec.INT.fieldOf("value").forGetter(pred -> pred.minABV)
             ).apply(instance, MinimumABVPredicate::new));
     public static final DrinkPredicateType DRINK_PREDICATE_TYPE = new DrinkPredicateType(CODEC);
 
