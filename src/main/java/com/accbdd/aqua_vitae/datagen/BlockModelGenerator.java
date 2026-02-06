@@ -19,8 +19,8 @@ public class BlockModelGenerator extends BlockModelProvider {
         kegModel("dark_oak");
         kegModel("crimson");
         kegModel("warped");
-        cubeAll("fermenter_closed", modLoc("block/fermenter_closed"));
-        cubeAll("fermenter", modLoc("block/fermenter_open"));
+        cubeBottomTop("fermenter_closed", modLoc("block/fermenter_side"), modLoc("block/fermenter_bottom"), modLoc("block/fermenter_top_closed"));
+        cubeBottomTop("fermenter", modLoc("block/fermenter_side"), modLoc("block/fermenter_bottom"), modLoc("block/fermenter_top_open"));
         cube("malt_kiln",
                 modLoc("block/malt_kiln_end"),
                 modLoc("block/malt_kiln_end"),

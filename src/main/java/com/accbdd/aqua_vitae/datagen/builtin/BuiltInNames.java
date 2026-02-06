@@ -1,10 +1,7 @@
 package com.accbdd.aqua_vitae.datagen.builtin;
 
 import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.api.naming.IngredientPredicate;
-import com.accbdd.aqua_vitae.api.naming.MaximumABVPredicate;
-import com.accbdd.aqua_vitae.api.naming.MinimumABVPredicate;
-import com.accbdd.aqua_vitae.api.naming.NameEntry;
+import com.accbdd.aqua_vitae.api.naming.*;
 import com.accbdd.aqua_vitae.registry.ModFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -25,12 +22,12 @@ public class BuiltInNames extends DataMapProvider {
                 List.of(
                         new NameEntry(
                                 "name.aqua_vitae.small_beer",
-                                List.of(new MinimumABVPredicate(5), new MaximumABVPredicate(30)),
+                                List.of(new RangeABVPredicate(5, 30)),
                                 10
                         ),
                         new NameEntry(
                                 "name.aqua_vitae.beer",
-                                List.of(new MinimumABVPredicate(30), new MaximumABVPredicate(80)),
+                                List.of(new RangeABVPredicate(30, 80)),
                                 10
                         ),
                         new NameEntry(

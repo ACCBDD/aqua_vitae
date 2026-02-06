@@ -25,6 +25,7 @@ public class ModDrinkPredicateType {
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MAXIMUM_AGE = DRINK_PREDICATE_TYPE.register("maximum_age", () -> MaximumAgePredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> AGE_RANGE = DRINK_PREDICATE_TYPE.register("age_range", () -> RangeAgePredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> INGREDIENT = DRINK_PREDICATE_TYPE.register("ingredient", () -> IngredientPredicate.DRINK_PREDICATE_TYPE);
+    public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> MALT = DRINK_PREDICATE_TYPE.register("malt_ingredient", () -> MaltPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> NOT = DRINK_PREDICATE_TYPE.register("not", () -> NotPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ANY_OF = DRINK_PREDICATE_TYPE.register("any_of", () -> AnyOfPredicate.DRINK_PREDICATE_TYPE);
     public static final DeferredHolder<DrinkPredicateType, DrinkPredicateType> ALL_OF = DRINK_PREDICATE_TYPE.register("all_of", () -> AllOfPredicate.DRINK_PREDICATE_TYPE);
