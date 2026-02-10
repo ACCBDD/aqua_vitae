@@ -6,6 +6,7 @@ import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.IngredientMap;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class BrewingUtils {
 
@@ -234,15 +236,11 @@ public class BrewingUtils {
 
     public static void determineAlcoholName(FluidStack alcohol, Level level) {
         if (level != null && alcohol.has(ModComponents.ALCOHOL_PROPERTIES)) {
-            var names = alcohol.getFluidHolder().getData(AquaVitae.DRINK_NAMES);
-            Component name = null;
-            if (names != null) {
-                name = names.stream()
-                        .filter(entry -> entry.test(alcohol))
-                        .max(Comparator.comparingInt(NameEntry::priority))
-                        .map(NameEntry::getComponent)
-                        .orElse(null);
-            }
+            Component name = level.registryAccess().registry(AquaVitae.NAME_REGISTRY).orElseThrow().entrySet().stream()
+                    .filter(entry -> entry.getValue().test(alcohol))
+                    .max(Comparator.comparing(entry -> entry.getValue().priority()))
+                    .map(entry -> entry.getValue().getComponent())
+                    .orElse(null);
 
             if (name == null)
                 name = Component.translatable("name.aqua_vitae.generic");

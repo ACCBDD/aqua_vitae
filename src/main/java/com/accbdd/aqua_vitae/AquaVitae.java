@@ -13,11 +13,9 @@ import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -31,13 +29,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.datamaps.AdvancedDataMapType;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
-import net.neoforged.neoforge.registries.datamaps.DataMapValueMerger;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.slf4j.Logger;
-
-import java.util.List;
 
 @Mod(AquaVitae.MODID)
 public class AquaVitae {
@@ -46,12 +38,7 @@ public class AquaVitae {
 
     public static ResourceKey<Registry<Flavor>> FLAVOR_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "flavor"));
     public static ResourceKey<Registry<BrewingIngredient>> INGREDIENT_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "brewing_ingredient"));
-
-    public static DataMapType<Fluid, List<NameEntry>> DRINK_NAMES = AdvancedDataMapType.builder(
-            ResourceLocation.fromNamespaceAndPath(MODID, "drink_names"),
-            Registries.FLUID,
-            NameEntry.CODEC.listOf()
-    ).synced(NameEntry.CODEC.listOf(), true).merger(DataMapValueMerger.listMerger()).build();
+    public static ResourceKey<Registry<NameEntry>> NAME_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MODID, "alcohol_names"));
 
     public AquaVitae(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
@@ -71,7 +58,6 @@ public class AquaVitae {
         modEventBus.addListener(this::registerRegistries);
         modEventBus.addListener(this::registerDatapackRegistries);
         modEventBus.addListener(this::registerPayloadHandlers);
-        modEventBus.addListener(this::registerDataMaps);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -153,10 +139,12 @@ public class AquaVitae {
                 BrewingIngredient.CODEC,
                 BrewingIngredient.CODEC
         );
-    }
 
-    public void registerDataMaps(RegisterDataMapTypesEvent event) {
-        event.register(DRINK_NAMES);
+        event.dataPackRegistry(
+                NAME_REGISTRY,
+                NameEntry.CODEC,
+                NameEntry.CODEC
+        );
     }
 
     public void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
