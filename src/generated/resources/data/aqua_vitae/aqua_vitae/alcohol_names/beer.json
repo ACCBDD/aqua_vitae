@@ -1,0 +1,11 @@
+{
+  "key": "name.aqua_vitae.beer",
+  "predicates": [
+    {
+      "type": "aqua_vitae:abv_range",
+      "max": 80,
+      "min": 30
+    }
+  ],
+  "priority": 10
+}

@@ -4,6 +4,7 @@ package com.accbdd.aqua_vitae.datagen;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltIn;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInFlavors;
 import com.accbdd.aqua_vitae.datagen.builtin.BuiltInIngredients;
@@ -38,7 +39,6 @@ public class Generators {
         generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new BlockTagGenerator(packOutput, lookupProvider, MODID, existingFileHelper));
-        generator.addProvider(event.includeServer(), new BuiltInNames(packOutput, lookupProvider));
 
         // If it's a client resource (goes in the assets folder) include the client.
         generator.addProvider(event.includeClient(), new BlockModelGenerator(packOutput, MODID, existingFileHelper));
@@ -47,7 +47,7 @@ public class Generators {
         generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
 
         //utility classes for datagen
-        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}", new BuiltInFlavors(), new BuiltInIngredients());
+        AquaVitae.LOGGER.info("flavors: {}, ingredients: {}, names: {}", new BuiltInFlavors(), new BuiltInIngredients(), new BuiltInNames());
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
                 AquaVitae.FLAVOR_REGISTRY,
                 bootstrap -> {
@@ -61,6 +61,15 @@ public class Generators {
                 AquaVitae.INGREDIENT_REGISTRY,
                 bootstrap -> {
                     for (Map.Entry<ResourceKey<BrewingIngredient>, BrewingIngredient> entry : BuiltIn.BREWING_INGREDIENTS.entrySet())
+                        bootstrap.register(
+                                entry.getKey(),
+                                entry.getValue()
+                        );
+                }
+        ).add(
+                AquaVitae.NAME_REGISTRY,
+                bootstrap -> {
+                    for (Map.Entry<ResourceKey<NameEntry>, NameEntry> entry: BuiltIn.NAMES.entrySet())
                         bootstrap.register(
                                 entry.getKey(),
                                 entry.getValue()

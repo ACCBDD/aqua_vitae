@@ -1,42 +1,16 @@
 package com.accbdd.aqua_vitae.datagen.builtin;
 
-import com.accbdd.aqua_vitae.AquaVitae;
-import com.accbdd.aqua_vitae.api.naming.*;
-import com.accbdd.aqua_vitae.registry.ModFluids;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.DataMapProvider;
+import com.accbdd.aqua_vitae.api.naming.IngredientPredicate;
+import com.accbdd.aqua_vitae.api.naming.RangeABVPredicate;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
-public class BuiltInNames extends DataMapProvider {
-    public BuiltInNames(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(packOutput, lookupProvider);
-    }
+import static com.accbdd.aqua_vitae.datagen.builtin.BuiltIn.nameEntry;
 
-    @Override
-    protected void gather(HolderLookup.Provider provider) {
-        builder(AquaVitae.DRINK_NAMES).add(
-                ModFluids.ALCOHOL.getKey(),
-                List.of(
-                        new NameEntry(
-                                "name.aqua_vitae.small_beer",
-                                List.of(new RangeABVPredicate(5, 30)),
-                                10
-                        ),
-                        new NameEntry(
-                                "name.aqua_vitae.beer",
-                                List.of(new RangeABVPredicate(30, 80)),
-                                10
-                        ),
-                        new NameEntry(
-                                "name.aqua_vitae.brown_beer",
-                                List.of(new MinimumABVPredicate(40), new IngredientPredicate("aqua_vitae:wheat.3.malt")),
-                                20
-                        )
-                ),
-                false
-        );
+public class BuiltInNames {
+    static {
+        nameEntry("small_beer", List.of(new RangeABVPredicate(5, 30)), 10);
+        nameEntry("beer", List.of(new RangeABVPredicate(30, 80)), 10);
+        nameEntry("brown_beer", List.of(new RangeABVPredicate(30, 80), new IngredientPredicate("aqua_vitae:wheat.3.malt")), 20);
     }
 }

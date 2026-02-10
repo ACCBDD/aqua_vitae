@@ -1,7 +1,7 @@
 {
   "flavors": [
-    "aqua_vitae:fruity",
-    "aqua_vitae:sweet"
+    "aqua_vitae:sweet",
+    "aqua_vitae:fruity"
   ],
   "input": {
     "item": "minecraft:apple"
