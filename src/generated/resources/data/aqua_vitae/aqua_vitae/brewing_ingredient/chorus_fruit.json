@@ -1,0 +1,24 @@
+{
+  "flavors": [
+    "aqua_vitae:wispy"
+  ],
+  "input": [
+    {
+      "item": "minecraft:chorus_fruit"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "CC896789",
+      "influence": 1
+    },
+    "diastatic_power": 50,
+    "starch": 120,
+    "sugar": 10,
+    "yeast": 20,
+    "yeast_tolerance": 150
+  }
+}

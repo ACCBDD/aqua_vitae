@@ -1,0 +1,20 @@
+{
+  "flavors": [
+    "aqua_vitae:sweet",
+    "aqua_vitae:fruity"
+  ],
+  "input": {
+    "item": "minecraft:sweet_berries"
+  },
+  "properties": {
+    "color": {
+      "color": "CCB30000",
+      "influence": 5
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 20,
+    "yeast": 8,
+    "yeast_tolerance": 100
+  }
+}

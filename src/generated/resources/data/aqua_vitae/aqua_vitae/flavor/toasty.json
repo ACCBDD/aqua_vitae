@@ -1,4 +1,11 @@
 {
+  "effects": [
+    {
+      "amplifier": 1,
+      "duration": 600,
+      "effect": "minecraft:speed"
+    }
+  ],
   "kiln": {
     "flavors": [
       "aqua_vitae:cocoa"

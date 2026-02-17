@@ -1,0 +1,17 @@
+{
+  "flavors": [],
+  "input": {
+    "item": "minecraft:pink_dye"
+  },
+  "properties": {
+    "color": {
+      "color": "FFFF69B4",
+      "influence": 10
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 0,
+    "yeast": 0,
+    "yeast_tolerance": 0
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "flavors": [
+    "aqua_vitae:sweet",
+    "aqua_vitae:floral"
+  ],
+  "input": [
+    {
+      "item": "minecraft:honey_bottle"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "CCFFB900",
+      "influence": 4
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 36,
+    "yeast": 15,
+    "yeast_tolerance": 120
+  }
+}

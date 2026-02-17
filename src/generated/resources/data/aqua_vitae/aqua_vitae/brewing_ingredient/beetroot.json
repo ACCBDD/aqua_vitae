@@ -1,0 +1,20 @@
+{
+  "flavors": [
+    "aqua_vitae:sweet",
+    "aqua_vitae:starchy"
+  ],
+  "input": {
+    "item": "minecraft:beetroot"
+  },
+  "properties": {
+    "color": {
+      "color": "CC910022",
+      "influence": 6
+    },
+    "diastatic_power": 0,
+    "starch": 80,
+    "sugar": 18,
+    "yeast": 5,
+    "yeast_tolerance": 90
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 400,
+      "effect": "minecraft:invisibility"
+    }
+  ]
+}

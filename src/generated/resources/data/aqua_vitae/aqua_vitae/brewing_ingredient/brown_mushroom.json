@@ -1,0 +1,24 @@
+{
+  "flavors": [
+    "aqua_vitae:earthy"
+  ],
+  "input": [
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom_block"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "CC5D4037",
+      "influence": 1
+    },
+    "diastatic_power": 20,
+    "starch": 0,
+    "sugar": 2,
+    "yeast": 60,
+    "yeast_tolerance": 60
+  }
+}

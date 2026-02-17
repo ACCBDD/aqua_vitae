@@ -1,0 +1,14 @@
+{
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 600,
+      "effect": "minecraft:night_vision"
+    },
+    {
+      "amplifier": 0,
+      "duration": 600,
+      "effect": "minecraft:glowing"
+    }
+  ]
+}

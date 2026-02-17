@@ -1,0 +1,17 @@
+{
+  "flavors": [],
+  "input": {
+    "item": "minecraft:lime_dye"
+  },
+  "properties": {
+    "color": {
+      "color": "FF32CD32",
+      "influence": 10
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 0,
+    "yeast": 0,
+    "yeast_tolerance": 0
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "flavors": [
+    "aqua_vitae:fruity",
+    "aqua_vitae:crisp"
+  ],
+  "input": [
+    {
+      "item": "minecraft:melon"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "CCFF6347",
+      "influence": 3
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 18,
+    "yeast": 5,
+    "yeast_tolerance": 60
+  }
+}

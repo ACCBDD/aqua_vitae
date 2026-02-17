@@ -1,11 +1,11 @@
 {
   "flavors": [],
   "input": {
-    "item": "minecraft:lapis_lazuli"
+    "item": "minecraft:orange_dye"
   },
   "properties": {
     "color": {
-      "color": "FF0000FF",
+      "color": "FFFF8C00",
       "influence": 10
     },
     "diastatic_power": 0,

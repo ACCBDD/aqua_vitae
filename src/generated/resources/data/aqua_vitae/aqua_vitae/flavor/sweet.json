@@ -1,9 +1,13 @@
 {
+  "age": {
+    "flavors": [],
+    "transition_point": 2
+  },
   "effects": [
     {
       "amplifier": 0,
-      "duration": 200,
-      "effect": "minecraft:regeneration"
+      "duration": 1,
+      "effect": "minecraft:instant_health"
     }
   ]
 }

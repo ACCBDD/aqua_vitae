@@ -1,0 +1,24 @@
+{
+  "flavors": [
+    "aqua_vitae:starchy"
+  ],
+  "input": [
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "BBF5F5DC",
+      "influence": 1
+    },
+    "diastatic_power": 0,
+    "starch": 160,
+    "sugar": 4,
+    "yeast": 2,
+    "yeast_tolerance": 80
+  }
+}

@@ -2,8 +2,6 @@ package com.accbdd.aqua_vitae.api.naming;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.List;
 import java.util.function.Function;

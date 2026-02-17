@@ -3,7 +3,6 @@ package com.accbdd.aqua_vitae.datagen.builtin;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
-import com.accbdd.aqua_vitae.api.KegType;
 import com.accbdd.aqua_vitae.api.naming.DrinkPredicate;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import net.minecraft.resources.ResourceKey;

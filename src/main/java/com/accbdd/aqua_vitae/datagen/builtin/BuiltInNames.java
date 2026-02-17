@@ -12,5 +12,6 @@ public class BuiltInNames {
         nameEntry("small_beer", List.of(new RangeABVPredicate(5, 30)), 10);
         nameEntry("beer", List.of(new RangeABVPredicate(30, 80)), 10);
         nameEntry("brown_beer", List.of(new RangeABVPredicate(30, 80), new IngredientPredicate("aqua_vitae:wheat.3.malt")), 20);
+        nameEntry("wheat_beer", List.of(new RangeABVPredicate(30, 80), new IngredientPredicate("#aqua_vitae:grain")), 30);
     }
 }

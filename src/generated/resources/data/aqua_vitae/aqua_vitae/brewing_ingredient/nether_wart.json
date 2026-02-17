@@ -1,0 +1,25 @@
+{
+  "flavors": [
+    "aqua_vitae:acrid",
+    "aqua_vitae:sulfuric"
+  ],
+  "input": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:nether_wart_block"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "0CC7F000",
+      "influence": 5
+    },
+    "diastatic_power": 0,
+    "starch": 20,
+    "sugar": 4,
+    "yeast": 5,
+    "yeast_tolerance": 180
+  }
+}

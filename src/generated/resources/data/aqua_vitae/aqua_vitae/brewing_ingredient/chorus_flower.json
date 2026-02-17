@@ -1,0 +1,19 @@
+{
+  "flavors": [
+    "aqua_vitae:ozone"
+  ],
+  "input": {
+    "item": "minecraft:chorus_flower"
+  },
+  "properties": {
+    "color": {
+      "color": "CCE7BCE7",
+      "influence": 5
+    },
+    "diastatic_power": 0,
+    "starch": 0,
+    "sugar": 30,
+    "yeast": 40,
+    "yeast_tolerance": 150
+  }
+}

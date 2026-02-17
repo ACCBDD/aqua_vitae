@@ -34,21 +34,9 @@ public class Generators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        // If it's a server resource (goes in the data folder) include the server.
-        generator.addProvider(event.includeServer(), new RecipeGenerator(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new BlockTagGenerator(packOutput, lookupProvider, MODID, existingFileHelper));
-
-        // If it's a client resource (goes in the assets folder) include the client.
-        generator.addProvider(event.includeClient(), new BlockModelGenerator(packOutput, MODID, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ItemModelGenerator(packOutput, MODID, existingFileHelper));
-        generator.addProvider(event.includeClient(), new BlockStateGenerator(packOutput, MODID, existingFileHelper));
-        generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
-
         //utility classes for datagen
         AquaVitae.LOGGER.info("flavors: {}, ingredients: {}, names: {}", new BuiltInFlavors(), new BuiltInIngredients(), new BuiltInNames());
-        generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
+        DatapackBuiltinEntriesProvider datapackProvider = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder().add(
                 AquaVitae.FLAVOR_REGISTRY,
                 bootstrap -> {
                     for (Map.Entry<ResourceKey<Flavor>, Flavor> entry : BuiltIn.FLAVORS.entrySet())
@@ -69,12 +57,28 @@ public class Generators {
         ).add(
                 AquaVitae.NAME_REGISTRY,
                 bootstrap -> {
-                    for (Map.Entry<ResourceKey<NameEntry>, NameEntry> entry: BuiltIn.NAMES.entrySet())
+                    for (Map.Entry<ResourceKey<NameEntry>, NameEntry> entry : BuiltIn.NAMES.entrySet())
                         bootstrap.register(
                                 entry.getKey(),
                                 entry.getValue()
                         );
                 }
-        ), Set.of(MODID)));
+        ), Set.of(MODID));
+
+        lookupProvider = datapackProvider.getRegistryProvider();
+
+        // If it's a server resource (goes in the data folder) include the server.
+        generator.addProvider(event.includeServer(), new RecipeGenerator(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new BlockTagGenerator(packOutput, lookupProvider, MODID, existingFileHelper));
+        generator.addProvider(event.includeServer(), new IngredientTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), datapackProvider);
+
+        // If it's a client resource (goes in the assets folder) include the client.
+        generator.addProvider(event.includeClient(), new BlockModelGenerator(packOutput, MODID, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ItemModelGenerator(packOutput, MODID, existingFileHelper));
+        generator.addProvider(event.includeClient(), new BlockStateGenerator(packOutput, MODID, existingFileHelper));
+        generator.addProvider(event.includeClient(), new LanguageGenerator(packOutput, MODID, Locale.US.toString().toLowerCase()));
     }
 }

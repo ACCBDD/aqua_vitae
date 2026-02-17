@@ -1,0 +1,19 @@
+{
+  "flavors": [
+    "aqua_vitae:crisp"
+  ],
+  "input": {
+    "item": "minecraft:carrot"
+  },
+  "properties": {
+    "color": {
+      "color": "CCFF9100",
+      "influence": 5
+    },
+    "diastatic_power": 0,
+    "starch": 40,
+    "sugar": 12,
+    "yeast": 5,
+    "yeast_tolerance": 80
+  }
+}

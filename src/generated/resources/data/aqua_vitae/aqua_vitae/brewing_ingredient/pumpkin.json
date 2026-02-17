@@ -1,0 +1,21 @@
+{
+  "flavors": [
+    "aqua_vitae:heavy",
+    "aqua_vitae:starchy",
+    "aqua_vitae:earthy"
+  ],
+  "input": {
+    "item": "minecraft:pumpkin"
+  },
+  "properties": {
+    "color": {
+      "color": "CCFF7518",
+      "influence": 2
+    },
+    "diastatic_power": 0,
+    "starch": 80,
+    "sugar": 10,
+    "yeast": 5,
+    "yeast_tolerance": 80
+  }
+}

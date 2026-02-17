@@ -4,9 +4,7 @@ import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.IngredientMap;
-import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
-import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
@@ -31,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class BrewingUtils {
 

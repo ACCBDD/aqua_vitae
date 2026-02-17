@@ -1,0 +1,9 @@
+{
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 1200,
+      "effect": "minecraft:fire_resistance"
+    }
+  ]
+}

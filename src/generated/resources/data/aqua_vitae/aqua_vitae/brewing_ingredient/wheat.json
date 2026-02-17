@@ -18,13 +18,13 @@
   },
   "properties": {
     "color": {
-      "color": "00FFFFFF",
+      "color": "CCFDCC80",
       "influence": 1
     },
-    "diastatic_power": 0,
-    "starch": 0,
-    "sugar": 0,
-    "yeast": 200,
+    "diastatic_power": 5,
+    "starch": 100,
+    "sugar": 2,
+    "yeast": 25,
     "yeast_tolerance": 80
   }
 }

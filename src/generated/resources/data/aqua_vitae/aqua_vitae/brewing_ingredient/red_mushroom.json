@@ -1,0 +1,24 @@
+{
+  "flavors": [
+    "aqua_vitae:funky"
+  ],
+  "input": [
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:red_mushroom_block"
+    }
+  ],
+  "properties": {
+    "color": {
+      "color": "CCED1C24",
+      "influence": 1
+    },
+    "diastatic_power": 30,
+    "starch": 0,
+    "sugar": 4,
+    "yeast": 45,
+    "yeast_tolerance": 120
+  }
+}

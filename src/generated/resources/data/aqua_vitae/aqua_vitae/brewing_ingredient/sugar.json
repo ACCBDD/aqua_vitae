@@ -1,16 +1,18 @@
 {
-  "flavors": [],
+  "flavors": [
+    "aqua_vitae:sweet"
+  ],
   "input": {
     "item": "minecraft:sugar"
   },
   "properties": {
     "color": {
-      "color": "00FFFFFF",
+      "color": "33FFFFFF",
       "influence": 1
     },
     "diastatic_power": 0,
     "starch": 0,
-    "sugar": 200,
+    "sugar": 50,
     "yeast": 0,
     "yeast_tolerance": 0
   }

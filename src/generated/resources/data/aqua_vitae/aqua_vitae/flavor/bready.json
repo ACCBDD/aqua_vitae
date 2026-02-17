@@ -1,9 +1,16 @@
 {
-  "kiln": {
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 400,
+      "effect": "minecraft:resistance"
+    }
+  ],
+  "malt": {
     "flavors": [
       "aqua_vitae:nutty",
       "aqua_vitae:fruity"
     ],
-    "transition_point": 1
+    "transition_point": 0
   }
 }

@@ -1,0 +1,15 @@
+{
+  "key": "name.aqua_vitae.wheat_beer",
+  "predicates": [
+    {
+      "type": "aqua_vitae:abv_range",
+      "max": 80,
+      "min": 30
+    },
+    {
+      "type": "aqua_vitae:ingredient",
+      "ingredient": "#aqua_vitae:grain"
+    }
+  ],
+  "priority": 30
+}

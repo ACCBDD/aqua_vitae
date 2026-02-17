@@ -12,9 +12,9 @@
       "influence": 10
     },
     "diastatic_power": 0,
-    "starch": 2,
-    "sugar": 60,
-    "yeast": 5,
-    "yeast_tolerance": 80
+    "starch": 0,
+    "sugar": 24,
+    "yeast": 10,
+    "yeast_tolerance": 90
   }
 }
