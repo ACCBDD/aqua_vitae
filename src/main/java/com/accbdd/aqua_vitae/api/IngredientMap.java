@@ -79,7 +79,10 @@ public class IngredientMap {
     public Component getTooltipComponent() {
         final int totalCount = getIngredientCount();
         if (totalCount == 0)
-            return Component.translatable("ingredient.aqua_vitae.no_ingredients");
+            return Component.translatable("grammar.aqua_vitae.label",
+                    Component.translatable("ingredient.aqua_vitae.label")
+                            .withStyle(ChatFormatting.AQUA),
+                    Component.translatable("ingredient.aqua_vitae.no_ingredients"));
 
         MutableComponent finalComponent = Component.empty();
 

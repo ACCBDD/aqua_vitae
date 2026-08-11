@@ -121,22 +121,32 @@ public class BrewingUtils {
         return null;
     }
 
-    public static Component flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
+    public static List<Component> flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
         if (flavors.isEmpty())
-            return Component.translatable("flavor.aqua_vitae.none");
-        MutableComponent component = Component.empty();
-        Iterator<ResourceKey<Flavor>> iterator = flavors.iterator();
-        while (iterator.hasNext()) {
-            ResourceKey<Flavor> key = iterator.next();
+            return List.of(Component.translatable("flavor.aqua_vitae.none"));
+        List<Component> components = new ArrayList<>();
+        components.add(Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.AQUA));
+        for (ResourceKey<Flavor> key : flavors) {
             MutableComponent flavorName = Component.translatable("flavor.aqua_vitae." + key.location());
-            if (iterator.hasNext()) {
-                component.append(Component.translatable("grammar.aqua_vitae.list_combine", flavorName));
-            } else {
-                component.append(flavorName);
-            }
+            MutableComponent flavorEffect = getFlavor(key).effects().stream().map(effect -> {
+                MutableComponent component = Component.translatable(effect.getDescriptionId());
+                if (effect.getAmplifier() > 0) {
+                    component = Component.translatable(
+                            "potion.withAmplifier", component, Component.translatable("potion.potency." + effect.getAmplifier())
+                    );
+                }
+
+//                if (!effect.endsWithin(20)) {
+//                    component = Component.translatable(
+//                            "potion.withDuration", component, MobEffectUtil.formatDuration(effect, 1, 20)
+//                    );
+//                }
+                return component;
+            }).findFirst().get();
+            components.add(Component.translatable("grammar.aqua_vitae.list_item", Component.translatable("grammar.aqua_vitae.label_parenthesis", flavorName, flavorEffect)));
         }
 
-        return Component.translatable("grammar.aqua_vitae.label", Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.AQUA), component);
+        return components;
     }
 
     public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {

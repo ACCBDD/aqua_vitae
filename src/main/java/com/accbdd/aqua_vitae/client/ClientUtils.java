@@ -26,7 +26,7 @@ public class ClientUtils {
 
         if (fluidStack.has(ModComponents.PRECURSOR_PROPERTIES)) {
             PrecursorPropertiesComponent precursorComponent = fluidStack.get(ModComponents.PRECURSOR_PROPERTIES);
-            ingredientsTooltip.add(BrewingUtils.flavorTooltip(precursorComponent.flavors()));
+            ingredientsTooltip.addAll(BrewingUtils.flavorTooltip(precursorComponent.flavors()));
             ingredientsTooltip.add(precursorComponent.ingredients().getTooltipComponent());
             propertiesTooltip.addAll(BrewingUtils.propertiesTooltip(precursorComponent.properties()));
         }
@@ -38,7 +38,7 @@ public class ClientUtils {
 
         if (fluidStack.has(ModComponents.ALCOHOL_PROPERTIES)) {
             AlcoholPropertiesComponent alcoholComponent = fluidStack.get(ModComponents.ALCOHOL_PROPERTIES);
-            ingredientsTooltip.add(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
+            ingredientsTooltip.addAll(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abv", String.format("%.2f%%", alcoholComponent.abv() / 10)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", String.format("%.2f", (alcoholComponent.age() * Config.ageTicks) / 24000f)));
