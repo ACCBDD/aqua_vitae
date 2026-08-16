@@ -24,6 +24,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -68,6 +69,11 @@ public class AquaVitae {
     public void onPlayerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
         PlayerAlcoholManager.tickPlayer(player);
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        PlayerAlcoholManager.syncAlcohol(event.getEntity());
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
