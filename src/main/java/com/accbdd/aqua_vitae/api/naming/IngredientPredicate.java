@@ -16,7 +16,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 
 /**
- * checks if ingredient is present in IngredientMap, supports ingredient tags
+ * Checks if ingredient is present in IngredientMap, supports ingredient tags. When checking tags, malts count as their root item. Malts can be checked using the format {base}.{malt_level}.malt
  */
 public class IngredientPredicate implements DrinkPredicate {
     public static final MapCodec<IngredientPredicate> CODEC = RecordCodecBuilder.mapCodec(instance ->
