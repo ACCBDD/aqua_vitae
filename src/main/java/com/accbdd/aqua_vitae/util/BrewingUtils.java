@@ -5,18 +5,28 @@ import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.IngredientMap;
 import com.accbdd.aqua_vitae.component.AlcoholNameComponent;
+import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.registry.ModFluids;
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -28,6 +38,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class BrewingUtils {
@@ -128,7 +139,7 @@ public class BrewingUtils {
         components.add(Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.AQUA));
         for (ResourceKey<Flavor> key : flavors) {
             MutableComponent flavorName = Component.translatable("flavor.aqua_vitae." + key.location());
-            MutableComponent flavorEffect = getFlavor(key).effects().stream().map(effect -> {
+            Component flavorEffects = ComponentUtils.formatList(getFlavor(key).effects().stream().map(effect -> {
                 MutableComponent component = Component.translatable(effect.getDescriptionId());
                 if (effect.getAmplifier() > 0) {
                     component = Component.translatable(
@@ -142,8 +153,8 @@ public class BrewingUtils {
 //                    );
 //                }
                 return component;
-            }).findFirst().get();
-            components.add(Component.translatable("grammar.aqua_vitae.list_item", Component.translatable("grammar.aqua_vitae.label_parenthesis", flavorName, flavorEffect)));
+            }).toList(), Component.literal(","));
+            components.add(Component.translatable("grammar.aqua_vitae.list_item", Component.translatable("grammar.aqua_vitae.label", flavorName, Component.translatable("grammar.aqua_vitae.parenthesis", flavorEffects).withStyle(ChatFormatting.BLUE))));
         }
 
         return components;
@@ -252,6 +263,47 @@ public class BrewingUtils {
             if (name == null)
                 name = Component.translatable("name.aqua_vitae.generic");
             alcohol.set(ModComponents.ALCOHOL_NAME, new AlcoholNameComponent(name));
+        }
+    }
+
+    /**
+     * returns a list of MobEffectInstances from alcohol properties. The effects are modified by abv - 5% abv is base, with higher abvs resulting in stronger effects that last longer.
+     * @param props alcohol properties to get effects from
+     * @param amount the amount of alcohol, affects duration
+     * @param registryAccess a RegistryAccess for fetching purposes
+     */
+    public static List<MobEffectInstance> effectsFromProps(AlcoholPropertiesComponent props, int amount, RegistryAccess registryAccess) {
+        List<MobEffectInstance> effects = new ArrayList<>();
+        props.flavors().stream().map(key ->
+                registryAccess.registry(AquaVitae.FLAVOR_REGISTRY).get().get(key)).filter(Objects::nonNull).forEach(flavor ->
+                flavor.effects().forEach(baseEffect -> effects.add(new MobEffectInstance(baseEffect.getEffect(),
+                        (int) (baseEffect.getDuration() * (props.abv() * 0.02) * (amount / 250f)),
+                        baseEffect.getAmplifier() + (int)(props.abv() * 0.0025) - 1))));
+        return effects;
+    }
+
+    public static void addEffectTooltip(List<MobEffectInstance> effects, Consumer<Component> tooltipAdder, float ticksPerSecond) {
+        List<Pair<Holder<Attribute>, AttributeModifier>> list = Lists.newArrayList();
+        boolean flag = true;
+
+        for (MobEffectInstance mobeffectinstance : effects) {
+            flag = false;
+            MutableComponent mutablecomponent = Component.translatable(mobeffectinstance.getDescriptionId());
+            Holder<MobEffect> holder = mobeffectinstance.getEffect();
+            holder.value().createModifiers(mobeffectinstance.getAmplifier(), (p_331556_, p_330860_) -> list.add(new Pair<>(p_331556_, p_330860_)));
+            if (mobeffectinstance.getAmplifier() > 0) {
+                mutablecomponent = Component.translatable(
+                        "potion.withAmplifier", mutablecomponent, Component.translatable("potion.potency." + mobeffectinstance.getAmplifier())
+                );
+            }
+
+            if (!mobeffectinstance.endsWithin(20)) {
+                mutablecomponent = Component.translatable(
+                        "potion.withDuration", mutablecomponent, MobEffectUtil.formatDuration(mobeffectinstance, 1, ticksPerSecond)
+                );
+            }
+
+            tooltipAdder.accept(mutablecomponent.withStyle(holder.value().getCategory().getTooltipFormatting()));
         }
     }
 }

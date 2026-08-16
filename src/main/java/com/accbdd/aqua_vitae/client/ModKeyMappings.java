@@ -37,9 +37,18 @@ public class ModKeyMappings {
             "key.categories.aqua_vitae")
     );
 
+    public static Lazy<KeyMapping> FLAVORS_MAPPING = Lazy.of(() -> new KeyMapping(
+            "key.aqua_vitae.flavors",
+            CONTEXT,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_LEFT_ALT,
+            "key.categories.aqua_vitae")
+    );
+
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(PROPERTIES_MAPPING.get());
         event.register(INGREDIENTS_MAPPING.get());
+        event.register(FLAVORS_MAPPING.get());
     }
 
     public static boolean isKeyDown(KeyMapping keyBinding) {

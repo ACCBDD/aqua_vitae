@@ -3,9 +3,12 @@ package com.accbdd.aqua_vitae.component;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
+import com.accbdd.aqua_vitae.util.Constants;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -25,14 +28,16 @@ import java.util.function.Consumer;
 
 /**
  * Component for brewing ingredients, used as an override for custom ingredients or for malts which don't have a defined ingredient
+ *
  * @param properties
  * @param maltProperties properties when malted, optional
  * @param flavors
- * @param origin the originating brewing ingredient, if this is a malt
+ * @param origin         the originating brewing ingredient, if this is a malt
  */
-public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties properties, @Nullable BrewingIngredient.BrewingProperties maltProperties, Set<ResourceKey<Flavor>> flavors, @Nullable ResourceLocation origin) implements TooltipProvider {
-    public static BrewingIngredientComponent DEFAULT = new BrewingIngredientComponent(BrewingIngredient.BrewingProperties.DEFAULT, null, Set.of(), null);
-
+public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties properties,
+                                         @Nullable BrewingIngredient.BrewingProperties maltProperties,
+                                         Set<ResourceKey<Flavor>> flavors,
+                                         @Nullable ResourceLocation origin) implements TooltipProvider {
     public static final Codec<BrewingIngredientComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     BrewingIngredient.BrewingProperties.CODEC.fieldOf("properties").forGetter(BrewingIngredientComponent::properties),
@@ -40,7 +45,6 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
                     ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(BrewingIngredientComponent::flavors),
                     ResourceLocation.CODEC.optionalFieldOf("origin").forGetter(i -> Optional.ofNullable(i.origin))
             ).apply(instance, (prop, malt, flavors, origin) -> new BrewingIngredientComponent(prop, malt.orElse(null), flavors, origin.orElse(null))));
-
     public static final StreamCodec<RegistryFriendlyByteBuf, BrewingIngredientComponent> STREAM_CODEC = StreamCodec.composite(
             BrewingIngredient.BrewingProperties.STREAM_CODEC, BrewingIngredientComponent::properties,
             ByteBufCodecs.optional(BrewingIngredient.BrewingProperties.STREAM_CODEC).map(opt -> opt.orElse(null), Optional::ofNullable), BrewingIngredientComponent::maltProperties,
@@ -48,6 +52,7 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
             ResourceLocation.STREAM_CODEC, BrewingIngredientComponent::origin,
             BrewingIngredientComponent::new
     );
+    public static BrewingIngredientComponent DEFAULT = new BrewingIngredientComponent(BrewingIngredient.BrewingProperties.DEFAULT, null, Set.of(), null);
 
     public Component originDescriptionId() {
         return Component.translatable("ingredient.aqua_vitae." + origin.toString());
@@ -55,11 +60,19 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
 
     @Override
     public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        List<Component> components = BrewingUtils.flavorTooltip(this.flavors);
-        if (components.isEmpty())
-            return;
+        List<Component> flavorsTooltip = BrewingUtils.flavorTooltip(this.flavors);
+        List<Component> propertiesTooltip = BrewingUtils.propertiesTooltip(this.properties);
 
-        components.forEach(consumer);
-        BrewingUtils.propertiesTooltip(this.properties).forEach(consumer);
+        if (!flavorsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get())) {
+            flavorsTooltip.forEach(consumer);
+        } else {
+            consumer.accept(Constants.COMPONENT_FLAVORS.withStyle(ChatFormatting.DARK_GRAY));
+        }
+
+        if (!propertiesTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get())) {
+            propertiesTooltip.forEach(consumer);
+        } else {
+            consumer.accept(Constants.COMPONENT_PROPERTIES.withStyle(ChatFormatting.DARK_GRAY));
+        }
     }
 }

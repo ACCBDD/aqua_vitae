@@ -21,6 +21,7 @@ public class ClientUtils {
      */
     public static List<Component> getFluidTooltip(FluidStack fluidStack) {
         List<Component> tooltips = new ArrayList<>();
+        List<Component> flavorsTooltip = new ArrayList<>();
         List<Component> ingredientsTooltip = new ArrayList<>();
         List<Component> propertiesTooltip = new ArrayList<>();
 
@@ -38,7 +39,7 @@ public class ClientUtils {
 
         if (fluidStack.has(ModComponents.ALCOHOL_PROPERTIES)) {
             AlcoholPropertiesComponent alcoholComponent = fluidStack.get(ModComponents.ALCOHOL_PROPERTIES);
-            ingredientsTooltip.addAll(BrewingUtils.flavorTooltip(alcoholComponent.flavors()));
+            flavorsTooltip = BrewingUtils.flavorTooltip(alcoholComponent.flavors());
             ingredientsTooltip.add(alcoholComponent.inputs().getTooltipComponent());
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.abv", String.format("%.2f%%", alcoholComponent.abv() / 10)));
             propertiesTooltip.add(Component.translatable("properties.aqua_vitae.age", String.format("%.2f", (alcoholComponent.age() * Config.ageTicks) / 24000f)));
@@ -48,15 +49,23 @@ public class ClientUtils {
         if (ingredientsTooltip.isEmpty() && propertiesTooltip.isEmpty())
             return List.of();
 
-        if (!ingredientsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()))
-            tooltips.addAll(ingredientsTooltip);
-        else
-            tooltips.add(Constants.COMPONENT_INGREDIENTS.withStyle(ChatFormatting.DARK_GRAY));
+        if (!flavorsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get())) {
+            tooltips.addAll(flavorsTooltip);
+        } else {
+            tooltips.add(Constants.COMPONENT_FLAVORS.withStyle(ChatFormatting.DARK_GRAY));
+        }
 
-        if (!propertiesTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()))
+        if (!ingredientsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get())) {
+            tooltips.addAll(ingredientsTooltip);
+        } else {
+            tooltips.add(Constants.COMPONENT_INGREDIENTS.withStyle(ChatFormatting.DARK_GRAY));
+        }
+
+        if (!propertiesTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get())) {
             tooltips.addAll(propertiesTooltip);
-        else
+        } else {
             tooltips.add(Constants.COMPONENT_PROPERTIES.withStyle(ChatFormatting.DARK_GRAY));
+            }
 
         return tooltips;
     }

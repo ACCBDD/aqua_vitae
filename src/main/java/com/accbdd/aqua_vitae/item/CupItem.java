@@ -2,10 +2,12 @@ package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.client.ClientUtils;
+import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -47,7 +50,11 @@ public class CupItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         FluidStack fluid = stack.getOrDefault(ModComponents.FLUIDSTACK, FluidStackComponent.EMPTY).stack();
         if (!fluid.isEmpty()) {
+            AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
             tooltipComponents.add(Component.translatable("grammar.aqua_vitae.fluid_amount", fluid.getAmount()).withStyle(ChatFormatting.GRAY));
+            if (props != null && !(ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()))) {
+                BrewingUtils.addEffectTooltip(BrewingUtils.effectsFromProps(props, fluid.getAmount(), BrewingUtils.registryAccess()), tooltipComponents::add, context.tickRate());
+            }
             tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
         }
     }
@@ -82,9 +89,7 @@ public class CupItem extends Item {
         if (fluid.has(ModComponents.ALCOHOL_PROPERTIES) && livingEntity instanceof Player player) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
             PlayerAlcoholManager.addBloodAlcohol(player, (int) (props.abv() * fluid.getAmount() / 10));
-            props.flavors().stream().map(key ->
-                            level.registryAccess().registry(AquaVitae.FLAVOR_REGISTRY).get().get(key)).filter(Objects::nonNull).forEach(flavor ->
-                    flavor.effects().forEach(effectInstance -> livingEntity.addEffect(new MobEffectInstance(effectInstance))));
+            BrewingUtils.effectsFromProps(props, fluid.getAmount(), level.registryAccess()).forEach(livingEntity::addEffect);
         }
         return stack;
     }
