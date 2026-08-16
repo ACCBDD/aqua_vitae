@@ -27,7 +27,7 @@ public class ClientUtils {
 
         if (fluidStack.has(ModComponents.PRECURSOR_PROPERTIES)) {
             PrecursorPropertiesComponent precursorComponent = fluidStack.get(ModComponents.PRECURSOR_PROPERTIES);
-            ingredientsTooltip.addAll(BrewingUtils.flavorTooltip(precursorComponent.flavors()));
+            flavorsTooltip = BrewingUtils.flavorTooltip(precursorComponent.flavors());
             ingredientsTooltip.add(precursorComponent.ingredients().getTooltipComponent());
             propertiesTooltip.addAll(BrewingUtils.propertiesTooltip(precursorComponent.properties()));
         }

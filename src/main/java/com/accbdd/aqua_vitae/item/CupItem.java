@@ -52,7 +52,7 @@ public class CupItem extends Item {
         if (!fluid.isEmpty()) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
             tooltipComponents.add(Component.translatable("grammar.aqua_vitae.fluid_amount", fluid.getAmount()).withStyle(ChatFormatting.GRAY));
-            if (props != null && !(ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()))) {
+            if (props != null && !(ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get()))) {
                 BrewingUtils.addEffectTooltip(BrewingUtils.effectsFromProps(props, fluid.getAmount(), BrewingUtils.registryAccess()), tooltipComponents::add, context.tickRate());
             }
             tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));

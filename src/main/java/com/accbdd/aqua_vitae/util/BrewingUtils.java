@@ -136,7 +136,7 @@ public class BrewingUtils {
         if (flavors.isEmpty())
             return List.of(Component.translatable("flavor.aqua_vitae.none"));
         List<Component> components = new ArrayList<>();
-        components.add(Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.AQUA));
+        components.add(Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.GOLD));
         for (ResourceKey<Flavor> key : flavors) {
             MutableComponent flavorName = Component.translatable("flavor.aqua_vitae." + key.location());
             Component flavorEffects = ComponentUtils.formatList(getFlavor(key).effects().stream().map(effect -> {
