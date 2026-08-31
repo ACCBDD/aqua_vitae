@@ -42,6 +42,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.POT_STILL, "Pot Still");
         addBlock(ModBlocks.MALT_KILN, "Malt Kiln");
         addBlock(ModBlocks.MASH_TUN, "Mash Tun");
+        addBlock(ModBlocks.FERMENTER, "Fermenter");
 
         addItem(ModItems.CUP, "Cup");
         addItem(ModItems.SHOOTER, "Shooter");
@@ -107,6 +108,8 @@ public class LanguageGenerator extends LanguageProvider {
         addGrammar("fluid_amount", "%s mB");
         addGrammar("list_combine", "%s, ");
         addGrammar("label", "%1$s %2$s");
+        addGrammar("parenthesis", "(%s");
+        addGrammar("list_item", "- %s");
 
         addAlcoholName("generic", "Ferment");
         addAlcoholName("liquor", "Liquor");
@@ -130,11 +133,13 @@ public class LanguageGenerator extends LanguageProvider {
         add("properties.aqua_vitae.color", "#%s");
         add("properties.aqua_vitae.abv", "%s ABV");
         add("properties.aqua_vitae.age", "Aged for %s days");
-        add("properties.aqua_vitae.properties", "Hold %s for properties.");
+        add("properties.aqua_vitae.properties", "Hold %s for brewing properties.");
+        add("properties.aqua_vitae.flavors", "Hold %s for flavors.");
         add("properties.aqua_vitae.ingredients", "Hold %s for ingredients.");
         add("key.categories.aqua_vitae", "Aqua Vitae");
         add("key.aqua_vitae.properties", "Show Fluid Properties");
         add("key.aqua_vitae.ingredients", "Show Ingredients");
+        add("key.aqua_vitae.flavors", "Show Flavors");
         add("tooltip.aqua_vitae.heated", "Heated");
         add("tooltip.aqua_vitae.needs_heat", "Needs heat from below");
 
