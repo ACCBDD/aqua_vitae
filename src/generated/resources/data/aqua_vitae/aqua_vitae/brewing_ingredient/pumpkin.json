@@ -1,8 +1,8 @@
 {
   "flavors": [
+    "aqua_vitae:earthy",
     "aqua_vitae:starchy",
-    "aqua_vitae:heavy",
-    "aqua_vitae:earthy"
+    "aqua_vitae:heavy"
   ],
   "input": {
     "item": "minecraft:pumpkin"

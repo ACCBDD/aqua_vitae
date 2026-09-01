@@ -1,6 +1,5 @@
 package com.accbdd.aqua_vitae.item;
 
-import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.client.ClientUtils;
 import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
@@ -9,22 +8,20 @@ import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CupItem extends Item {
     private final int useTime;
@@ -55,7 +52,9 @@ public class CupItem extends Item {
             if (props != null && !(ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get()))) {
                 BrewingUtils.addEffectTooltip(BrewingUtils.effectsFromProps(props, fluid.getAmount(), BrewingUtils.registryAccess()), tooltipComponents::add, context.tickRate());
             }
-            tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+            if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player)) {
+                tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+            }
         }
     }
 

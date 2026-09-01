@@ -4,6 +4,7 @@ import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.capability.CupHandler;
+import com.accbdd.aqua_vitae.compat.curios.Curios;
 import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
@@ -21,6 +22,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -53,6 +55,9 @@ public class AquaVitae {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModMenus.MENU_TYPES.register(modEventBus);
         ModDrinkPredicateType.DRINK_PREDICATE_TYPE.register(modEventBus);
+        if (LoadingModList.get().getModFileById("curios") != null) {
+            Curios.init(modEventBus);
+        }
 
         modEventBus.addListener(Generators::onGatherData);
         modEventBus.addListener(this::registerCapabilities);

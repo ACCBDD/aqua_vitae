@@ -1,6 +1,7 @@
 package com.accbdd.aqua_vitae.screen.widget;
 
 import com.accbdd.aqua_vitae.client.ClientUtils;
+import com.accbdd.aqua_vitae.item.MonocleItem;
 import com.accbdd.aqua_vitae.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -48,7 +49,9 @@ public class FluidGaugeWidget extends AbstractDisplayWidget {
         List<Component> tooltips = new ArrayList<>();
         if (!fluidStack.isEmpty()) {
             tooltips.add(fluidStack.getHoverName().copy().append(": ").append(Component.literal(fluidSupplier.get().getAmount() + " mB")));
-            tooltips.addAll(ClientUtils.getFluidTooltip(fluidStack));
+            if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player)) {
+                tooltips.addAll(ClientUtils.getFluidTooltip(fluidStack));
+            }
         } else {
             tooltips.add(Component.literal("Empty"));
         }

@@ -2,6 +2,7 @@ package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.component.BrewingIngredientComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +27,7 @@ public class MaltItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
 
-        if (stack.has(ModComponents.BREWING_INGREDIENT))
+        if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player) && stack.has(ModComponents.BREWING_INGREDIENT))
             stack.addToTooltip(ModComponents.BREWING_INGREDIENT, context, tooltip::add, tooltipFlag);
     }
 
