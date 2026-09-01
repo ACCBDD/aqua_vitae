@@ -132,52 +132,6 @@ public class BrewingUtils {
         return null;
     }
 
-    public static List<Component> flavorTooltip(Set<ResourceKey<Flavor>> flavors) {
-        if (flavors.isEmpty())
-            return List.of(Component.translatable("flavor.aqua_vitae.none"));
-        List<Component> components = new ArrayList<>();
-        components.add(Component.translatable("flavor.aqua_vitae.label").withStyle(ChatFormatting.GOLD));
-        for (ResourceKey<Flavor> key : flavors) {
-            MutableComponent flavorName = Component.translatable("flavor.aqua_vitae." + key.location());
-            Component flavorEffects = ComponentUtils.formatList(getFlavor(key).effects().stream().map(effect -> {
-                MutableComponent component = Component.translatable(effect.getDescriptionId());
-                if (effect.getAmplifier() > 0) {
-                    component = Component.translatable(
-                            "potion.withAmplifier", component, Component.translatable("potion.potency." + effect.getAmplifier())
-                    );
-                }
-
-//                if (!effect.endsWithin(20)) {
-//                    component = Component.translatable(
-//                            "potion.withDuration", component, MobEffectUtil.formatDuration(effect, 1, 20)
-//                    );
-//                }
-                return component;
-            }).toList(), Component.literal(","));
-            components.add(Component.translatable("grammar.aqua_vitae.list_item", Component.translatable("grammar.aqua_vitae.label", flavorName, Component.translatable("grammar.aqua_vitae.parenthesis", flavorEffects).withStyle(ChatFormatting.BLUE))));
-        }
-
-        return components;
-    }
-
-    public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
-        List<Component> tooltips = new ArrayList<>();
-        if (properties.sugar() > 0) {
-            tooltips.add(Component.translatable("properties.aqua_vitae.sugar", properties.sugar()));
-        }
-        if (properties.starch() > 0) {
-            tooltips.add(Component.translatable("properties.aqua_vitae.starch", properties.starch()));
-        }
-        if (properties.diastaticPower() > 0) {
-            tooltips.add(Component.translatable("properties.aqua_vitae.diastatic_power", properties.diastaticPower()));
-        }
-        if (properties.yeast() > 0 && properties.yeastTolerance() > 0) {
-            tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), String.format("%.2f%%", (float)properties.yeastTolerance() / 10)));
-        }
-        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color().color()).toUpperCase()).withColor(properties.color().color() | 0xFF000000));
-        return tooltips;
-    }
-
     /**
      * transitions flavors according to a flavor transition
      * @param flavors
@@ -280,30 +234,5 @@ public class BrewingUtils {
                         (int) (baseEffect.getDuration() * (props.abv() * 0.02) * (amount / 250f)),
                         baseEffect.getAmplifier() + (int)(props.abv() * 0.0025) - 1))));
         return effects;
-    }
-
-    public static void addEffectTooltip(List<MobEffectInstance> effects, Consumer<Component> tooltipAdder, float ticksPerSecond) {
-        List<Pair<Holder<Attribute>, AttributeModifier>> list = Lists.newArrayList();
-        boolean flag = true;
-
-        for (MobEffectInstance mobeffectinstance : effects) {
-            flag = false;
-            MutableComponent mutablecomponent = Component.translatable(mobeffectinstance.getDescriptionId());
-            Holder<MobEffect> holder = mobeffectinstance.getEffect();
-            holder.value().createModifiers(mobeffectinstance.getAmplifier(), (p_331556_, p_330860_) -> list.add(new Pair<>(p_331556_, p_330860_)));
-            if (mobeffectinstance.getAmplifier() > 0) {
-                mutablecomponent = Component.translatable(
-                        "potion.withAmplifier", mutablecomponent, Component.translatable("potion.potency." + mobeffectinstance.getAmplifier())
-                );
-            }
-
-            if (!mobeffectinstance.endsWithin(20)) {
-                mutablecomponent = Component.translatable(
-                        "potion.withDuration", mutablecomponent, MobEffectUtil.formatDuration(mobeffectinstance, 1, ticksPerSecond)
-                );
-            }
-
-            tooltipAdder.accept(mutablecomponent.withStyle(holder.value().getCategory().getTooltipFormatting()));
-        }
     }
 }

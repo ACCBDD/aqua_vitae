@@ -4,16 +4,20 @@ import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
 import com.accbdd.aqua_vitae.api.naming.NameEntry;
 import com.accbdd.aqua_vitae.capability.CupHandler;
+import com.accbdd.aqua_vitae.client.ClientUtils;
 import com.accbdd.aqua_vitae.compat.curios.Curios;
 import com.accbdd.aqua_vitae.config.Config;
 import com.accbdd.aqua_vitae.datagen.Generators;
 import com.accbdd.aqua_vitae.item.CupItem;
+import com.accbdd.aqua_vitae.item.MonocleItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
 import com.accbdd.aqua_vitae.network.FluidSyncPacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.*;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +30,7 @@ import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -33,6 +38,8 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 @Mod(AquaVitae.MODID)
 public class AquaVitae {
@@ -79,6 +86,18 @@ public class AquaVitae {
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerAlcoholManager.syncAlcohol(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public void onTooltipEvent(ItemTooltipEvent event) {
+        if (!MonocleItem.isWearingMonocle(event.getEntity()))
+            return;
+
+        BrewingIngredient ingredient = BrewingUtils.getIngredient(event.getItemStack());
+        if (ingredient != null) {
+            List<Component> tooltip = event.getToolTip();
+            tooltip.addAll(ClientUtils.getTooltip(ingredient));
+        }
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {

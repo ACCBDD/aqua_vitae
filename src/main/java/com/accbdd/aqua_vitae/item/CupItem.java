@@ -49,11 +49,12 @@ public class CupItem extends Item {
         if (!fluid.isEmpty()) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
             tooltipComponents.add(Component.translatable("grammar.aqua_vitae.fluid_amount", fluid.getAmount()).withStyle(ChatFormatting.GRAY));
-            if (props != null && !(ModKeyMappings.isKeyDown(ModKeyMappings.INGREDIENTS_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get()) || ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get()))) {
-                BrewingUtils.addEffectTooltip(BrewingUtils.effectsFromProps(props, fluid.getAmount(), BrewingUtils.registryAccess()), tooltipComponents::add, context.tickRate());
-            }
-            if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player)) {
-                tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+            if (props != null) {
+                var effectTooltip = ClientUtils.effectTooltip(BrewingUtils.effectsFromProps(props, fluid.getAmount(), context.level().registryAccess()), context.tickRate());
+                tooltipComponents.addAll(effectTooltip);
+                if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player)) {
+                    tooltipComponents.addAll(ClientUtils.getFluidTooltip(fluid));
+                }
             }
         }
     }

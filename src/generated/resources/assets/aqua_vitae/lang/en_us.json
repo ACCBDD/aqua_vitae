@@ -42,7 +42,7 @@
   "grammar.aqua_vitae.list_combine": "%s, ",
   "grammar.aqua_vitae.list_item": "- %s",
   "grammar.aqua_vitae.malt": "%1$s %2$s %3$s",
-  "grammar.aqua_vitae.parenthesis": "(%s",
+  "grammar.aqua_vitae.parenthesis": "(%s)",
   "ingredient.aqua_vitae.aqua_vitae:apple": "Apple",
   "ingredient.aqua_vitae.aqua_vitae:beetroot": "Beetroot",
   "ingredient.aqua_vitae.aqua_vitae:black_dye": "Black Dye",

@@ -50,7 +50,7 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.EYEBALL, "Eyeball");
         addItem(ModItems.BREW_BUCKET, "Brew Bucket");
         addItem(ModItems.MALT, "Malt");
-        addItem(ModItems.BREWMASTER_MONOCLE, "Brewmaster Monocle");
+        addItem(ModItems.BREWMASTER_MONOCLE, "Brewmaster's Monocle");
 
         addIngredient(BuiltInIngredients.APPLE, "Apple");
         addIngredient(BuiltInIngredients.HONEY, "Honey");

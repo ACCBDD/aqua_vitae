@@ -1,7 +1,7 @@
 {
   "flavors": [
-    "aqua_vitae:sulfuric",
-    "aqua_vitae:acrid"
+    "aqua_vitae:acrid",
+    "aqua_vitae:sulfuric"
   ],
   "input": [
     {

@@ -1,19 +1,31 @@
 package com.accbdd.aqua_vitae.util;
 
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
+import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.PrecursorPropertiesComponent;
 import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class GuiUtils {
     public static void drawTiledSprite(GuiGraphics guiGraphics, int xPosition, int yPosition, int yOffset, int desiredWidth, int desiredHeight, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int zLevel, boolean blend) {

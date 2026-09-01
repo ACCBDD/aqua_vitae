@@ -1,15 +1,19 @@
 package com.accbdd.aqua_vitae.client;
 
 import com.accbdd.aqua_vitae.AquaVitae;
+import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.client.event.SwayCamera;
 import com.accbdd.aqua_vitae.client.renderer.CrushingTubRenderer;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.item.MaltItem;
+import com.accbdd.aqua_vitae.item.MonocleItem;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.screen.MaltKilnScreen;
 import com.accbdd.aqua_vitae.screen.MashTunScreen;
+import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.FluidUtils;
+import com.accbdd.aqua_vitae.util.GuiUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -18,6 +22,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,8 +36,11 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
+
+import java.util.List;
 
 @Mod(value = AquaVitae.MODID, dist = {Dist.CLIENT})
 public class AquaVitaeClient {

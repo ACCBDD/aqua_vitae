@@ -3,9 +3,11 @@ package com.accbdd.aqua_vitae.component;
 import com.accbdd.aqua_vitae.AquaVitae;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.api.Flavor;
+import com.accbdd.aqua_vitae.client.ClientUtils;
 import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import com.accbdd.aqua_vitae.util.Constants;
+import com.accbdd.aqua_vitae.util.GuiUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
@@ -37,7 +39,7 @@ import java.util.function.Consumer;
 public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties properties,
                                          @Nullable BrewingIngredient.BrewingProperties maltProperties,
                                          Set<ResourceKey<Flavor>> flavors,
-                                         @Nullable ResourceLocation origin) implements TooltipProvider {
+                                         @Nullable ResourceLocation origin) {
     public static final Codec<BrewingIngredientComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     BrewingIngredient.BrewingProperties.CODEC.fieldOf("properties").forGetter(BrewingIngredientComponent::properties),
@@ -56,23 +58,5 @@ public record BrewingIngredientComponent(BrewingIngredient.BrewingProperties pro
 
     public Component originDescriptionId() {
         return Component.translatable("ingredient.aqua_vitae." + origin.toString());
-    }
-
-    @Override
-    public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
-        List<Component> flavorsTooltip = BrewingUtils.flavorTooltip(this.flavors);
-        List<Component> propertiesTooltip = BrewingUtils.propertiesTooltip(this.properties);
-
-        if (!flavorsTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.FLAVORS_MAPPING.get())) {
-            flavorsTooltip.forEach(consumer);
-        } else {
-            consumer.accept(Constants.COMPONENT_FLAVORS.withStyle(ChatFormatting.DARK_GRAY));
-        }
-
-        if (!propertiesTooltip.isEmpty() && ModKeyMappings.isKeyDown(ModKeyMappings.PROPERTIES_MAPPING.get())) {
-            propertiesTooltip.forEach(consumer);
-        } else {
-            consumer.accept(Constants.COMPONENT_PROPERTIES.withStyle(ChatFormatting.DARK_GRAY));
-        }
     }
 }

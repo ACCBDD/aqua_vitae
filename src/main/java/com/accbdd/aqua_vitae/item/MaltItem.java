@@ -26,9 +26,6 @@ public class MaltItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
-
-        if (MonocleItem.isWearingMonocle(Minecraft.getInstance().player) && stack.has(ModComponents.BREWING_INGREDIENT))
-            stack.addToTooltip(ModComponents.BREWING_INGREDIENT, context, tooltip::add, tooltipFlag);
     }
 
     public static int getColor(ItemStack stack, int index) {
