@@ -12,10 +12,10 @@ import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 public class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, MODID);
 
-    public static final Supplier<AttachmentType<Integer>> BLOOD_ALCOHOL = ATTACHMENT_TYPES.register("blood_alcohol",
+    public static final Supplier<AttachmentType<Integer>> UNDIGESTED_ALCOHOL = ATTACHMENT_TYPES.register("undigested_alcohol",
             () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 
-    public static final Supplier<AttachmentType<Integer>> INTOXICATION = ATTACHMENT_TYPES.register("intoxication",
+    public static final Supplier<AttachmentType<Integer>> BLOOD_ALCOHOL = ATTACHMENT_TYPES.register("blood_alcohol",
             () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 
     public static final Supplier<AttachmentType<Integer>> HANGOVER = ATTACHMENT_TYPES.register("hangover",

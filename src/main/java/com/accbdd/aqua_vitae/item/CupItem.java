@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae.item;
 
 import com.accbdd.aqua_vitae.client.ClientUtils;
-import com.accbdd.aqua_vitae.client.ModKeyMappings;
 import com.accbdd.aqua_vitae.component.AlcoholPropertiesComponent;
 import com.accbdd.aqua_vitae.component.FluidStackComponent;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
@@ -88,7 +87,7 @@ public class CupItem extends Item {
         var fluid = stack.remove(ModComponents.FLUIDSTACK).stack();
         if (fluid.has(ModComponents.ALCOHOL_PROPERTIES) && livingEntity instanceof Player player) {
             AlcoholPropertiesComponent props = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-            PlayerAlcoholManager.addBloodAlcohol(player, (int) (props.abv() * fluid.getAmount() / 10));
+            PlayerAlcoholManager.addAlcohol(player, (int) (props.abv() * fluid.getAmount()));
             BrewingUtils.effectsFromProps(props, fluid.getAmount(), level.registryAccess()).forEach(livingEntity::addEffect);
         }
         return stack;

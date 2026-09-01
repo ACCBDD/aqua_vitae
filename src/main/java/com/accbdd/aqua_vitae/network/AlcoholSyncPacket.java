@@ -23,8 +23,8 @@ public record AlcoholSyncPacket(int bloodAlcohol, int intoxication, int hangover
 
     public static void handle(AlcoholSyncPacket packet, IPayloadContext context) {
         Player player = context.player();
-        player.setData(ModAttachments.BLOOD_ALCOHOL, packet.bloodAlcohol());
-        player.setData(ModAttachments.INTOXICATION, packet.intoxication());
+        player.setData(ModAttachments.UNDIGESTED_ALCOHOL, packet.bloodAlcohol());
+        player.setData(ModAttachments.BLOOD_ALCOHOL, packet.intoxication());
         player.setData(ModAttachments.HANGOVER, packet.hangover());
     }
 

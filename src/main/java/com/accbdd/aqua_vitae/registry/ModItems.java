@@ -1,9 +1,6 @@
 package com.accbdd.aqua_vitae.registry;
 
-import com.accbdd.aqua_vitae.item.MonocleItem;
-import com.accbdd.aqua_vitae.item.CupItem;
-import com.accbdd.aqua_vitae.item.MaltItem;
-import com.accbdd.aqua_vitae.item.MeterItem;
+import com.accbdd.aqua_vitae.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -46,8 +43,8 @@ public class ModItems {
 
     public static final DeferredItem<MeterItem> METER = registerWithTab("meter", MeterItem::new);
     public static final DeferredItem<MaltItem> MALT = registerWithTab("malt", MaltItem::new);
-
     public static final DeferredItem<Item> BREWMASTER_MONOCLE = registerWithTab("brewmaster_monocle", MonocleItem::new);
+    public static final DeferredItem<BreathalyzerItem> BREATHALYZER = registerWithTab("breathalyzer", BreathalyzerItem::new);
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> itemSupplier) {
         return ITEMS.register(name, itemSupplier);

@@ -1,7 +1,7 @@
 {
   "flavors": [
-    "aqua_vitae:sweet",
-    "aqua_vitae:starchy"
+    "aqua_vitae:starchy",
+    "aqua_vitae:sweet"
   ],
   "input": {
     "item": "minecraft:beetroot"
