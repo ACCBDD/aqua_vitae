@@ -29,7 +29,7 @@ public class BreathalyzerItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 20;
+        return 40;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BreathalyzerItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (livingEntity instanceof Player player && !level.isClientSide) {
-            player.getCooldowns().addCooldown(this, 20);
+            player.getCooldowns().addCooldown(this, 40);
             double reach = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
             Vec3 eyePos = player.getEyePosition();
             Vec3 viewVec = player.getViewVector(1.0F);
@@ -60,6 +60,8 @@ public class BreathalyzerItem extends Item {
                     target.getData(ModAttachments.UNDIGESTED_ALCOHOL),
                     target.getData(ModAttachments.BLOOD_ALCOHOL).floatValue() / 1000000f,
                     target.getData(ModAttachments.HANGOVER))), true);
+            //todo add noises
+            //todo add obscuration for undigested and hangover (HIGH, etc)
         }
         return super.finishUsingItem(stack, level, livingEntity);
     }

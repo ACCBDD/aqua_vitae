@@ -40,6 +40,7 @@ public class PlayerAlcoholManager {
         player.setData(ModAttachments.UNDIGESTED_ALCOHOL, Math.max(undigested, 0));
         player.setData(ModAttachments.BLOOD_ALCOHOL, Math.max(bloodAlcohol, 0));
         player.setData(ModAttachments.HANGOVER, Math.max(hangover, 0));
+        //todo add actual effects for hangover and bac
     }
 
     public static void addAlcohol(Player player, int toAdd) {
