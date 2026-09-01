@@ -109,7 +109,7 @@ public class LanguageGenerator extends LanguageProvider {
         addGrammar("fluid_amount", "%s mB");
         addGrammar("list_combine", "%s, ");
         addGrammar("label", "%1$s %2$s");
-        addGrammar("parenthesis", "(%s");
+        addGrammar("parenthesis", "(%s)");
         addGrammar("list_item", "- %s");
 
         addAlcoholName("generic", "Ferment");
