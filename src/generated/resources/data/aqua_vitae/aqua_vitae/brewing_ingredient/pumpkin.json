@@ -1,7 +1,7 @@
 {
   "flavors": [
-    "aqua_vitae:earthy",
     "aqua_vitae:starchy",
+    "aqua_vitae:earthy",
     "aqua_vitae:heavy"
   ],
   "input": {

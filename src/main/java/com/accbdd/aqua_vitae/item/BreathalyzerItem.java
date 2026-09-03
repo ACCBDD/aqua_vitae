@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.item;
 
+import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.ModAttachments;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +30,9 @@ public class BreathalyzerItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 40;
+        if (entity instanceof Player player && !player.isCreative())
+            return 40;
+        return 0;
     }
 
     @Override
@@ -40,7 +43,8 @@ public class BreathalyzerItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (livingEntity instanceof Player player && !level.isClientSide) {
-            player.getCooldowns().addCooldown(this, 40);
+            if (!player.isCreative())
+                player.getCooldowns().addCooldown(this, 40);
             double reach = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
             Vec3 eyePos = player.getEyePosition();
             Vec3 viewVec = player.getViewVector(1.0F);
@@ -54,6 +58,13 @@ public class BreathalyzerItem extends Item {
             Player target = (hitResult != null && hitResult.getEntity() instanceof Player hitPlayer)
                     ? hitPlayer
                     : player;
+
+            if (player.isCreative() && player.isCrouching()) {
+                target.setData(ModAttachments.UNDIGESTED_ALCOHOL, 0);
+                target.setData(ModAttachments.BLOOD_ALCOHOL, 0);
+                target.setData(ModAttachments.HANGOVER, 0);
+                PlayerAlcoholManager.syncAlcohol(target);
+            }
 
             player.displayClientMessage(Component.literal(String.format("%s -> Undigested: %d, BAC: %3.3f, Hangover: %d",
                     target == player ? "Self" : target.getName().getString(),
