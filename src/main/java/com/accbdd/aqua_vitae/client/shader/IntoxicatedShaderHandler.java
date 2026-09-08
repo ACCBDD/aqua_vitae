@@ -1,17 +1,14 @@
 package com.accbdd.aqua_vitae.client.shader;
 
+import com.accbdd.aqua_vitae.registry.ModAttachments;
 import com.accbdd.aqua_vitae.registry.ModEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-
-import java.util.concurrent.CompletableFuture;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
@@ -42,8 +39,7 @@ public class IntoxicatedShaderHandler {
         }
 
         if (intoxicatedShader != null) {
-            MobEffectInstance instance = minecraft.player.getEffect(ModEffects.INTOXICATED);
-            int amplifier = instance != null ? instance.getAmplifier() : 0;
+            int bac = minecraft.player.getData(ModAttachments.BLOOD_ALCOHOL);
 
             float time = (minecraft.level.getGameTime() + event.getPartialTick().getGameTimeDeltaPartialTick(true)) * 0.05f;
 
@@ -51,7 +47,7 @@ public class IntoxicatedShaderHandler {
             float focusY = 0.5f + (float) Math.cos(time * 0.6f) * 0.25f;
 
             intoxicatedShader.passes.forEach(pass -> {
-                pass.getEffect().safeGetUniform("IntoxicationLevel").set(amplifier);
+                pass.getEffect().safeGetUniform("PlayerBAC").set(bac);
                 pass.getEffect().safeGetUniform("FocusCenter").set(focusX, focusY);
             });
 
