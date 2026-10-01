@@ -238,6 +238,8 @@ public class FluidUtils {
     }
 
     public static int getColorOrInvisible(FluidStack stack) {
+        if (stack.isEmpty())
+            return 0x00000000;
         if (stack.has(ModComponents.ALCOHOL_PROPERTIES))
             return stack.getOrDefault(ModComponents.ALCOHOL_PROPERTIES, AlcoholPropertiesComponent.EMPTY).color().color();
         if (stack.has(ModComponents.FERMENTING_PROPERTIES))

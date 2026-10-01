@@ -1,5 +1,6 @@
 package com.accbdd.aqua_vitae.datagen;
 
+import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.registry.ModBlocks;
 import com.accbdd.aqua_vitae.registry.ModFluids;
 import com.accbdd.aqua_vitae.registry.ModItems;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 public class ItemModelGenerator extends ItemModelProvider {
     public ItemModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
@@ -40,7 +42,8 @@ public class ItemModelGenerator extends ItemModelProvider {
         basicItem(ModItems.BREW_BUCKET.get());
         basicItem(ModItems.MALT.get());
         basicItem(ModItems.BREATHALYZER.get());
-        getBuilder(ModItems.EYEBALL.getKey().location().toString()).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", modLoc("item/eyeball_base")).texture("layer1", modLoc("item/eyeball_overlay"));
+        cupModel(ModItems.EYEBALL);
+        cupModel(ModItems.TANKARD);
     }
 
     private void bucketModel(DeferredHolder<Fluid, FlowingFluid> fluid) {
@@ -51,5 +54,13 @@ public class ItemModelGenerator extends ItemModelProvider {
                 .coverIsMask(false)
                 .flipGas(false)
                 .fluid(fluid.get());
+    }
+
+    private void cupModel(DeferredItem<CupItem> cupItem) {
+        String name = cupItem.getId().getPath();
+        getBuilder(cupItem.getKey().location().toString())
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", modLoc("item/" + name))
+                .texture("layer1", modLoc("item/" + name + "_overlay"));
     }
 }

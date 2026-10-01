@@ -45,6 +45,7 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.FERMENTER, "Fermenter");
 
         addItem(ModItems.CUP, "Cup");
+        addItem(ModItems.TANKARD, "Tankard");
         addItem(ModItems.SHOOTER, "Shooter");
         addItem(ModItems.METER, "Meter");
         addItem(ModItems.EYEBALL, "Eyeball");

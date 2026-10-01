@@ -37,6 +37,7 @@ public class ModItems {
     public static final DeferredItem<BlockItem> MASH_TUN = registerSimpleBlockItem("mash_tun", ModBlocks.MASH_TUN);
 
     public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
+    public static final DeferredItem<CupItem> TANKARD = registerWithTab("tankard", () -> new CupItem(40, 1, 250));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));
     public static final DeferredItem<CupItem> EYEBALL = registerWithTab("eyeball", () -> new CupItem(20, 1, 10));
     public static final DeferredItem<CupItem> BREW_BUCKET = registerWithTab("brew_bucket", () -> new CupItem(120, 1, 1000));

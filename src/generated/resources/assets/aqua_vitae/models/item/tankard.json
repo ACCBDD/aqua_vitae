@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "layer0": "aqua_vitae:item/tankard",
+    "layer1": "aqua_vitae:item/tankard_overlay"
+  }
+}
