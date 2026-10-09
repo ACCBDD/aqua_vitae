@@ -18,7 +18,7 @@ public class NumUtils {
         return (Math.max(a, 0x22) << 24) | (r << 16) | (g << 8) | b;
     }
 
-    public static int darkenColor(int argb, float factor) { //clamped alpha to DD
+    public static int darkenColor(int argb, float factor) {
         factor = Math.max(0f, Math.min(1f, factor));
 
         int a = (argb >> 24) & 0xFF;
@@ -26,7 +26,7 @@ public class NumUtils {
         int g = (argb >> 8) & 0xFF;
         int b = argb & 0xFF;
 
-        a = (int) Math.min(a + factor * 100, 0xDD);
+        a = (int) (Math.min(a + factor * 100, 255));
         r = (int) (r * (1f - factor));
         g = (int) (g * (1f - factor));
         b = (int) (b * (1f - factor));

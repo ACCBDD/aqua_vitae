@@ -140,7 +140,7 @@ public record BrewingIngredient(@Nullable Ingredient itemIngredient, @Nullable F
          */
         public BrewingProperties kiln() {
             int kilnColor = NumUtils.saturateColor(this.color.color(), 0.4f);
-            return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.25f),
+            return new BrewingProperties(NumUtils.darkenColor(kilnColor, 0.33f),
                     (int) (this.starch * 0.95),
                     (int) (this.sugar + (this.starch - this.starch * 0.95) / 4),
                     (int) (this.yeast * 0.95),
