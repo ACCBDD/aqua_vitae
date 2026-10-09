@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "aqua_vitae:item/brew_bucket"
+    "layer0": "aqua_vitae:item/brew_bucket",
+    "layer1": "aqua_vitae:item/brew_bucket_overlay"
   }
 }

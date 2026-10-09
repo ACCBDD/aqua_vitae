@@ -37,10 +37,9 @@ public class ItemModelGenerator extends ItemModelProvider {
         simpleBlockItem(ModBlocks.MALT_KILN.get());
         simpleBlockItem(ModBlocks.MASH_TUN.get());
         basicItem(ModItems.METER.get());
-        basicItem(ModItems.BREW_BUCKET.get());
         basicItem(ModItems.MALT.get());
         basicItem(ModItems.BREATHALYZER.get());
-        cupModel(ModItems.EYEBALL);
+        cupModel(ModItems.BREW_BUCKET);
         cupModel(ModItems.TANKARD);
         cupModel(ModItems.SHOOTER);
         cupModel(ModItems.FLUTE_GLASS);

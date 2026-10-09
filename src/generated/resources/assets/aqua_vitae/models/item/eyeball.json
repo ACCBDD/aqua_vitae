@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "aqua_vitae:item/eyeball",
-    "layer1": "aqua_vitae:item/eyeball_overlay"
-  }
-}

@@ -53,7 +53,6 @@ public class LanguageGenerator extends LanguageProvider {
         addItem(ModItems.COCKTAIL_GLASS, "Cocktail Glass");
         addItem(ModItems.COPPER_MUG, "Copper Mug");
         addItem(ModItems.METER, "Meter");
-        addItem(ModItems.EYEBALL, "Eyeball");
         addItem(ModItems.BREW_BUCKET, "Brew Bucket");
         addItem(ModItems.MALT, "Malt");
         addItem(ModItems.BREWMASTER_MONOCLE, "Brewmaster's Monocle");

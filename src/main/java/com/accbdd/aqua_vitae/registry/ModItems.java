@@ -44,7 +44,6 @@ public class ModItems {
     public static final DeferredItem<CupItem> COCKTAIL_GLASS = registerWithTab("cocktail_glass", () -> new CupItem(150));
     public static final DeferredItem<CupItem> COPPER_MUG = registerWithTab("copper_mug", () -> new CupItem(200));
     public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(50));
-    public static final DeferredItem<CupItem> EYEBALL = registerWithTab("eyeball", () -> new CupItem(10));
     public static final DeferredItem<CupItem> BREW_BUCKET = registerWithTab("brew_bucket", () -> new CupItem(1000));
 
     public static final DeferredItem<MeterItem> METER = registerWithTab("meter", MeterItem::new);
