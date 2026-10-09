@@ -36,14 +36,19 @@ public class ItemModelGenerator extends ItemModelProvider {
         simpleBlockItem(ModBlocks.POT_STILL.get());
         simpleBlockItem(ModBlocks.MALT_KILN.get());
         simpleBlockItem(ModBlocks.MASH_TUN.get());
-        basicItem(ModItems.CUP.get());
-        basicItem(ModItems.SHOOTER.get());
         basicItem(ModItems.METER.get());
         basicItem(ModItems.BREW_BUCKET.get());
         basicItem(ModItems.MALT.get());
         basicItem(ModItems.BREATHALYZER.get());
         cupModel(ModItems.EYEBALL);
         cupModel(ModItems.TANKARD);
+        cupModel(ModItems.SHOOTER);
+        cupModel(ModItems.FLUTE_GLASS);
+        cupModel(ModItems.HIGHBALL_GLASS);
+        cupModel(ModItems.ROCKS_GLASS);
+        cupModel(ModItems.WINE_GLASS);
+        cupModel(ModItems.COCKTAIL_GLASS);
+        cupModel(ModItems.COPPER_MUG);
     }
 
     private void bucketModel(DeferredHolder<Fluid, FlowingFluid> fluid) {

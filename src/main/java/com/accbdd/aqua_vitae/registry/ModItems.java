@@ -36,11 +36,16 @@ public class ModItems {
     public static final DeferredItem<BlockItem> MALT_KILN = registerSimpleBlockItem("malt_kiln", ModBlocks.MALT_KILN);
     public static final DeferredItem<BlockItem> MASH_TUN = registerSimpleBlockItem("mash_tun", ModBlocks.MASH_TUN);
 
-    public static final DeferredItem<CupItem> CUP = registerWithTab("cup", () -> new CupItem(40, 1, 250));
-    public static final DeferredItem<CupItem> TANKARD = registerWithTab("tankard", () -> new CupItem(40, 1, 250));
-    public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(20, 4, 50));
-    public static final DeferredItem<CupItem> EYEBALL = registerWithTab("eyeball", () -> new CupItem(20, 1, 10));
-    public static final DeferredItem<CupItem> BREW_BUCKET = registerWithTab("brew_bucket", () -> new CupItem(120, 1, 1000));
+    public static final DeferredItem<CupItem> TANKARD = registerWithTab("tankard", () -> new CupItem(250));
+    public static final DeferredItem<CupItem> FLUTE_GLASS = registerWithTab("flute_glass", () -> new CupItem(125));
+    public static final DeferredItem<CupItem> HIGHBALL_GLASS = registerWithTab("highball_glass", () -> new CupItem(200));
+    public static final DeferredItem<CupItem> ROCKS_GLASS = registerWithTab("rocks_glass", () -> new CupItem(100));
+    public static final DeferredItem<CupItem> WINE_GLASS = registerWithTab("wine_glass", () -> new CupItem(150));
+    public static final DeferredItem<CupItem> COCKTAIL_GLASS = registerWithTab("cocktail_glass", () -> new CupItem(150));
+    public static final DeferredItem<CupItem> COPPER_MUG = registerWithTab("copper_mug", () -> new CupItem(200));
+    public static final DeferredItem<CupItem> SHOOTER = registerWithTab("shooter", () -> new CupItem(50));
+    public static final DeferredItem<CupItem> EYEBALL = registerWithTab("eyeball", () -> new CupItem(10));
+    public static final DeferredItem<CupItem> BREW_BUCKET = registerWithTab("brew_bucket", () -> new CupItem(1000));
 
     public static final DeferredItem<MeterItem> METER = registerWithTab("meter", MeterItem::new);
     public static final DeferredItem<MaltItem> MALT = registerWithTab("malt", MaltItem::new);

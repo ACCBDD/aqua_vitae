@@ -44,9 +44,14 @@ public class LanguageGenerator extends LanguageProvider {
         addBlock(ModBlocks.MASH_TUN, "Mash Tun");
         addBlock(ModBlocks.FERMENTER, "Fermenter");
 
-        addItem(ModItems.CUP, "Cup");
         addItem(ModItems.TANKARD, "Tankard");
         addItem(ModItems.SHOOTER, "Shooter");
+        addItem(ModItems.FLUTE_GLASS, "Flute Glass");
+        addItem(ModItems.HIGHBALL_GLASS, "Highball Glass");
+        addItem(ModItems.ROCKS_GLASS, "Rocks Glass");
+        addItem(ModItems.WINE_GLASS, "Wine Glass");
+        addItem(ModItems.COCKTAIL_GLASS, "Cocktail Glass");
+        addItem(ModItems.COPPER_MUG, "Copper Mug");
         addItem(ModItems.METER, "Meter");
         addItem(ModItems.EYEBALL, "Eyeball");
         addItem(ModItems.BREW_BUCKET, "Brew Bucket");

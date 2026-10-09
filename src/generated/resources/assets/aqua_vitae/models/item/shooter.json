@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "aqua_vitae:item/shooter"
+    "layer0": "aqua_vitae:item/shooter",
+    "layer1": "aqua_vitae:item/shooter_overlay"
   }
 }

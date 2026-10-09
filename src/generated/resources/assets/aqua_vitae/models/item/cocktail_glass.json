@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "aqua_vitae:item/cocktail_glass",
+    "layer1": "aqua_vitae:item/cocktail_glass_overlay"
+  }
+}

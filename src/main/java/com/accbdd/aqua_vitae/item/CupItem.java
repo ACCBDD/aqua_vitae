@@ -34,6 +34,10 @@ public class CupItem extends Item {
         this.capacity = capacity;
     }
 
+    public CupItem(int capacity) {
+        this(capacity / 5, 1000 / capacity, capacity);
+    }
+
     @Override
     public Component getName(ItemStack stack) {
         if (stack.has(ModComponents.FLUIDSTACK) && !stack.get(ModComponents.FLUIDSTACK).stack().isEmpty())
