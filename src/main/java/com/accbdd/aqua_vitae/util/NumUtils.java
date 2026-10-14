@@ -3,7 +3,7 @@ package com.accbdd.aqua_vitae.util;
 import java.awt.*;
 
 public class NumUtils {
-    public static int lightenColor(int argb, float factor) { //clamped alpha to 22
+    public static int lightenColor(int argb, float factor) { //clamped alpha to 33
         factor = Math.max(0f, Math.min(1f, factor));
 
         int a = (argb >> 24) & 0xFF;
@@ -11,11 +11,12 @@ public class NumUtils {
         int g = (argb >> 8) & 0xFF;
         int b = argb & 0xFF;
 
+        a = (int) (a - (255 - a) * factor);
         r = (int) (r + (255 - r) * factor);
         g = (int) (g + (255 - g) * factor);
         b = (int) (b + (255 - b) * factor);
 
-        return (Math.max(a, 0x22) << 24) | (r << 16) | (g << 8) | b;
+        return (Math.max(a, 0x33) << 24) | (r << 16) | (g << 8) | b;
     }
 
     public static int darkenColor(int argb, float factor) {

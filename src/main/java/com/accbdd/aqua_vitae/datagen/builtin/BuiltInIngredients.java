@@ -50,7 +50,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.APPLE),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCFF3300, 10)
+                                .color(0xAAF59A40, 10)
                                 .sugar(24)
                                 .yeast(10)
                                 .yeastTolerance(90)
@@ -60,7 +60,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.HONEY_BOTTLE, Items.HONEYCOMB),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCFFB900, 4)
+                                .color(0xBBFFB900, 4)
                                 .sugar(36)
                                 .yeast(15)
                                 .yeastTolerance(120)
@@ -84,7 +84,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.SWEET_BERRIES),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCB30000, 5)
+                                .color(0xAAB30000, 5)
                                 .sugar(20)
                                 .yeast(8)
                                 .yeastTolerance(100)
@@ -95,7 +95,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.BROWN_MUSHROOM, Items.BROWN_MUSHROOM_BLOCK),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCC5D4037, 1)
+                                .color(0xBB5D4037, 1)
                                 .sugar(2)
                                 .yeast(60)
                                 .yeastTolerance(60)
@@ -107,7 +107,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.RED_MUSHROOM, Items.RED_MUSHROOM_BLOCK),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCED1C24, 1)
+                                .color(0xBBED1C24, 1)
                                 .sugar(4)
                                 .yeast(45)
                                 .yeastTolerance(120)
@@ -119,7 +119,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.CHORUS_FRUIT, Items.POPPED_CHORUS_FRUIT),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCC896789, 1)
+                                .color(0xAA896789, 1)
                                 .sugar(10)
                                 .yeast(20)
                                 .yeastTolerance(150)
@@ -132,7 +132,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.CHORUS_FLOWER),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCE7BCE7, 5)
+                                .color(0xAAE7BCE7, 5)
                                 .sugar(30)
                                 .yeast(40)
                                 .yeastTolerance(150)
@@ -143,7 +143,7 @@ public class BuiltInIngredients {
                 new BrewingIngredient(
                         Ingredient.of(Items.MELON, Items.MELON_SLICE),
                         new BrewingIngredient.BrewingProperties.Builder()
-                                .color(0xCCFF6347, 3)
+                                .color(0xBBFF6347, 3)
                                 .sugar(18)
                                 .yeast(5)
                                 .yeastTolerance(60)

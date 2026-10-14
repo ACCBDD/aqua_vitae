@@ -34,7 +34,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
-@Mod(value = AquaVitae.MODID, dist = {Dist.CLIENT})
+import static com.accbdd.aqua_vitae.AquaVitae.MODID;
+
+@Mod(value = MODID, dist = {Dist.CLIENT})
 public class AquaVitaeClient {
     public AquaVitaeClient(IEventBus modEventBus, ModContainer container) {
         modEventBus.register(this);
@@ -63,7 +65,7 @@ public class AquaVitaeClient {
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
         ModFluidTypes.REGISTERED.forEach((name, set) -> event.registerFluidType(new IClientFluidTypeExtensions() {
             private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
-            private static final ResourceLocation WATER_STILL = ResourceLocation.withDefaultNamespace("block/water_still");
+            private static final ResourceLocation FLUID_STILL = ResourceLocation.fromNamespaceAndPath(MODID, "block/opaque_fluid_still");
             private static final ResourceLocation WATER_FLOW = ResourceLocation.withDefaultNamespace("block/water_flow");
             private static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
 
@@ -79,7 +81,7 @@ public class AquaVitaeClient {
 
             @Override
             public ResourceLocation getStillTexture() {
-                return WATER_STILL;
+                return FLUID_STILL;
             }
 
             @Override
