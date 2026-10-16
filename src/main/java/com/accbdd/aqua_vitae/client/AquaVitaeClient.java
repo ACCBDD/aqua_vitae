@@ -14,11 +14,19 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
@@ -29,6 +37,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -113,6 +122,20 @@ public class AquaVitaeClient {
                 RenderSystem.setShaderFogEnd(10);
             }
         }, set.type()));
+
+        event.registerMobEffect(new IClientMobEffectExtensions() {
+            @Override
+            public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+                guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/mob_effect/intoxicated_" + Math.min(instance.getAmplifier(), 5) + ".png"), x, y + 7, 0, 0, 18, 18, 18, 18);
+                return true;
+            }
+
+            @Override
+            public boolean renderGuiIcon(MobEffectInstance instance, Gui gui, GuiGraphics guiGraphics, int x, int y, float z, float alpha) {
+                guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/mob_effect/intoxicated_" + Math.min(instance.getAmplifier(), 5) + ".png"), x + 3, y + 3, 0, 0, 18, 18, 18, 18);
+                return true;
+            }
+        }, ModEffects.INTOXICATED);
     }
 
     @SubscribeEvent
