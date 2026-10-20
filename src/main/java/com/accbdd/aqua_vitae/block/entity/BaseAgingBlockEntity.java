@@ -17,16 +17,17 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import java.util.List;
 
 public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
-    private final String LAST_TICKED_TAG = "last_tick";
+    private static final String LAST_SEEN_TAG = "last_seen_time";
+    private static final String TICK_TAG = "age_tick";
 
     private IngredientColor color;
     private int tick;
-    private long lastTicked;
+    private long lastTicked = -1;
+    private boolean internalChange;
 
     public BaseAgingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, int capacity, IngredientColor color) {
         super(type, pos, blockState, capacity);
         this.color = color;
-        this.tick = 0;
     }
 
     @Override
@@ -35,50 +36,66 @@ public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
             @Override
             protected void onContentsChanged() {
                 setChanged();
-                tick = 0;
+                if (!internalChange) {
+                    tick = 0;
+                }
             }
         };
     }
 
-    public void tickServer() {
-        if (getLevel() == null || getBlockState().getValue(BlockStateProperties.OPEN))
-            return;
+    private void ageFluid(int amount) {
+        internalChange = true;
+        if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
+            setFluid(FluidUtils.age(getFluid(), amount, color, List.of()));
+        }
+        BrewingUtils.determineAlcoholName(getFluid(), getLevel());
+        internalChange = false;
+        setChanged();
+    }
 
-        long currentTime = getLevel().getGameTime();
-        if (lastTicked == 0) {
-            lastTicked = currentTime;
+    public void tickServer() {
+        if (getLevel() == null) {
             return;
         }
 
-        if (tick++ >= Config.ageTicks) {
-            this.tick = 0;
-            int ageBy = (int) (getLevel().getGameTime() - this.lastTicked) / Config.ageTicks;
-            this.lastTicked = getLevel().getGameTime();
-            if (getFluid().has(ModComponents.ALCOHOL_PROPERTIES)) {
-                setFluid(FluidUtils.age(getFluid(), ageBy, color, List.of()));
-            }
-            BrewingUtils.determineAlcoholName(getFluid(), getLevel());
+        long currentTime = getLevel().getGameTime();
+        long elapsed = lastTicked < 0 ? 1 : Math.max(0, currentTime - lastTicked);
+        lastTicked = currentTime;
+
+        if (getBlockState().getValue(BlockStateProperties.OPEN)) {
+            return;
+        }
+
+        long total = tick + elapsed;
+        tick = (int) (total % Config.ageTicks);
+
+        long ageBy = total / Config.ageTicks;
+        if (ageBy > 0) {
+            ageFluid((int) Math.min(ageBy, Integer.MAX_VALUE));
         }
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putLong(LAST_TICKED_TAG, this.lastTicked);
+        tag.putInt(TICK_TAG, tick);
+        if (lastTicked >= 0) {
+            tag.putLong(LAST_SEEN_TAG, lastTicked);
+        }
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        if (tag.contains(LAST_TICKED_TAG))
-            this.lastTicked = tag.getLong(LAST_TICKED_TAG);
-    }
-
-    public void setColor(IngredientColor color) {
-        this.color = color;
+        tick = tag.getInt(TICK_TAG);
+        lastTicked = tag.contains(LAST_SEEN_TAG) ? tag.getLong(LAST_SEEN_TAG) : -1;
     }
 
     public IngredientColor getColor() {
         return color;
+    }
+
+    public void setColor(IngredientColor color) {
+        this.color = color;
     }
 }
