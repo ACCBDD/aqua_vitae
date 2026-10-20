@@ -8,6 +8,7 @@ import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,7 @@ import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
 public class FluidTagGenerator extends FluidTagsProvider {
     public static TagKey<Fluid> AQUA_VITAE = TagKey.create(Registries.FLUID, loc("aqua_vitae"));
+    public static TagKey<Fluid> WORT_BASE = TagKey.create(Registries.FLUID, loc("wort_base"));
 
     public FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, MODID, existingFileHelper);
@@ -27,6 +29,10 @@ public class FluidTagGenerator extends FluidTagsProvider {
         tag(AQUA_VITAE).add(
                 ModFluids.AQUA_VITAE.get(),
                 ModFluids.FLOWING_AQUA_VITAE.get()
+        );
+        tag(WORT_BASE).add(
+                Fluids.WATER,
+                Fluids.FLOWING_WATER
         );
     }
 

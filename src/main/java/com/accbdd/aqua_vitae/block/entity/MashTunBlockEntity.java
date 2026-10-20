@@ -3,8 +3,10 @@ package com.accbdd.aqua_vitae.block.entity;
 import com.accbdd.aqua_vitae.api.BrewingIngredient;
 import com.accbdd.aqua_vitae.capability.AdaptedFluidHandler;
 import com.accbdd.aqua_vitae.capability.AdaptedItemHandler;
+import com.accbdd.aqua_vitae.datagen.FluidTagGenerator;
 import com.accbdd.aqua_vitae.fluid.CombinedFluidHandler;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
+import com.accbdd.aqua_vitae.registry.ModComponents;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSyncable {
     public static final int MAX_PROGRESS = 30;
@@ -41,7 +44,7 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
     public MashTunBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MASH_TUN.get(), pos, blockState);
         this.maxProgress = MAX_PROGRESS; //todo fix
-        this.inputFluid = new FluidTank(MAX_FLUID) {
+        this.inputFluid = new FluidTank(MAX_FLUID, fluidStack -> fluidStack.is(FluidTagGenerator.WORT_BASE)) {
             @Override
             protected void onContentsChanged() {
                 setChanged();
@@ -67,6 +70,11 @@ public class MashTunBlockEntity extends AbstractBEWithData implements IFluidSync
             @Override
             public int getSlotLimit(int slot) {
                 return 1;
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return BrewingUtils.getIngredient(stack) != null;
             }
         };
         this.outputItems = new ItemStackHandler(1);
