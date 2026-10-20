@@ -113,7 +113,6 @@ public class FluidUtils {
      * @return a fluid fermented for one tick
      */
     public static FluidStack ferment(FluidStack fluid) {
-        //todo: flavors changing
         FermentingPropertiesComponent ferment = fluid.get(ModComponents.FERMENTING_PROPERTIES);
         if (ferment == null)
             return fluid;
@@ -130,7 +129,6 @@ public class FluidUtils {
         double abvDelta = converted / 2; //sugar is converted to alcohol at 2:1
 
         FermentingPropertiesComponent newFerment = new FermentingPropertiesComponent(ferment.stress(),
-                ferment.flavors(),
                 new BrewingProperties(brewing.color(),
                         brewing.starch(),
                         Math.max(0, (int) (brewing.sugar() - converted)),
@@ -138,10 +136,11 @@ public class FluidUtils {
                         brewing.yeastTolerance(),
                         brewing.diastaticPower()));
 
+        float newAbv = (float) (alcohol.abv() + abvDelta);
         AlcoholPropertiesComponent newAlcohol = new AlcoholPropertiesComponent(alcohol.color(),
-                Math.min((float) (alcohol.abv() + abvDelta), brewing.yeastTolerance()),
+                Math.min(newAbv, brewing.yeastTolerance()),
                 alcohol.age(),
-                alcohol.flavors(),
+                BrewingUtils.transitionFlavors(alcohol.flavors(), Flavor::ferment, Math.round(newAbv)),
                 alcohol.inputs());
 
         AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abv: {}, yeast: {}), abv delta: {}", conversionRate, batchPenalty, abvFactor, yeastFactor, abvDelta);
@@ -161,7 +160,7 @@ public class FluidUtils {
             return fluid;
 
         FluidStack newFluid = fluid.copy();
-        newFluid.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(ferment.stress() + 1, ferment.flavors(), ferment.properties()));
+        newFluid.set(ModComponents.FERMENTING_PROPERTIES, new FermentingPropertiesComponent(ferment.stress() + 1, ferment.properties()));
         return newFluid;
     }
 
@@ -175,7 +174,7 @@ public class FluidUtils {
      */
     public static FluidStack distill(FluidStack fluid, float lossFactor, float distillFactor, float maxAbv) {
         AlcoholPropertiesComponent alcohol = fluid.get(ModComponents.ALCOHOL_PROPERTIES);
-        if (alcohol == null )
+        if (alcohol == null)
             return fluid;
 
         float currentAbv = alcohol.abv();

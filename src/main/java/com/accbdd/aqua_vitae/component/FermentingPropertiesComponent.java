@@ -14,20 +14,18 @@ import net.minecraft.resources.ResourceKey;
 import java.util.List;
 import java.util.Set;
 
-public record FermentingPropertiesComponent(int stress, Set<ResourceKey<Flavor>> flavors,
+public record FermentingPropertiesComponent(int stress,
                                             BrewingIngredient.BrewingProperties properties) {
-    public static final FermentingPropertiesComponent EMPTY = new FermentingPropertiesComponent(0, Set.of(), BrewingIngredient.BrewingProperties.DEFAULT);
+    public static final FermentingPropertiesComponent EMPTY = new FermentingPropertiesComponent(0, BrewingIngredient.BrewingProperties.DEFAULT);
 
     public static final Codec<FermentingPropertiesComponent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.INT.fieldOf("stress").forGetter(FermentingPropertiesComponent::stress),
-                    ResourceKey.codec(AquaVitae.FLAVOR_REGISTRY).listOf().xmap(Set::copyOf, List::copyOf).fieldOf("flavors").forGetter(FermentingPropertiesComponent::flavors),
                     BrewingIngredient.BrewingProperties.CODEC.fieldOf("properties").forGetter(FermentingPropertiesComponent::properties)
             ).apply(instance, FermentingPropertiesComponent::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, FermentingPropertiesComponent> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, FermentingPropertiesComponent::stress,
-            ResourceKey.streamCodec(AquaVitae.FLAVOR_REGISTRY).apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).map(Set::copyOf, NonNullList::copyOf), FermentingPropertiesComponent::flavors,
             BrewingIngredient.BrewingProperties.STREAM_CODEC, FermentingPropertiesComponent::properties,
             FermentingPropertiesComponent::new
     );

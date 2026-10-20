@@ -113,7 +113,7 @@
   "properties.aqua_vitae.diastatic_power": "DP: %s",
   "properties.aqua_vitae.flavors": "Hold %s for flavors.",
   "properties.aqua_vitae.ingredients": "Hold %s for ingredients.",
-  "properties.aqua_vitae.properties": "Hold %s for brewing properties.",
+  "properties.aqua_vitae.properties": "Hold %s for properties.",
   "properties.aqua_vitae.starch": "Starch: %s",
   "properties.aqua_vitae.sugar": "Sugar: %s",
   "properties.aqua_vitae.yeast": "Yeast: %1$s, Tolerance: %2$s",
