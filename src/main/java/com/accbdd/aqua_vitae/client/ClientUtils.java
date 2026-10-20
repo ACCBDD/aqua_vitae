@@ -59,7 +59,7 @@ public class ClientUtils {
         return components;
     }
 
-    public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
+    public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties, boolean color) {
         List<Component> tooltips = new ArrayList<>();
         if (properties.sugar() > 0) {
             tooltips.add(Component.translatable("properties.aqua_vitae.sugar", properties.sugar()));
@@ -73,8 +73,14 @@ public class ClientUtils {
         if (properties.yeast() > 0 && properties.yeastTolerance() > 0) {
             tooltips.add(Component.translatable("properties.aqua_vitae.yeast", properties.yeast(), String.format("%.2f%%", (float)properties.yeastTolerance() / 10)));
         }
-        tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color().color()).toUpperCase()).withColor(properties.color().color() | 0xFF000000));
+        if (color) {
+            tooltips.add(Component.translatable("properties.aqua_vitae.color", Integer.toHexString(properties.color().color()).toUpperCase()).withColor(properties.color().color() | 0xFF000000));
+        }
         return tooltips;
+    }
+
+    public static List<Component> propertiesTooltip(BrewingIngredient.BrewingProperties properties) {
+        return propertiesTooltip(properties, true);
     }
 
     public static List<Component> getTooltip(BrewingIngredient ingredient) {
@@ -145,7 +151,7 @@ public class ClientUtils {
 
         if (fluidStack.has(ModComponents.FERMENTING_PROPERTIES)) {
             FermentingPropertiesComponent fermentingComponent = fluidStack.get(ModComponents.FERMENTING_PROPERTIES);
-            propertiesTooltip.addAll(propertiesTooltip(fermentingComponent.properties()));
+            propertiesTooltip.addAll(propertiesTooltip(fermentingComponent.properties(), !fluidStack.has(ModComponents.ALCOHOL_PROPERTIES)));
         }
 
         if (fluidStack.has(ModComponents.ALCOHOL_PROPERTIES)) {
