@@ -1,7 +1,6 @@
 package com.accbdd.aqua_vitae.block;
 
 import com.accbdd.aqua_vitae.block.entity.BaseAgingBlockEntity;
-import com.accbdd.aqua_vitae.block.entity.KegBlockEntity;
 import com.accbdd.aqua_vitae.registry.ModBlockEntities;
 import com.accbdd.aqua_vitae.util.FluidUtils;
 import net.minecraft.core.BlockPos;
@@ -61,11 +60,11 @@ public abstract class BaseAgingBlock extends BaseEntityBlock {
         if (level.isClientSide)
             return ItemInteractionResult.SUCCESS;
 
-        KegBlockEntity keg = level.getBlockEntity(pos, ModBlockEntities.KEG.get()).orElse(null);
-        if (keg == null)
+        BaseAgingBlockEntity blockEntity = level.getBlockEntity(pos, ModBlockEntities.KEG.get()).orElse(null);
+        if (blockEntity == null)
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        if (state.getValue(BlockStateProperties.OPEN) && FluidUtils.handleInteraction(player, hand, stack, keg.getFluidHandler())) {
+        if (state.getValue(BlockStateProperties.OPEN) && FluidUtils.handleInteraction(player, hand, stack, blockEntity.getFluidHandler())) {
             level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             player.getInventory().setChanged();
             return ItemInteractionResult.SUCCESS;
@@ -81,6 +80,12 @@ public abstract class BaseAgingBlock extends BaseEntityBlock {
             if (flag == level.hasNeighborSignal(pos)) {
                 level.setBlock(pos, state.cycle(BlockStateProperties.OPEN), 2);
                 level.invalidateCapabilities(pos);
+                if (state.getValue(BlockStateProperties.OPEN)) { // if block was previously open (ie we are now closing it), reset lastTicked
+                    BaseAgingBlockEntity blockEntity = level.getBlockEntity(pos, ModBlockEntities.KEG.get()).orElse(null);
+                    if (blockEntity != null) {
+                        blockEntity.setLastTicked(level.getGameTime());
+                    }
+                }
             }
         }
     }
