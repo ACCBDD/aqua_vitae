@@ -143,8 +143,8 @@ public class FluidUtils {
                 BrewingUtils.transitionFlavors(alcohol.flavors(), Flavor::ferment, Math.round(newAbv)),
                 alcohol.inputs());
 
-        AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abv: {}, yeast: {}), abv delta: {}", conversionRate, batchPenalty, abvFactor, yeastFactor, abvDelta);
-        AquaVitae.LOGGER.debug("sugar {} -> {}; abv {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abv(), newAlcohol.abv());
+//        AquaVitae.LOGGER.debug("conversion rate: {} (batch: {}, abv: {}, yeast: {}), abv delta: {}", conversionRate, batchPenalty, abvFactor, yeastFactor, abvDelta);
+//        AquaVitae.LOGGER.debug("sugar {} -> {}; abv {} -> {}", brewing.sugar(), newFerment.properties().sugar(), alcohol.abv(), newAlcohol.abv());
 
         if (newFerment.properties().sugar() == 0 || abvDelta == 0 || alcohol.abv() >= brewing.yeastTolerance())
             newFluid.remove(ModComponents.FERMENTING_PROPERTIES);

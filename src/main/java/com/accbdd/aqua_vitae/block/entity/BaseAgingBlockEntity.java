@@ -49,7 +49,6 @@ public abstract class BaseAgingBlockEntity extends BaseSingleFluidTankEntity {
         if (elapsed > Config.ageTicks) {
             long ageBy = elapsed / Config.ageTicks;
             if (ageBy > 0) {
-                AquaVitae.LOGGER.info("aging by {}. current time {}, last ticked {}, elapsed {}", ageBy, currentTime, lastTicked, elapsed);
                 ageFluid((int) Math.min(ageBy, Integer.MAX_VALUE));
             }
             lastTicked = currentTime;
