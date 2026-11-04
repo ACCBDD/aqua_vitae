@@ -1,16 +1,16 @@
 {
   "targets": [
-    "swap"
+    "aqua_vitae:swap"
   ],
   "passes": [
     {
-      "name": "aqua_vitae:intoxicated",
+      "name": "aqua_vitae:intoxicated_horizontal",
       "intarget": "minecraft:main",
-      "outtarget": "swap"
+      "outtarget": "aqua_vitae:swap"
     },
     {
-      "name": "blit",
-      "intarget": "swap",
+      "name": "aqua_vitae:intoxicated_vertical",
+      "intarget": "aqua_vitae:swap",
       "outtarget": "minecraft:main"
     }
   ]

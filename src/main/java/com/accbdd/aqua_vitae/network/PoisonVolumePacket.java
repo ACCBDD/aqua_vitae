@@ -20,20 +20,18 @@ public record PoisonVolumePacket(float volume) implements CustomPacketPayload {
     );
 
     public static void handle(PoisonVolumePacket packet, IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (packet.volume <= 0f) {
-                if (SaxophoneSound.INSTANCE == null)
-                    return;
-                SaxophoneSound.INSTANCE.stopSound();
-                SaxophoneSound.INSTANCE = null;
+        if (packet.volume <= 0f) {
+            if (SaxophoneSound.INSTANCE == null)
                 return;
-            }
-            if (SaxophoneSound.INSTANCE == null || SaxophoneSound.INSTANCE.isStopped()) {
-                SaxophoneSound.INSTANCE = new SaxophoneSound();
-                Minecraft.getInstance().getSoundManager().play(SaxophoneSound.INSTANCE);
-            }
-            SaxophoneSound.INSTANCE.setFadeVolume(packet.volume());
-        });
+            SaxophoneSound.INSTANCE.stopSound();
+            SaxophoneSound.INSTANCE = null;
+            return;
+        }
+        if (SaxophoneSound.INSTANCE == null || SaxophoneSound.INSTANCE.isStopped()) {
+            SaxophoneSound.INSTANCE = new SaxophoneSound();
+            Minecraft.getInstance().getSoundManager().play(SaxophoneSound.INSTANCE);
+        }
+        SaxophoneSound.INSTANCE.setFadeVolume(packet.volume());
     }
 
     @Override

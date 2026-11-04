@@ -77,6 +77,10 @@ public class PlayerAlcoholManager {
         if (poisoning >= 728) {
             player.hurt(ModDamageSources.alcoholPoisoning(player.level()), Float.MAX_VALUE);
             syncPoison(player, -1f);
+            player.setData(ModAttachments.UNDIGESTED_ALCOHOL, 0);
+            player.setData(ModAttachments.BLOOD_ALCOHOL, 0);
+            player.setData(ModAttachments.HANGOVER, 0);
+            syncAlcohol(player);
         }
     }
 
@@ -97,10 +101,7 @@ public class PlayerAlcoholManager {
 
     public static void syncPoison(Player player, float volume) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer,
-                    new PoisonVolumePacket(
-                            volume
-                    ));
+            PacketDistributor.sendToPlayer(serverPlayer, new PoisonVolumePacket(volume));
         }
     }
 
