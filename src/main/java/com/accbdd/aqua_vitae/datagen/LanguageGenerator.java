@@ -151,6 +151,7 @@ public class LanguageGenerator extends LanguageProvider {
         add("tooltip.aqua_vitae.needs_heat", "Needs heat from below");
         add("effect.aqua_vitae.intoxicated", "Intoxicated");
         add("effect.aqua_vitae.hungover", "Hungover");
+        add("death.attack.alcohol_poisoning", "%1$s heard the saxophones getting too loud");
     }
 
     private void addFluidSet(String name, Supplier<? extends LiquidBlock> block, Supplier<? extends BucketItem> bucket) {

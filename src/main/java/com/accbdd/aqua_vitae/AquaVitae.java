@@ -12,6 +12,7 @@ import com.accbdd.aqua_vitae.item.CupItem;
 import com.accbdd.aqua_vitae.item.MonocleItem;
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
 import com.accbdd.aqua_vitae.network.FluidSyncPacket;
+import com.accbdd.aqua_vitae.network.PoisonVolumePacket;
 import com.accbdd.aqua_vitae.player.PlayerAlcoholManager;
 import com.accbdd.aqua_vitae.registry.*;
 import com.accbdd.aqua_vitae.util.BrewingUtils;
@@ -62,6 +63,8 @@ public class AquaVitae {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModMenus.MENU_TYPES.register(modEventBus);
         ModDrinkPredicateType.DRINK_PREDICATE_TYPE.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
+
         if (LoadingModList.get().getModFileById("curios") != null) {
             Curios.init(modEventBus);
         }
@@ -181,5 +184,6 @@ public class AquaVitae {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playToClient(AlcoholSyncPacket.TYPE, AlcoholSyncPacket.STREAM_CODEC, AlcoholSyncPacket::handle);
         registrar.playToClient(FluidSyncPacket.TYPE, FluidSyncPacket.STREAM_CODEC, FluidSyncPacket::handle);
+        registrar.playToClient(PoisonVolumePacket.TYPE, PoisonVolumePacket.STREAM_CODEC, PoisonVolumePacket::handle);
     }
 }

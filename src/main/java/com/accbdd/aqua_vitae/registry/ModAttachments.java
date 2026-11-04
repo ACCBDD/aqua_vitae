@@ -20,4 +20,7 @@ public class ModAttachments {
 
     public static final Supplier<AttachmentType<Integer>> HANGOVER = ATTACHMENT_TYPES.register("hangover",
             () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
+
+    public static final Supplier<AttachmentType<Integer>> ALCOHOL_POISONING = ATTACHMENT_TYPES.register("alcohol_poisoning",
+            () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 }

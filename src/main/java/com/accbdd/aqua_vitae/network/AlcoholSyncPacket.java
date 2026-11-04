@@ -11,13 +11,14 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import static com.accbdd.aqua_vitae.AquaVitae.MODID;
 
-public record AlcoholSyncPacket(int bloodAlcohol, int intoxication, int hangover) implements CustomPacketPayload {
+public record AlcoholSyncPacket(int bloodAlcohol, int intoxication, int hangover, int alcohol_poisoning) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<AlcoholSyncPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MODID, "alcohol_sync"));
 
     public static final StreamCodec<ByteBuf, AlcoholSyncPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, AlcoholSyncPacket::bloodAlcohol,
             ByteBufCodecs.INT, AlcoholSyncPacket::intoxication,
             ByteBufCodecs.INT, AlcoholSyncPacket::hangover,
+            ByteBufCodecs.INT, AlcoholSyncPacket::alcohol_poisoning,
             AlcoholSyncPacket::new
     );
 
@@ -26,6 +27,7 @@ public record AlcoholSyncPacket(int bloodAlcohol, int intoxication, int hangover
         player.setData(ModAttachments.UNDIGESTED_ALCOHOL, packet.bloodAlcohol());
         player.setData(ModAttachments.BLOOD_ALCOHOL, packet.intoxication());
         player.setData(ModAttachments.HANGOVER, packet.hangover());
+        player.setData(ModAttachments.ALCOHOL_POISONING, packet.alcohol_poisoning());
     }
 
     @Override

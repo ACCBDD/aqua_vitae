@@ -1,7 +1,9 @@
 package com.accbdd.aqua_vitae.player;
 
 import com.accbdd.aqua_vitae.network.AlcoholSyncPacket;
+import com.accbdd.aqua_vitae.network.PoisonVolumePacket;
 import com.accbdd.aqua_vitae.registry.ModAttachments;
+import com.accbdd.aqua_vitae.registry.ModDamageSources;
 import com.accbdd.aqua_vitae.registry.ModEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +17,7 @@ public class PlayerAlcoholManager {
         int undigested = player.getData(ModAttachments.UNDIGESTED_ALCOHOL);
         int bloodAlcohol = player.getData(ModAttachments.BLOOD_ALCOHOL);
         int hangover = player.getData(ModAttachments.HANGOVER);
+        int poisoning = player.getData(ModAttachments.ALCOHOL_POISONING);
 
         float saturationFactor = Math.max(0.3f, 1.0f - (player.getFoodData().getSaturationLevel() / 20.0f) * 0.7f);
         if (undigested > 0) {
@@ -44,7 +47,7 @@ public class PlayerAlcoholManager {
         player.setData(ModAttachments.UNDIGESTED_ALCOHOL, Math.max(undigested, 0));
         player.setData(ModAttachments.BLOOD_ALCOHOL, Math.max(bloodAlcohol, 0));
         player.setData(ModAttachments.HANGOVER, Math.max(hangover, 0));
-        //todo add actual effects for hangover and bac
+        //todo add actual effects for hangover
         if (bloodAlcohol > 500000) { //0.50 bac
             setPlayerEffectLevel(player, ModEffects.INTOXICATED, 5);
         } else if (bloodAlcohol > 320000) {
@@ -60,6 +63,21 @@ public class PlayerAlcoholManager {
         } else {
             setPlayerEffectLevel(player, ModEffects.INTOXICATED, -1);
         }
+
+        if (bloodAlcohol > 500000) {
+            player.setData(ModAttachments.ALCOHOL_POISONING, poisoning + 1);
+            syncPoison(player, Math.min(player.getData(ModAttachments.ALCOHOL_POISONING) / 700f, 1.0f));
+        } else if (poisoning > 0) {
+                int nextPoison = Math.max(poisoning - 1, 0);
+                player.setData(ModAttachments.ALCOHOL_POISONING, nextPoison);
+
+                syncPoison(player, Math.min(nextPoison / 728f, 1.0f));
+        }
+
+        if (poisoning >= 728) {
+            player.hurt(ModDamageSources.alcoholPoisoning(player.level()), Float.MAX_VALUE);
+            syncPoison(player, -1f);
+        }
     }
 
     public static void addAlcohol(Player player, int toAdd) {
@@ -72,7 +90,17 @@ public class PlayerAlcoholManager {
             PacketDistributor.sendToPlayer(serverPlayer,
                     new AlcoholSyncPacket(player.getData(ModAttachments.UNDIGESTED_ALCOHOL),
                             player.getData(ModAttachments.BLOOD_ALCOHOL),
-                            player.getData(ModAttachments.HANGOVER)));
+                            player.getData(ModAttachments.HANGOVER),
+                            player.getData(ModAttachments.ALCOHOL_POISONING)));
+        }
+    }
+
+    public static void syncPoison(Player player, float volume) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer,
+                    new PoisonVolumePacket(
+                            volume
+                    ));
         }
     }
 
